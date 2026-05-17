@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Saudaraku</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=DM+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   /* Base — merah gelap & biru tua */
@@ -258,6 +258,1217 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
 .target-card{background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;}
 .target-progress{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:8px 0;}
 .target-bar{height:100%;border-radius:4px;background:var(--green);transition:width 0.5s ease;}
+
+/* ══════ LEADERBOARD EMBEDDED STYLES ══════ */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&display=swap');
+.lb-wrap{font-family:var(--sans);padding:4px 0 20px;}
+.lb-live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(62,207,142,0.1);border:1px solid rgba(62,207,142,0.3);padding:5px 12px;border-radius:20px;font-size:11px;color:var(--green);font-weight:600;letter-spacing:1px;margin-bottom:12px;}
+.lb-live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:lbPulse 1.5s infinite;}
+@keyframes lbPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
+.lb-period-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.lb-period-chip{background:var(--s2);border:1px solid var(--border);padding:6px 12px;border-radius:8px;font-size:11px;color:var(--muted2);font-family:var(--mono);}
+.lb-period-chip span{color:var(--text);font-weight:600;}
+.lb-motiv{background:linear-gradient(135deg,rgba(245,208,32,0.08),rgba(245,208,32,0.02));border:1px solid rgba(245,208,32,0.2);border-left:3px solid var(--yellow);padding:12px 16px;border-radius:8px;margin-bottom:14px;font-size:12px;color:var(--yellow);font-weight:500;}
+.lb-tab-nav{display:flex;gap:3px;margin-bottom:16px;background:var(--s2);padding:3px;border-radius:10px;border:1px solid var(--border);}
+.lb-tab-btn{flex:1;padding:8px 6px;border-radius:7px;border:none;background:transparent;color:var(--muted2);font-family:var(--sans);font-size:11px;font-weight:500;cursor:pointer;transition:all .2s;}
+.lb-tab-btn.on{background:var(--s3);color:var(--text);font-weight:700;}
+.lb-tab-panel{display:none;}
+.lb-tab-panel.on{display:block;}
+.lb-sec-title{font-family:'Bebas Neue',cursive,'Plus Jakarta Sans',sans-serif;font-size:16px;letter-spacing:2px;color:var(--muted2);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.lb-sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.lb-podium{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;}
+.lb-pod-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:16px 12px;text-align:center;cursor:pointer;transition:transform .2s;}
+.lb-pod-card:hover{transform:translateY(-2px);}
+.lb-pod-card.r1{border-color:rgba(245,208,32,.4);background:linear-gradient(135deg,rgba(245,208,32,.08),var(--s2));}
+.lb-pod-card.r2{border-color:rgba(192,192,192,.3);}
+.lb-pod-card.r3{border-color:rgba(205,127,50,.3);}
+.lb-pod-badge{font-family:'Bebas Neue',cursive,sans-serif;font-size:32px;line-height:1;margin-bottom:4px;}
+.r1 .lb-pod-badge{color:var(--yellow);}
+.r2 .lb-pod-badge{color:#c0c0c0;}
+.r3 .lb-pod-badge{color:#cd7f32;}
+.lb-pod-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.lb-pod-cabang{font-size:10px;color:var(--muted2);margin-bottom:8px;font-family:var(--mono);}
+.lb-pod-score{font-family:'Bebas Neue',cursive,sans-serif;font-size:26px;color:var(--yellow);}
+.lb-pod-lbl{font-size:9px;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;}
+.lb-table{background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+.lb-thead{display:grid;grid-template-columns:40px 1fr 64px 64px 64px 64px 90px;padding:10px 12px;background:var(--s3);border-bottom:1px solid var(--border);font-size:9px;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
+.lb-trow{display:grid;grid-template-columns:40px 1fr 64px 64px 64px 64px 90px;padding:12px 12px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background .2s;}
+.lb-trow:last-child{border-bottom:none;}
+.lb-trow:hover{background:var(--s3);}
+.lb-tr-rank{font-family:'Bebas Neue',cursive,sans-serif;font-size:18px;color:var(--muted2);text-align:center;}
+.lb-tr-rank.top{color:var(--yellow);}
+.lb-tr-person{display:flex;flex-direction:column;}
+.lb-tr-name{font-size:12px;font-weight:600;color:var(--text);}
+.lb-tr-cabang{font-size:10px;color:var(--muted2);font-family:var(--mono);margin-top:1px;}
+.lb-tr-tag{display:inline-block;padding:1px 5px;border-radius:3px;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:2px;background:rgba(245,208,32,.15);color:var(--yellow);}
+.lb-tr-stat{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text);text-align:center;}
+.lb-prog-wrap{display:flex;flex-direction:column;gap:2px;}
+.lb-prog-lbl{font-size:9px;color:var(--muted2);text-align:right;font-family:var(--mono);}
+.lb-prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.lb-prog-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.lb-kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.lb-kpi-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.lb-kpi-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.lb-kpi-name{font-size:12px;font-weight:600;}
+.lb-kpi-period{font-size:10px;color:var(--muted2);font-family:var(--mono);background:var(--s3);padding:2px 7px;border-radius:4px;}
+.lb-kpi-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.lb-kpi-lbl{font-size:10px;color:var(--muted2);width:72px;flex-shrink:0;}
+.lb-kpi-bar-w{flex:1;}
+.lb-kpi-bar{height:7px;background:var(--border);border-radius:3px;overflow:hidden;}
+.lb-kpi-fill{height:100%;border-radius:3px;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+.lb-kpi-pct{font-size:10px;font-family:var(--mono);font-weight:600;width:34px;text-align:right;flex-shrink:0;}
+.lb-pct-great{color:var(--green);}
+.lb-pct-ok{color:var(--yellow);}
+.lb-pct-low{color:var(--accent2);}
+.lb-reward-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.lb-rcard{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;overflow:hidden;}
+.lb-rcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.lb-rcard.earned::before{background:var(--green);}
+.lb-rcard.partial::before{background:var(--yellow);}
+.lb-rcard.at-risk::before{background:var(--accent2);}
+.lb-rcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.lb-rcard-person{font-size:12px;font-weight:600;}
+.lb-rcard-amt{font-family:'Bebas Neue',cursive,sans-serif;font-size:24px;line-height:1;}
+.earned .lb-rcard-amt{color:var(--green);}
+.partial .lb-rcard-amt{color:var(--yellow);}
+.at-risk .lb-rcard-amt{color:var(--accent2);}
+.lb-rcard-stxt{font-size:10px;margin-bottom:8px;padding:5px 9px;border-radius:5px;font-weight:500;}
+.earned .lb-rcard-stxt{background:rgba(62,207,142,.1);color:var(--green);}
+.partial .lb-rcard-stxt{background:rgba(245,208,32,.1);color:var(--yellow);}
+.at-risk .lb-rcard-stxt{background:rgba(255,96,128,.1);color:var(--accent2);}
+.lb-wa-box{background:#1a2a1a;border:1px solid rgba(62,207,142,.2);border-radius:12px;padding:16px;margin-bottom:16px;font-family:var(--mono);font-size:11px;line-height:1.8;color:#a0d4a0;white-space:pre-wrap;}
+.lb-wa-hdr{font-size:10px;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+.lb-copy-btn{background:rgba(62,207,142,.15);border:1px solid rgba(62,207,142,.3);color:var(--green);padding:3px 10px;border-radius:6px;font-size:10px;cursor:pointer;font-family:var(--sans);transition:all .2s;}
+.lb-copy-btn:hover{background:rgba(62,207,142,.25);}
+.lb-inp-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
+.lb-inp-title{font-size:11px;font-weight:600;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.lb-inp-row{display:flex;flex-direction:column;gap:3px;margin-bottom:8px;}
+.lb-inp-label{font-size:10px;color:var(--muted2);}
+.lb-inp-field{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--mono);font-size:12px;width:100%;transition:border-color .2s;}
+.lb-inp-field:focus{outline:none;border-color:var(--accent2);}
+.lb-inp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.lb-save-btn{width:100%;padding:9px;border-radius:8px;border:none;font-family:'Bebas Neue',cursive,sans-serif;font-size:15px;letter-spacing:2px;cursor:pointer;margin-top:10px;transition:all .2s;}
+.lb-save-btn:hover{filter:brightness(1.1);}
+.lb-btn-gold{background:var(--yellow);color:#09090f;}
+.lb-btn-green{background:var(--green);color:#09090f;}
+.lb-btn-accent{background:var(--accent);color:#fff;}
+.lb-streak-row{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;}
+.lb-sd{width:20px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;font-family:var(--mono);}
+.lb-sd-hit{background:rgba(62,207,142,.3);color:var(--green);border:1px solid rgba(62,207,142,.4);}
+.lb-sd-miss{background:rgba(224,48,80,.15);color:var(--accent2);border:1px solid rgba(224,48,80,.2);}
+.lb-sd-empty{background:var(--s3);color:var(--muted2);border:1px solid var(--border);}
+.lb-manage-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--s2);border:1px solid var(--border);border-radius:8px;margin-bottom:7px;}
+@media(max-width:600px){
+  .lb-thead,.lb-trow{grid-template-columns:34px 1fr 56px 80px;}
+  .lb-thead>*:nth-child(3),.lb-thead>*:nth-child(4),.lb-thead>*:nth-child(5),
+  .lb-trow>*:nth-child(3),.lb-trow>*:nth-child(4),.lb-trow>*:nth-child(5){display:none;}
+  .lb-kpi-grid,.lb-reward-cards,.lb-inp-grid{grid-template-columns:1fr;}
+}
+
+/* Leaderboard staff mode: hide input tab */
+
+
+/* =====================================================
+   LEADERBOARD STYLES (dari saudara-cell-leaderboard)
+   ===================================================== */
+.lb-wrap { position: relative; }
+.lb-wrap .section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: var(--muted2);
+  margin: 16px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lb-wrap .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.lb-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.lb-brand-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: #f5c842;
+  line-height: 1;
+}
+.lb-brand-sub { font-size: 10px; color: var(--muted2); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+.lb-live-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.3);
+  padding: 5px 12px; border-radius: 20px;
+  font-size: 11px; color: #2ecc71; font-weight: 600; letter-spacing: 1px;
+}
+.lb-live-dot { width:7px; height:7px; border-radius:50%; background:#2ecc71; animation:lb-pulse 1.5s infinite; }
+@keyframes lb-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+
+.lb-period-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.lb-period-chip {
+  background:var(--s1); border:1px solid var(--border);
+  padding:6px 12px; border-radius:7px;
+  font-size:11px; color:var(--muted2); font-family:var(--mono);
+}
+.lb-period-chip span { color:var(--text); font-weight:600; }
+
+.lb-motivation {
+  background:linear-gradient(135deg,rgba(245,200,66,.08),rgba(245,200,66,.02));
+  border:1px solid rgba(245,200,66,.2); border-left:3px solid #f5c842;
+  padding:12px 16px; border-radius:8px; margin-bottom:14px;
+  font-size:12px; color:#f5c842; font-weight:500; animation:lb-fadein .8s ease;
+}
+@keyframes lb-fadein { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:none} }
+
+.lb-tab-nav {
+  display:flex; gap:4px; margin-bottom:14px;
+  background:var(--s1); padding:4px; border-radius:10px;
+  border:1px solid var(--border); overflow-x:auto; scrollbar-width:none;
+}
+.lb-tab-nav::-webkit-scrollbar { display:none; }
+.lb-tab-btn {
+  flex-shrink:0; padding:8px 12px; border-radius:7px; border:none;
+  background:transparent; color:var(--muted2);
+  font-family:var(--sans); font-size:11px; font-weight:600;
+  cursor:pointer; transition:all .2s; white-space:nowrap;
+}
+.lb-tab-btn.lb-active { background:var(--s3); color:var(--text); }
+.lb-tab-content { display:none; }
+.lb-tab-content.lb-active { display:block; }
+
+/* Podium */
+.lb-podium { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:4px; }
+.lb-podium-card {
+  background:var(--s2); border:1px solid var(--border); border-radius:12px;
+  padding:16px 10px; text-align:center; transition:transform .2s;
+}
+.lb-podium-card:hover { transform:translateY(-2px); }
+.lb-podium-card.lb-r1 { border-color:rgba(245,200,66,.4); background:linear-gradient(135deg,rgba(245,200,66,.08),var(--s2)); }
+.lb-podium-card.lb-r2 { border-color:rgba(192,192,192,.3); }
+.lb-podium-card.lb-r3 { border-color:rgba(205,127,50,.3); }
+.lb-podium-medal { font-size:26px; line-height:1; margin-bottom:4px; }
+.lb-podium-name { font-size:11px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.lb-podium-cabang { font-size:9px; color:var(--muted2); font-family:var(--mono); margin-bottom:8px; }
+.lb-podium-score { font-family:'Bebas Neue',monospace; font-size:22px; color:#f5c842; }
+.lb-podium-score-lbl { font-size:9px; color:var(--muted2); letter-spacing:1px; text-transform:uppercase; }
+
+/* Table */
+.lb-table { background:var(--s2); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:4px; }
+.lb-th { display:grid; grid-template-columns:40px 1fr 60px 60px 60px 60px 90px; padding:10px 12px; background:var(--s3); border-bottom:1px solid var(--border); font-size:9px; color:var(--muted2); letter-spacing:1px; text-transform:uppercase; }
+.lb-tr { display:grid; grid-template-columns:40px 1fr 60px 60px 60px 60px 90px; padding:12px 12px; border-bottom:1px solid var(--border); align-items:center; animation:lb-slidein .4s ease both; }
+.lb-tr:last-child { border-bottom:none; }
+.lb-tr:hover { background:var(--s3); }
+@keyframes lb-slidein { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:none} }
+.lb-rank-num { font-family:'Bebas Neue',monospace; font-size:18px; color:var(--muted2); text-align:center; }
+.lb-rank-num.lb-top { color:#f5c842; }
+.lb-pname { font-size:12px; font-weight:700; color:var(--text); }
+.lb-prole { font-size:9px; color:var(--muted2); font-family:var(--mono); }
+.lb-role-tag { display:inline-block; padding:1px 6px; border-radius:4px; font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-top:2px; }
+.lb-tag-senior { background:rgba(245,200,66,.15); color:#f5c842; }
+.lb-tag-c1 { background:rgba(74,158,255,.15); color:#4a9eff; }
+.lb-tag-c2 { background:rgba(46,204,113,.15); color:#2ecc71; }
+.lb-tag-c3 { background:rgba(255,107,107,.15); color:#ff6b6b; }
+.lb-tag-custom { background:rgba(155,89,182,.15); color:#9b59b6; }
+.lb-stat { font-family:var(--mono); font-size:12px; font-weight:600; color:var(--text); text-align:center; }
+.lb-prog-wrap { display:flex; flex-direction:column; gap:2px; }
+.lb-prog-lbl { font-size:9px; color:var(--muted2); text-align:right; font-family:var(--mono); }
+.lb-prog-bar { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+.lb-prog-fill { height:100%; border-radius:3px; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+
+/* KPI */
+.lb-breakdown-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.lb-breakdown-card { background:var(--s2); border:1px solid var(--border); border-radius:12px; padding:16px; animation:lb-fadein .6s ease both; }
+.lb-breakdown-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.lb-breakdown-name { font-size:12px; font-weight:600; }
+.lb-breakdown-period { font-size:9px; color:var(--muted2); font-family:var(--mono); background:var(--s3); padding:3px 7px; border-radius:4px; }
+.lb-kpi-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.lb-kpi-label { font-size:10px; color:var(--muted2); width:76px; flex-shrink:0; }
+.lb-kpi-bar-wrap { flex:1; }
+.lb-kpi-bar { height:7px; background:var(--border); border-radius:4px; overflow:hidden; }
+.lb-kpi-fill { height:100%; border-radius:4px; transition:width 1.4s cubic-bezier(.4,0,.2,1); }
+.lb-kpi-pct { font-size:10px; font-family:var(--mono); font-weight:700; width:34px; text-align:right; flex-shrink:0; }
+.lb-pct-great { color:var(--green); } .lb-pct-ok { color:#f5c842; } .lb-pct-low { color:#ff6b6b; }
+
+/* Reward */
+.lb-reward-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.lb-reward-card { background:var(--s2); border:1px solid var(--border); border-radius:12px; padding:16px; position:relative; overflow:hidden; }
+.lb-reward-card::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; }
+.lb-reward-card.lb-earned::before { background:var(--green); }
+.lb-reward-card.lb-partial::before { background:#f5c842; }
+.lb-reward-card.lb-at-risk::before { background:#ff6b6b; }
+.lb-reward-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.lb-reward-person { font-size:12px; font-weight:700; }
+.lb-reward-amount { font-family:'Bebas Neue',monospace; font-size:22px; line-height:1; }
+.lb-earned .lb-reward-amount { color:var(--green); }
+.lb-partial .lb-reward-amount { color:#f5c842; }
+.lb-at-risk .lb-reward-amount { color:#ff6b6b; }
+.lb-reward-status { font-size:10px; margin-bottom:8px; padding:5px 8px; border-radius:5px; font-weight:600; }
+.lb-earned .lb-reward-status { background:rgba(62,207,142,.1); color:var(--green); }
+.lb-partial .lb-reward-status { background:rgba(245,200,66,.1); color:#f5c842; }
+.lb-at-risk .lb-reward-status { background:rgba(255,107,107,.1); color:#ff6b6b; }
+.lb-reward-missing { font-size:10px; color:var(--muted2); font-family:var(--mono); }
+
+/* Streak */
+.lb-streak-card { background:var(--s2); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:10px; }
+.lb-streak-row { display:flex; gap:5px; flex-wrap:wrap; margin-top:8px; }
+.lb-streak-day { width:22px; height:22px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:700; font-family:var(--mono); }
+.lb-s-hit { background:rgba(46,204,113,.25); color:#2ecc71; border:1px solid rgba(46,204,113,.4); }
+.lb-s-miss { background:rgba(255,107,107,.1); color:#ff6b6b; border:1px solid rgba(255,107,107,.2); }
+.lb-s-empty { background:var(--s3); color:var(--muted2); border:1px solid var(--border); }
+
+/* WA */
+.lb-wa-box { background:#0d1a0d; border:1px solid rgba(46,204,113,.2); border-radius:12px; padding:16px; margin-bottom:4px; }
+.lb-wa-hdr { font-size:10px; color:#2ecc71; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; font-weight:700; display:flex; justify-content:space-between; align-items:center; }
+.lb-copy-btn { background:rgba(46,204,113,.15); border:1px solid rgba(46,204,113,.3); color:#2ecc71; padding:4px 10px; border-radius:6px; font-size:10px; cursor:pointer; font-family:var(--sans); }
+.lb-neuro-tip { background:linear-gradient(135deg,rgba(155,89,182,.08),rgba(74,158,255,.05)); border:1px solid rgba(155,89,182,.2); border-radius:10px; padding:14px; margin-top:14px; font-size:11px; color:var(--muted2); line-height:1.7; }
+.lb-neuro-tip strong { color:#9b59b6; }
+
+/* Period toggle */
+.lb-toggle-row { display:flex; gap:8px; margin-bottom:14px; }
+.lb-toggle-btn { padding:6px 14px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted2); font-size:11px; font-family:var(--sans); cursor:pointer; transition:all .2s; }
+.lb-toggle-btn.lb-toggle-on { background:#f5c842; color:var(--bg); border-color:#f5c842; font-weight:600; }
+
+/* Input section inside kanit tab */
+.lb-input-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.lb-input-card { background:var(--s2); border:1px solid var(--border); border-radius:12px; padding:16px; }
+.lb-input-card-title { font-size:11px; font-weight:600; color:var(--muted2); letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.lb-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.lb-input-row { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
+.lb-input-label { font-size:10px; color:var(--muted2); }
+.lb-input-field { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 12px; color:var(--text); font-family:var(--mono); font-size:12px; width:100%; transition:border-color .2s; }
+.lb-input-field:focus { outline:none; border-color:var(--blue); }
+.lb-save-btn { width:100%; padding:10px; border-radius:8px; border:none; font-family:'Bebas Neue',monospace; font-size:15px; letter-spacing:2px; cursor:pointer; margin-top:10px; transition:all .2s; }
+.lb-save-btn:hover { transform:translateY(-1px); filter:brightness(1.1); }
+.lb-btn-gold { background:#f5c842; color:var(--bg); }
+.lb-btn-blue { background:#4a9eff; color:white; }
+.lb-btn-green { background:#2ecc71; color:white; }
+.lb-btn-red { background:#ff6b6b; color:white; }
+.lb-btn-purple { background:#9b59b6; color:white; }
+
+.lb-me { background:rgba(62,207,142,.06) !important; border-color:rgba(62,207,142,.35) !important; }
+
+@media(max-width:480px){
+  .lb-breakdown-grid,.lb-reward-cards,.lb-input-grid { grid-template-columns:1fr; }
+  .lb-podium { grid-template-columns:repeat(3,1fr); }
+  .lb-th,.lb-tr { grid-template-columns:32px 1fr 60px 80px; }
+  .lb-th>*:nth-child(3),.lb-th>*:nth-child(4),.lb-th>*:nth-child(5),
+  .lb-tr>*:nth-child(3),.lb-tr>*:nth-child(4),.lb-tr>*:nth-child(5) { display:none; }
+}
+
+
+/* ── LEADERBOARD SCREEN CSS (scoped) ── */
+
+/* ─── Google Fonts import ─── */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ─── Root vars khusus LB (scoped ke #sc-leaderboard) ─── */
+#sc-leaderboard {
+  --lb-bg:       #08080f;
+  --lb-s1:       #111118;
+  --lb-s2:       #181820;
+  --lb-s3:       #1e1e28;
+  --lb-border:   #252532;
+  --lb-gold:     #f5c842;
+  --lb-gold2:    #e8a020;
+  --lb-green:    #2ecc71;
+  --lb-red:      #e74c3c;
+  --lb-blue:     #4a9eff;
+  --lb-purple:   #9b59b6;
+  --lb-text:     #e8e8f2;
+  --lb-muted:    #6a6a8a;
+  --lb-c1:       #4a9eff;
+  --lb-c2:       #2ecc71;
+  --lb-c3:       #ff6b6b;
+  --lb-r:        12px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--lb-text);
+  background: var(--lb-bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Reset dalam scope ─── */
+#sc-leaderboard *, #sc-leaderboard *::before, #sc-leaderboard *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Background grid atmosfer ─── */
+#sc-leaderboard::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(74,158,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,158,255,0.025) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Container ─── */
+#sc-leaderboard .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 16px 32px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* ─── HEADER ─── */
+#sc-leaderboard .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--lb-border);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+#sc-leaderboard .brand { display: flex; flex-direction: column; }
+
+#sc-leaderboard .brand-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(22px, 5vw, 34px);
+  letter-spacing: 3px;
+  color: var(--lb-gold);
+  line-height: 1;
+}
+
+#sc-leaderboard .brand-sub {
+  font-size: 10px;
+  color: var(--lb-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+#sc-leaderboard .live-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(46,204,113,0.08);
+  border: 1px solid rgba(46,204,113,0.25);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  color: var(--lb-green);
+  font-weight: 600;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+#sc-leaderboard .live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--lb-green);
+  animation: lb-pulse 1.5s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes lb-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.4); }
+}
+
+/* ─── PERIOD BAR ─── */
+#sc-leaderboard .period-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+#sc-leaderboard .period-chip {
+  background: var(--lb-s1);
+  border: 1px solid var(--lb-border);
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--lb-muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+#sc-leaderboard .period-chip span { color: var(--lb-text); font-weight: 600; }
+
+/* ─── MOTIVATION BANNER ─── */
+#sc-leaderboard .motivation-banner {
+  background: linear-gradient(135deg, rgba(245,200,66,0.07), rgba(245,200,66,0.02));
+  border: 1px solid rgba(245,200,66,0.18);
+  border-left: 3px solid var(--lb-gold);
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: clamp(11px, 2.5vw, 13px);
+  color: var(--lb-gold);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  animation: lb-fadeIn 0.8s ease;
+}
+
+@keyframes lb-fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── SECTION TITLE ─── */
+#sc-leaderboard .section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(14px, 3vw, 18px);
+  letter-spacing: 2px;
+  color: var(--lb-muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#sc-leaderboard .section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--lb-border);
+}
+
+/* ─── PODIUM — 3 kolom di semua ukuran ─── */
+#sc-leaderboard .podium {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+#sc-leaderboard .podium-card {
+  background: var(--lb-s1);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-r);
+  padding: clamp(12px, 3vw, 22px) clamp(8px, 2vw, 16px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+#sc-leaderboard .podium-card:active { transform: scale(0.97); }
+
+#sc-leaderboard .podium-card.rank-1 {
+  border-color: rgba(245,200,66,0.35);
+  background: linear-gradient(160deg, rgba(245,200,66,0.09), var(--lb-s1));
+  box-shadow: 0 0 28px rgba(245,200,66,0.08);
+}
+
+#sc-leaderboard .podium-card.rank-2 { border-color: rgba(192,192,192,0.25); }
+#sc-leaderboard .podium-card.rank-3 { border-color: rgba(205,127,50,0.25); }
+
+#sc-leaderboard .rank-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(26px, 6vw, 40px);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+#sc-leaderboard .rank-1 .rank-badge { color: var(--lb-gold); }
+#sc-leaderboard .rank-2 .rank-badge { color: #c0c0c0; }
+#sc-leaderboard .rank-3 .rank-badge { color: #cd7f32; }
+
+#sc-leaderboard .podium-name {
+  font-size: clamp(11px, 2.5vw, 14px);
+  font-weight: 700;
+  color: var(--lb-text);
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+#sc-leaderboard .podium-cabang {
+  font-size: clamp(9px, 2vw, 11px);
+  color: var(--lb-muted);
+  margin-bottom: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+#sc-leaderboard .podium-score {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(20px, 5vw, 30px);
+  color: var(--lb-gold);
+  line-height: 1;
+}
+
+#sc-leaderboard .podium-score-label {
+  font-size: clamp(8px, 1.8vw, 10px);
+  color: var(--lb-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ─── LEADERBOARD TABLE ─── */
+#sc-leaderboard .leaderboard {
+  background: var(--lb-s1);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-r);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+#sc-leaderboard .lb-header,
+#sc-leaderboard .lb-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 64px 64px 64px 64px 90px;
+  padding: 11px 14px;
+  align-items: center;
+  gap: 4px;
+}
+
+#sc-leaderboard .lb-header {
+  background: var(--lb-s2);
+  border-bottom: 1px solid var(--lb-border);
+  font-size: 9px;
+  color: var(--lb-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+#sc-leaderboard .lb-row {
+  border-bottom: 1px solid var(--lb-border);
+  transition: background 0.15s;
+  cursor: pointer;
+  animation: lb-slideIn 0.4s ease both;
+}
+
+#sc-leaderboard .lb-row:last-child { border-bottom: none; }
+#sc-leaderboard .lb-row:hover, #sc-leaderboard .lb-row:active { background: var(--lb-s2); }
+
+@keyframes lb-slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+#sc-leaderboard .lb-row:nth-child(1) { animation-delay: 0.04s; }
+#sc-leaderboard .lb-row:nth-child(2) { animation-delay: 0.08s; }
+#sc-leaderboard .lb-row:nth-child(3) { animation-delay: 0.12s; }
+#sc-leaderboard .lb-row:nth-child(4) { animation-delay: 0.16s; }
+#sc-leaderboard .lb-row:nth-child(5) { animation-delay: 0.20s; }
+
+#sc-leaderboard .lb-rank {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(16px, 3.5vw, 22px);
+  color: var(--lb-muted);
+  text-align: center;
+}
+
+#sc-leaderboard .lb-rank.top { color: var(--lb-gold); }
+
+#sc-leaderboard .lb-person { display: flex; flex-direction: column; min-width: 0; }
+#sc-leaderboard .lb-person-name {
+  font-size: clamp(11px, 2.5vw, 13px);
+  font-weight: 600;
+  color: var(--lb-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#sc-leaderboard .lb-person-role {
+  font-size: 9px;
+  color: var(--lb-muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 1px;
+}
+
+#sc-leaderboard .lb-role-tag {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+#sc-leaderboard .tag-senior { background: rgba(245,200,66,0.15); color: var(--lb-gold); }
+#sc-leaderboard .tag-c1     { background: rgba(74,158,255,0.15);  color: var(--lb-blue); }
+#sc-leaderboard .tag-c2     { background: rgba(46,204,113,0.15);  color: var(--lb-green); }
+#sc-leaderboard .tag-c3     { background: rgba(255,107,107,0.15); color: var(--lb-c3); }
+
+#sc-leaderboard .lb-stat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 2.2vw, 13px);
+  font-weight: 600;
+  color: var(--lb-text);
+  text-align: center;
+}
+
+/* Progress bar */
+#sc-leaderboard .progress-wrap { display: flex; flex-direction: column; gap: 3px; }
+#sc-leaderboard .progress-label { font-size: 9px; color: var(--lb-muted); text-align: right; font-family: 'JetBrains Mono', monospace; }
+#sc-leaderboard .progress-bar   { height: 5px; background: var(--lb-border); border-radius: 3px; overflow: hidden; }
+#sc-leaderboard .progress-fill  { height: 100%; border-radius: 3px; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+#sc-leaderboard .fill-gold   { background: linear-gradient(90deg, var(--lb-gold2), var(--lb-gold)); }
+#sc-leaderboard .fill-blue   { background: linear-gradient(90deg, #2980b9, var(--lb-blue)); }
+#sc-leaderboard .fill-green  { background: linear-gradient(90deg, #27ae60, var(--lb-green)); }
+#sc-leaderboard .fill-red    { background: linear-gradient(90deg, #c0392b, var(--lb-c3)); }
+
+#sc-leaderboard .lb-reward {
+  text-align: center;
+  font-size: clamp(10px, 2.2vw, 12px);
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+}
+#sc-leaderboard .reward-on      { color: var(--lb-green); }
+#sc-leaderboard .reward-partial { color: var(--lb-gold); }
+#sc-leaderboard .reward-off     { color: var(--lb-muted); }
+
+/* ─── KPI BREAKDOWN ─── */
+#sc-leaderboard .breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+#sc-leaderboard .breakdown-card {
+  background: var(--lb-s1);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-r);
+  padding: 18px;
+  animation: lb-fadeIn 0.6s ease both;
+}
+
+#sc-leaderboard .breakdown-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#sc-leaderboard .breakdown-name { font-size: 13px; font-weight: 600; }
+#sc-leaderboard .breakdown-period {
+  font-size: 10px;
+  color: var(--lb-muted);
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--lb-s2);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+#sc-leaderboard .kpi-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+#sc-leaderboard .kpi-label {
+  font-size: 10px;
+  color: var(--lb-muted);
+  width: 72px;
+  flex-shrink: 0;
+}
+#sc-leaderboard .kpi-bar-wrap { flex: 1; }
+#sc-leaderboard .kpi-bar  { height: 7px; background: var(--lb-border); border-radius: 4px; overflow: hidden; }
+#sc-leaderboard .kpi-fill { height: 100%; border-radius: 4px; transition: width 1.4s cubic-bezier(0.4,0,0.2,1); }
+#sc-leaderboard .kpi-pct  {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+#sc-leaderboard .pct-great { color: var(--lb-green); }
+#sc-leaderboard .pct-ok    { color: var(--lb-gold); }
+#sc-leaderboard .pct-low   { color: var(--lb-c3); }
+
+/* ─── REWARD CARDS ─── */
+#sc-leaderboard .reward-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+#sc-leaderboard .reward-card {
+  background: var(--lb-s1);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-r);
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+#sc-leaderboard .reward-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+#sc-leaderboard .reward-card.earned::before  { background: var(--lb-green); }
+#sc-leaderboard .reward-card.partial::before { background: var(--lb-gold); }
+#sc-leaderboard .reward-card.at-risk::before { background: var(--lb-c3); }
+
+#sc-leaderboard .reward-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+#sc-leaderboard .reward-person { font-size: 13px; font-weight: 600; }
+#sc-leaderboard .reward-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(20px, 5vw, 26px);
+  line-height: 1;
+}
+#sc-leaderboard .earned .reward-amount  { color: var(--lb-green); }
+#sc-leaderboard .partial .reward-amount { color: var(--lb-gold); }
+#sc-leaderboard .at-risk .reward-amount { color: var(--lb-c3); }
+
+#sc-leaderboard .reward-status-text {
+  font-size: 11px;
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+#sc-leaderboard .earned .reward-status-text  { background: rgba(46,204,113,0.1);  color: var(--lb-green); }
+#sc-leaderboard .partial .reward-status-text { background: rgba(245,200,66,0.1);  color: var(--lb-gold); }
+#sc-leaderboard .at-risk .reward-status-text { background: rgba(255,107,107,0.1); color: var(--lb-c3); }
+
+#sc-leaderboard .reward-missing {
+  font-size: 10px;
+  color: var(--lb-muted);
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.6;
+}
+
+/* ─── STREAK ─── */
+#sc-leaderboard .streak-row {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+#sc-leaderboard .streak-day {
+  width: clamp(20px, 5vw, 24px);
+  height: clamp(20px, 5vw, 24px);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+#sc-leaderboard .streak-hit   { background: rgba(46,204,113,0.28); color: var(--lb-green); border: 1px solid rgba(46,204,113,0.4); }
+#sc-leaderboard .streak-miss  { background: rgba(255,107,107,0.12); color: var(--lb-c3);  border: 1px solid rgba(255,107,107,0.2); }
+#sc-leaderboard .streak-empty { background: var(--lb-s2); color: var(--lb-muted); border: 1px solid var(--lb-border); }
+
+/* ─── NEURO TIP ─── */
+#sc-leaderboard .neuro-tip {
+  background: linear-gradient(135deg, rgba(155,89,182,0.07), rgba(74,158,255,0.04));
+  border: 1px solid rgba(155,89,182,0.18);
+  border-radius: var(--lb-r);
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  font-size: 12px;
+  color: var(--lb-muted);
+  line-height: 1.7;
+}
+#sc-leaderboard .neuro-tip strong { color: var(--lb-purple); }
+
+/* ─── INPUT PANEL ─── */
+#sc-leaderboard .input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+#sc-leaderboard .input-card {
+  background: var(--lb-s1);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-r);
+  padding: 18px;
+}
+
+#sc-leaderboard .input-card-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--lb-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#sc-leaderboard .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+#sc-leaderboard .input-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+#sc-leaderboard .input-label { font-size: 11px; color: var(--lb-muted); }
+
+#sc-leaderboard .input-field {
+  background: var(--lb-bg);
+  border: 1px solid var(--lb-border);
+  border-radius: 7px;
+  padding: 9px 12px;
+  color: var(--lb-text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  width: 100%;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+#sc-leaderboard .input-field:focus { outline: none; border-color: var(--lb-blue); }
+
+#sc-leaderboard .save-btn {
+  width: 100%;
+  padding: 11px;
+  border-radius: 9px;
+  border: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+#sc-leaderboard .save-btn:active { transform: scale(0.97); }
+#sc-leaderboard .btn-gold   { background: var(--lb-gold);   color: #000; }
+#sc-leaderboard .btn-blue   { background: var(--lb-blue);   color: #fff; }
+#sc-leaderboard .btn-green  { background: var(--lb-green);  color: #fff; }
+#sc-leaderboard .btn-red    { background: var(--lb-c3);     color: #fff; }
+
+/* ─── PERIOD TOGGLE ─── */
+#sc-leaderboard .period-toggle {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+#sc-leaderboard .toggle-btn {
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--lb-border);
+  background: transparent;
+  color: var(--lb-muted);
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+#sc-leaderboard .toggle-btn.active {
+  background: var(--lb-gold);
+  color: #000;
+  border-color: var(--lb-gold);
+  font-weight: 700;
+}
+
+/* ─── WA PREVIEW ─── */
+#sc-leaderboard .wa-preview {
+  background: #0f1f0f;
+  border: 1px solid rgba(46,204,113,0.2);
+  border-radius: var(--lb-r);
+  padding: 18px;
+  margin-bottom: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 2.5vw, 12px);
+  line-height: 1.8;
+  color: #90c490;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+#sc-leaderboard .wa-preview-header {
+  font-size: 10px;
+  color: var(--lb-green);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#sc-leaderboard .copy-btn {
+  background: rgba(46,204,113,0.12);
+  border: 1px solid rgba(46,204,113,0.28);
+  color: var(--lb-green);
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+#sc-leaderboard .copy-btn:active { background: rgba(46,204,113,0.25); }
+
+/* ─── TAB NAV ─── */
+#sc-leaderboard .tab-nav {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 22px;
+  background: var(--lb-s1);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--lb-border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+#sc-leaderboard .tab-nav::-webkit-scrollbar { display: none; }
+
+#sc-leaderboard .tab-btn {
+  flex: 1;
+  min-width: max-content;
+  padding: 9px 12px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--lb-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(11px, 2.5vw, 13px);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+#sc-leaderboard .tab-btn.active {
+  background: var(--lb-s2);
+  color: var(--lb-text);
+  font-weight: 700;
+}
+
+#sc-leaderboard .tab-content         { display: none; }
+#sc-leaderboard .tab-content.active  { display: block; }
+
+/* ─── LOGIN SCREEN ─── */
+#sc-leaderboard #lb-login-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--lb-bg);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#sc-leaderboard .login-box {
+  background: var(--lb-s1);
+  border: 1px solid var(--lb-border);
+  border-radius: 16px;
+  padding: clamp(24px, 6vw, 40px) clamp(20px, 5vw, 32px);
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+
+#sc-leaderboard .login-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(22px, 6vw, 30px);
+  letter-spacing: 3px;
+  color: var(--lb-gold);
+  margin-bottom: 4px;
+}
+
+#sc-leaderboard .login-sub {
+  font-size: 10px;
+  color: var(--lb-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+#sc-leaderboard .login-step { animation: lb-fadeIn 0.3s ease; }
+#sc-leaderboard .login-label {
+  font-size: 11px;
+  color: var(--lb-muted);
+  margin-bottom: 8px;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
+
+#sc-leaderboard .pin-input {
+  width: 100%;
+  background: var(--lb-bg);
+  border: 1px solid var(--lb-border);
+  border-radius: 10px;
+  padding: 13px 16px;
+  color: var(--lb-text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 6px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+#sc-leaderboard .pin-input:focus { outline: none; border-color: var(--lb-gold); }
+
+#sc-leaderboard .name-input {
+  width: 100%;
+  background: var(--lb-bg);
+  border: 1px solid var(--lb-border);
+  border-radius: 10px;
+  padding: 13px 16px;
+  color: var(--lb-text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+#sc-leaderboard .name-input:focus { outline: none; border-color: var(--lb-gold); }
+
+#sc-leaderboard .login-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 10px;
+  border: none;
+  background: var(--lb-gold);
+  color: #000;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+#sc-leaderboard .login-btn:active { transform: scale(0.98); filter: brightness(0.95); }
+#sc-leaderboard .login-error {
+  color: var(--lb-red);
+  font-size: 12px;
+  margin-top: 10px;
+  min-height: 18px;
+  font-weight: 500;
+}
+
+#sc-leaderboard #lb-logout-btn {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  background: var(--lb-s1);
+  border: 1px solid var(--lb-border);
+  color: var(--lb-muted);
+  padding: 6px 13px;
+  border-radius: 20px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  z-index: 200;
+  transition: all 0.2s;
+}
+#sc-leaderboard #lb-logout-btn:active { color: var(--lb-text); }
+
+#sc-leaderboard #lb-user-badge {
+  position: fixed;
+  top: 12px;
+  right: 80px;
+  background: rgba(245,200,66,0.1);
+  border: 1px solid rgba(245,200,66,0.2);
+  color: var(--lb-gold);
+  padding: 6px 13px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: 'DM Sans, sans-serif';
+  z-index: 200;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── WHITELIST ─── */
+#sc-leaderboard #whitelist-display { margin-bottom: 12px; }
+
+/* ─── MANAGE LIST ─── */
+#sc-leaderboard #manage-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+
+/* ─────────────────────────────────────────────────────────
+   RESPONSIVE BREAKPOINTS
+───────────────────────────────────────────────────────── */
+
+/* TABLET / iPad (481px - 900px) */
+@media (min-width: 481px) and (max-width: 900px) {
+  #sc-leaderboard .container { padding: 80px 20px 32px; }
+  #sc-leaderboard .lb-header,
+  #sc-leaderboard .lb-row {
+    grid-template-columns: 40px 1fr 60px 60px 90px;
+  }
+  #sc-leaderboard .lb-header > *:nth-child(4),
+  #sc-leaderboard .lb-row    > *:nth-child(4),
+  #sc-leaderboard .lb-header > *:nth-child(5),
+  #sc-leaderboard .lb-row    > *:nth-child(5) { display: none; }
+}
+
+/* HP KECIL (max 480px) */
+@media (max-width: 480px) {
+  #sc-leaderboard .container { padding: 72px 12px 24px; }
+
+  #sc-leaderboard .header { flex-direction: row; gap: 8px; }
+  #sc-leaderboard .brand-name { font-size: 20px; letter-spacing: 2px; }
+
+  /* Podium tetap 3 kolom, tapi lebih kompak */
+  #sc-leaderboard .podium { gap: 6px; }
+  #sc-leaderboard .podium-card { padding: 10px 6px; border-radius: 10px; }
+
+  /* Tabel ranking — sembunyikan kolom tengah, tampilkan rank + nama + progress */
+  #sc-leaderboard .lb-header,
+  #sc-leaderboard .lb-row {
+    grid-template-columns: 36px 1fr 72px;
+    padding: 10px 10px;
+  }
+  #sc-leaderboard .lb-header > *:nth-child(n+3):nth-child(-n+6),
+  #sc-leaderboard .lb-row    > *:nth-child(n+3):nth-child(-n+6) { display: none; }
+  /* Kolom 7 (progress) tetap tampil */
+  #sc-leaderboard .lb-header > *:nth-child(7),
+  #sc-leaderboard .lb-row    > *:nth-child(7) { display: flex; }
+
+  #sc-leaderboard .breakdown-grid  { grid-template-columns: 1fr; }
+  #sc-leaderboard .reward-cards    { grid-template-columns: 1fr; }
+  #sc-leaderboard .input-grid      { grid-template-columns: 1fr; }
+  #sc-leaderboard #manage-list     { grid-template-columns: 1fr; }
+
+  #sc-leaderboard .tab-btn { font-size: 11px; padding: 8px 10px; }
+
+  #sc-leaderboard #lb-user-badge { max-width: 120px; right: 76px; font-size: 10px; }
+}
+
+/* DESKTOP / LAPTOP LEBAR (>1100px) */
+@media (min-width: 1100px) {
+  #sc-leaderboard .container { padding: 88px 24px 40px; }
+  #sc-leaderboard .breakdown-grid  { grid-template-columns: repeat(3, 1fr); }
+  #sc-leaderboard .reward-cards    { grid-template-columns: repeat(3, 1fr); }
+  #sc-leaderboard .input-grid      { grid-template-columns: repeat(3, 1fr); }
+}
+/* ── end lb css ── */
+
 </style>
 </head>
 <body>
@@ -300,6 +1511,18 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
     <h1>Saudara<span>ku</span></h1>
     <p>Kasir & Manajemen — v2.0</p>
   </div>
+  <button class="role-btn" onclick="showScreen('sc-leaderboard')" style="border-color:rgba(245,200,66,0.35);">
+    <div class="rb-ico" style="background:rgba(245,200,66,0.12)">🏆</div>
+    <div>
+      <div class="rb-title" style="color:#f5c842;">Leaderboard</div>
+      <div class="rb-sub">Ranking &amp; KPI karyawan tim</div>
+      <div class="rb-tags">
+        <span class="tag" style="background:rgba(245,200,66,0.1);color:#f5c842;">📊 KPI</span>
+        <span class="tag" style="background:rgba(245,200,66,0.1);color:#f5c842;">💰 Reward</span>
+        <span class="tag" style="background:rgba(245,200,66,0.1);color:#f5c842;">🔥 Streak</span>
+      </div>
+    </div>
+  </button>
   <button class="role-btn staff" onclick="showScreen('sc-pin-staff')">
     <div class="rb-ico" style="background:rgba(62,207,142,0.12)">👤</div>
     <div>
@@ -984,14 +2207,14 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       <div style="background:var(--s3);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:12px">
         <div style="font-size:12px;font-weight:700;margin-bottom:10px">💡 Cara Kerja Iuran Bulanan</div>
         <div style="font-size:11px;color:var(--muted2);line-height:1.6;margin-bottom:10px">
-          Setiap bulan <b style="color:var(--text)">10% dari gaji pokokmu</b> otomatis masuk ke dana ini.
+          Setiap bulan <b style="color:var(--text)">Rp 100.000</b> otomatis masuk ke dana ini.
         </div>
         <div id="dana-breakdown-row" style="background:var(--s2);border-radius:9px;padding:10px 12px">
           <!-- diisi JS -->
         </div>
         <div style="margin-top:10px;font-size:11px;color:var(--muted2);line-height:1.6">
-          ✅ <b style="color:var(--text)">8% = tabungan murni kamu</b> — terakumulasi tiap bulan<br>
-          🔧 <b style="color:var(--muted2)">2% = biaya pemeliharaan</b> — operasional sistem dana
+          ✅ <b style="color:var(--text)">Rp 98.000 = tabungan murni kamu</b> — terakumulasi tiap bulan<br>
+          🔧 <b style="color:var(--muted2)">Rp 2.000 = biaya pemeliharaan</b> — operasional sistem dana
         </div>
       </div>
 
@@ -1064,6 +2287,7 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
   </div>
 </div>
 
+  <!-- LEADERBOARD (STAFF — view only) -->
 <!-- APP KANIT -->
 <div class="scr" id="sc-kanit">
   <div class="app-hdr">
@@ -1083,6 +2307,8 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
     <button class="tbtn" onclick="swTab('kanit','closing',this)">📋 Closing</button>
     <button class="tbtn" onclick="swTab('kanit','fee',this)">⚙️ Fee</button>
     <button class="tbtn" onclick="swTab('kanit','audit',this)">🔍 SO Audit</button>
+    <button class="tbtn" onclick="swTab('kanit','dana',this)">🛡️ Dana</button>
+    <button class="tbtn" onclick="swTab('kanit','database',this);renderGASPanel()">🗄️ Database</button>
   </div>
 
   <!-- DASHBOARD -->
@@ -1295,6 +2521,88 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       <div class="rrow" style="font-weight:700"><span class="rl">Total Laba Kotor Acc HP</span><span class="rv" style="color:var(--yellow)" id="k-acc-laba-tot">Rp 0</span></div>
     </div>
   </div>
+
+  <!-- KELOLA DANA DARURAT (KANIT) -->
+  <div class="panel pad" id="k-dana">
+
+    <!-- Header ringkasan -->
+    <div style="background:linear-gradient(135deg,rgba(62,207,142,0.12),rgba(108,99,255,0.1));border:1px solid rgba(62,207,142,0.28);border-radius:14px;padding:16px;margin-bottom:14px">
+      <div style="font-size:10px;color:var(--green);font-family:var(--mono);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px">Total Dana Darurat Semua Karyawan</div>
+      <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--green)" id="k-dana-total">Rp 0</div>
+      <div style="font-size:11px;color:var(--muted2);margin-top:4px" id="k-dana-count">0 karyawan terdaftar</div>
+    </div>
+
+    <!-- Daftar karyawan + saldo + tombol top up -->
+    <div class="stit">👥 Saldo Dana Per Karyawan</div>
+    <div id="k-dana-list">
+      <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">Belum ada data dana karyawan</div>
+    </div>
+
+    <!-- Form top up manual -->
+    <div class="card" style="margin-top:4px">
+      <div class="ctit">➕ Top Up / Potongan Dana Karyawan</div>
+      <div style="font-size:11px;color:var(--muted2);margin-bottom:14px;line-height:1.6">
+        Input manual — konfirmasi potongan gaji, top up awal, atau koreksi saldo. Tersimpan <b style="color:var(--text)">permanen</b> per karyawan.
+      </div>
+      <div class="field">
+        <label>Nama Karyawan</label>
+        <input class="finp" id="k-dana-nama" placeholder="Nama sesuai absensi" list="k-dana-nama-list">
+        <datalist id="k-dana-nama-list"></datalist>
+      </div>
+      <div class="field">
+        <label>Jenis</label>
+        <select class="finp" id="k-dana-jenis">
+          <option value="topup">➕ Top Up (tambah saldo)</option>
+          <option value="potongan">✂️ Potongan Bulanan (Rp 100.000)</option>
+          <option value="koreksi">🔧 Koreksi / Penyesuaian</option>
+          <option value="pencairan">💸 Cairkan (kurangi saldo)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nominal (Rp)</label>
+        <input type="number" class="finp" id="k-dana-nominal" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Keterangan <span style="color:var(--muted2)">(opsional)</span></label>
+        <input class="finp" id="k-dana-ket" placeholder="cth: Potongan Jan 2025, Top up awal, dst">
+      </div>
+      <button onclick="kanitTopupDana()" class="bigbtn green" style="margin-top:4px">💾 Simpan Permanen</button>
+      <div class="kstatus" id="k-dana-status"></div>
+    </div>
+
+    <!-- Riwayat semua transaksi dana -->
+    <div class="card" style="margin-top:4px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div class="ctit" style="margin:0">📋 Riwayat Semua Transaksi Dana</div>
+        <button onclick="exportDanaKanitCSV()" style="padding:6px 12px;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--green);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)">📥 Excel</button>
+      </div>
+      <div style="margin-bottom:10px">
+        <input class="finp" id="k-dana-filter" placeholder="Filter nama karyawan..." oninput="renderKanitDana()" style="font-size:12px">
+      </div>
+      <div id="k-dana-log">
+        <div style="text-align:center;padding:16px;color:var(--muted);font-size:12px">Belum ada riwayat</div>
+      </div>
+    </div>
+
+    <!-- Pengajuan pencairan pending -->
+    <div class="card" style="margin-top:4px">
+      <div class="ctit" style="color:var(--orange)">⏳ Pengajuan Pencairan — Perlu Konfirmasi</div>
+      <div id="k-dana-pending">
+        <div style="text-align:center;padding:16px;color:var(--muted);font-size:12px">Tidak ada pengajuan pending</div>
+      </div>
+    </div>
+
+
+  <!-- LEADERBOARD (KANIT / ADMIN) -->
+
+
+</div>
+  <div class="panel pad" id="k-database">
+    <div class="stit">🗄️ Database &amp; Google Sheets</div>
+    <div id="gas-setup-panel">
+      <div style="text-align:center;padding:32px;color:var(--muted2)">⏳ Memuat...</div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1484,6 +2792,9 @@ function swTab(who, name, btn){
   document.querySelectorAll(`#sc-${who} .panel`).forEach(p => p.classList.remove('on'));
   g(`${prefix}-${name}`)?.classList.add('on');
   if(who === 'staff' && name === 'sop') initSOP();
+  if(who === 'kanit' && name === 'dana') renderKanitDana();
+  if(who === 'kanit' && name === 'leaderboard') { if(typeof initLbKanit==='function') initLbKanit(); }
+  if(who === 'staff' && name === 'leaderboard') { if(typeof initLbStaff==='function') initLbStaff(); }
 }
 
 // ===== FEE =====
@@ -3269,41 +4580,57 @@ function renderReimburse(){
 // ══════════════════════
 //  DANA DARURAT
 // ══════════════════════
-const DANA_PCT_TOTAL        = 0.10;
-const DANA_PCT_PEMELIHARAAN = 0.02;
-const DANA_PCT_TABUNGAN     = 0.08;
-const DANA_TARGET           = 2000000; // target tampilan tetap Rp 2jt
+const DANA_IURAN_BULANAN    = 100000; // total potongan tetap per bulan
+const DANA_PEMELIHARAAN     = 2000;   // biaya pemeliharaan tetap per bulan
+const DANA_TABUNGAN         = 98000;  // masuk tabungan karyawan (100rb - 2rb)
+const DANA_TARGET           = 2000000; // target saldo dana darurat
 
 function getDanaIuranBulanan(){
-  return Math.round(hrGajiCfg.gaji_pokok * DANA_PCT_TOTAL);
+  return DANA_IURAN_BULANAN;
 }
 function getDanaTabunganBulanan(){
-  return Math.round(hrGajiCfg.gaji_pokok * DANA_PCT_TABUNGAN);
+  return DANA_TABUNGAN;
 }
 function getDanaSaldo(){
-  // Saldo = akumulasi tabungan 8% dari semua bulan sejak bergabung
-  // Disimpan di dana_cfg.saldo (di-update tiap gajian)
-  const cfg = hrGet('dana_cfg') || {saldo:0};
+  // Saldo per karyawan — ambil berdasarkan nama staff yg login
+  const nama = staffInfo?.nama || '';
+  if(!nama) return 0;
+  const cfg = hrGet('dana_cfg_' + nama) || hrGet('dana_cfg') || {saldo:0};
   return cfg.saldo || 0;
+}
+
+function getDanaSaldoNama(nama){
+  // Helper: ambil saldo dana karyawan tertentu (untuk kanit)
+  const cfg = hrGet('dana_cfg_' + nama) || {saldo:0};
+  return cfg.saldo || 0;
+}
+
+function getDanaLogNama(nama){
+  // Helper: ambil log transaksi dana karyawan tertentu
+  const cfg = hrGet('dana_cfg_' + nama) || {saldo:0, log:[]};
+  return cfg.log || [];
 }
 
 function renderDanaDarurat(){
   const nama          = staffInfo?.nama||'';
-  const saldo         = getDanaSaldo();
+  const saldo         = getDanaSaldo();           // per-nama
   const iuranBulanan  = getDanaIuranBulanan();
   const tabunganBulan = getDanaTabunganBulanan();
   const pemeliharaan  = iuranBulanan - tabunganBulan;
+  const bulanIuran    = tabunganBulan > 0 ? Math.round(saldo / tabunganBulan) : 0;
+  const pct           = Math.min(100, Math.round(saldo / DANA_TARGET * 100));
+  const akumulasi     = saldo;
 
-  const bulanIuran = tabunganBulan > 0 ? Math.round(saldo / tabunganBulan) : 0;
-  const pct        = Math.min(100, Math.round(saldo / DANA_TARGET * 100));
-
-  // Saldo display SELALU Rp 2jt (target/plafon)
+  // Saldo display — saldo NYATA karyawan ini
   const elSaldo = g('dana-saldo-display');
-  if(elSaldo){ elSaldo.textContent = fmt(DANA_TARGET); elSaldo.style.color = 'var(--green)'; }
+  if(elSaldo){
+    elSaldo.textContent = fmt(saldo);
+    elSaldo.style.color = saldo >= DANA_TARGET ? 'var(--green)' : pct >= 50 ? 'var(--accent2)' : 'var(--orange)';
+  }
   s('dana-iuran-bulan', '+'+fmt(tabunganBulan));
   s('dana-bulan-label', bulanIuran + ' bulan iuran');
   s('dana-pct-label', pct + '%');
-  s('dana-maks-hint', 'Plafon pencairan: ' + fmt(DANA_TARGET));
+  s('dana-maks-hint', 'Saldo kamu: ' + fmt(saldo));
   const bar = g('dana-progress-bar');
   if(bar) bar.style.width = pct + '%';
 
@@ -3311,30 +4638,31 @@ function renderDanaDarurat(){
   const bdEl = g('dana-breakdown-row');
   if(bdEl) bdEl.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <div style="font-size:11px;color:var(--muted2)">Total iuran bulanan (10%)</div>
+      <div style="font-size:11px;color:var(--muted2)">Total iuran bulanan (tetap)</div>
       <div style="font-family:var(--mono);font-size:12px;color:var(--orange)">−${fmt(iuranBulanan)}</div>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
       <div style="display:flex;align-items:center;gap:6px">
         <div style="width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0"></div>
-        <div style="font-size:11px;color:var(--muted2)">Biaya pemeliharaan (2%)</div>
+        <div style="font-size:11px;color:var(--muted2)">Biaya pemeliharaan (Rp 2.000)</div>
       </div>
       <div style="font-family:var(--mono);font-size:11px;color:var(--muted2)">−${fmt(pemeliharaan)}</div>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div style="display:flex;align-items:center;gap:6px">
         <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0"></div>
-        <div style="font-size:12px;font-weight:700;color:var(--green)">Masuk tabunganmu (8%)</div>
+        <div style="font-size:12px;font-weight:700;color:var(--green)">Masuk tabunganmu (Rp 98.000)</div>
       </div>
       <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:var(--green)">+${fmt(tabunganBulan)}</div>
     </div>
     <div style="margin-top:10px;background:var(--s1);border-radius:7px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center">
       <div style="font-size:11px;color:var(--muted2)">Sudah terkumpul</div>
-      <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:${pct>=100?'var(--green)':'var(--accent2)'}">
+      <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:${pct>=100?'var(--green)':`var(--accent2)`}">
         ${fmt(akumulasi)} / ${fmt(DANA_TARGET)} &nbsp;<span style="color:var(--muted2)">(${pct}%)</span>
       </div>
     </div>`;
-  // CTA Alert — neuroscience Gen Z based on saldo
+
+  // CTA Alert
   const ctaEl = g('dana-cta-alert');
   if(ctaEl){
     if(saldo <= 0){
@@ -3360,30 +4688,54 @@ function renderDanaDarurat(){
     }
   }
 
-  // Riwayat
+  // Riwayat: log transaksi dari kanit + pengajuan staff
   const wrap = g('dana-list'); if(!wrap) return;
-  const data = hrDana.filter(x=>x.nama===nama).sort((a,b)=>b.id-a.id);
-  if(!data.length){
+  const logKanit   = (nama ? getDanaLogNama(nama) : []).sort((a,b)=>(b.tgl||'').localeCompare(a.tgl||''));
+  const ajuanStaff = hrDana.filter(x=>x.nama===nama).sort((a,b)=>b.id-a.id);
+
+  if(!logKanit.length && !ajuanStaff.length){
     wrap.innerHTML='<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px">Belum pernah pakai — semoga ga perlu! 🙏</div>';
     return;
   }
+
+  const JENIS_ICO={topup:'➕',potongan:'✂️',koreksi:'🔧',pencairan:'💸',akumulasi:'🔄'};
+  const JENIS_LBL={topup:'Top Up',potongan:'Potongan Bulanan',koreksi:'Koreksi',pencairan:'Pencairan',akumulasi:'Akumulasi Otomatis'};
   const ALASAN={sakit:'🏥 Sakit/RS',keluarga:'👨‍👩‍👧 Keluarga',bencana:'🌊 Bencana',lain:'📦 Mendesak'};
-  wrap.innerHTML = data.map(x=>{
-    const sc = x.status==='approved'?'var(--green)':x.status==='rejected'?'var(--red)':'var(--orange)';
-    const st = x.status==='approved'?'✅ Cair':'❌ Tidak Disetujui';
-    return `<div style="background:var(--s3);border:1px solid ${x.status==='approved'?'rgba(62,207,142,0.25)':'var(--border)'};border-radius:12px;padding:12px 14px;margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+
+  let html = '';
+  if(logKanit.length){
+    html += logKanit.map(x=>{
+      const plus = (x.nominal||0) >= 0;
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border2)">
         <div>
-          <div style="font-size:12px;font-weight:700">${ALASAN[x.alasan]||x.alasan}</div>
-          <div style="font-size:10px;color:var(--muted2);margin-top:2px">${x.tgl_ajukan}${x.ket?' · '+x.ket:''}</div>
+          <div style="font-size:12px;font-weight:600">${JENIS_ICO[x.jenis]||'•'} ${JENIS_LBL[x.jenis]||x.jenis}</div>
+          <div style="font-size:10px;color:var(--muted2)">${x.tgl||'—'} ${x.ket?' · '+x.ket:''}</div>
         </div>
-        <div style="text-align:right">
-          <div style="font-family:var(--mono);font-weight:800;color:var(--green);font-size:14px">${fmt(x.nominal)}</div>
-          <div style="font-size:10px;font-weight:700;color:${sc};margin-top:2px">${x.status==='pending'?'⏳ Proses...':st}</div>
+        <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:${plus?'var(--green)':`var(--red)`}">${plus?'+':''}\${fmt(Math.abs(x.nominal||0))}</div>
+      </div>`;
+    }).join('');
+  }
+
+  if(ajuanStaff.length){
+    html += '<div style="font-size:10px;color:var(--muted2);padding:8px 0 4px;font-weight:700;letter-spacing:0.5px">PENGAJUAN PENCAIRAN</div>';
+    html += ajuanStaff.map(x=>{
+      const sc = x.status==='approved'?'var(--green)':x.status==='rejected'?'var(--red)':`var(--orange)`;
+      const st = x.status==='approved'?'✅ Cair':x.status==='rejected'?'❌ Ditolak':'⏳ Menunggu';
+      return `<div style="background:var(--s3);border:1px solid ${x.status==='approved'?'rgba(62,207,142,0.25)':'var(--border)'};border-radius:12px;padding:12px 14px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="font-size:12px;font-weight:700">${ALASAN[x.alasan]||x.alasan}</div>
+            <div style="font-size:10px;color:var(--muted2);margin-top:2px">${x.tgl_ajukan}${x.ket?' · '+x.ket:''}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:var(--mono);font-weight:800;color:var(--yellow);font-size:14px">\${fmt(x.nominal)}</div>
+            <div style="font-size:10px;font-weight:700;color:${sc};margin-top:2px">${st}</div>
+          </div>
         </div>
-      </div>
-    </div>`;
-  }).join('');
+      </div>`;
+    }).join('');
+  }
+  wrap.innerHTML = html;
 }
 
 function ajukanDanaDarurat(){
@@ -3396,6 +4748,7 @@ function ajukanDanaDarurat(){
 
   if(!alasan)  { statusEl.style.color='var(--orange)'; statusEl.textContent='⚠️ Pilih dulu situasi yang kamu hadapi'; return; }
   if(!nominal) { statusEl.style.color='var(--orange)'; statusEl.textContent='⚠️ Isi nominal yang kamu butuhin'; return; }
+  if(nominal > saldo && saldo > 0){ statusEl.style.color='var(--red)'; statusEl.textContent=`❌ Maks. ${fmt(saldo)} (saldo kamu)`; return; }
   if(nominal > DANA_TARGET){ statusEl.style.color='var(--red)'; statusEl.textContent=`❌ Maks. ${fmt(DANA_TARGET)}`; return; }
 
   const entry = {
@@ -3631,26 +4984,270 @@ function staffTambahMasterVP(){ tambahMasterVP(); }
 function staffTambahBarangAcc(){ tambahBarangAccModal(); }
 
 function topupDana(){
-  const el = g('dana-topup-nominal');
-  const nominal = parseFloat(el?.value)||0;
-  if(!nominal){ toast('⚠️ Isi nominal top up'); return; }
-  const cfg = hrGet('dana_cfg') || {saldo:0, log:[]};
-  cfg.saldo = (cfg.saldo||0) + nominal;
-  cfg.log   = (cfg.log||[]);
-  cfg.log.push({tgl: new Date().toISOString().split('T')[0], jenis:'topup', nominal});
-  hrSet('dana_cfg', cfg);
-  if(el) el.value = '';
-  renderDanaDarurat();
-  toast(`✅ Saldo ditambah ${fmt(nominal)}`);
+  // Legacy — tidak dipakai langsung, top up hanya via kanit
+  toast('⚠️ Top up hanya bisa dilakukan oleh Kanit');
+}
+
+// ──────────────────────────────────────────
+//  KANIT: Kelola Dana Darurat
+// ──────────────────────────────────────────
+
+function getAllKaryawanNama(){
+  // Kumpulkan nama unik dari absensi + semua key dana_cfg_*
+  const dariAbsen = [...new Set(hrAbsensi.map(x=>x.nama).filter(Boolean))];
+  const dariDana  = [];
+  for(let i=0; i<localStorage.length; i++){
+    const k = localStorage.key(i);
+    if(k && k.startsWith('hr_dana_cfg_')){
+      const nama = k.replace('hr_dana_cfg_','');
+      if(nama) dariDana.push(nama);
+    }
+  }
+  return [...new Set([...dariAbsen, ...dariDana])].sort();
+}
+
+function kanitTopupDana(){
+  const nama    = (g('k-dana-nama')?.value||'').trim();
+  const jenis   = vs('k-dana-jenis');
+  const nominal = parseFloat(g('k-dana-nominal')?.value)||0;
+  const ket     = (g('k-dana-ket')?.value||'').trim();
+  const statusEl= g('k-dana-status');
+
+  if(!nama)   { statusEl.style.color='var(--orange)'; statusEl.textContent='⚠️ Isi nama karyawan'; return; }
+  if(!nominal){ statusEl.style.color='var(--orange)'; statusEl.textContent='⚠️ Isi nominal'; return; }
+
+  const key = 'dana_cfg_' + nama;
+  const cfg = hrGet(key) || {saldo:0, log:[]};
+  cfg.log   = cfg.log || [];
+
+  const tgl = new Date().toISOString().split('T')[0];
+  const JENIS_LBL = {topup:'Top Up', potongan:'Potongan Bulanan', koreksi:'Koreksi', pencairan:'Pencairan'};
+
+  if(jenis === 'pencairan'){
+    if(nominal > cfg.saldo){
+      statusEl.style.color='var(--red)';
+      statusEl.textContent=`❌ Saldo ${fmt(cfg.saldo)} tidak cukup untuk dicairkan ${fmt(nominal)}`;
+      return;
+    }
+    cfg.saldo = Math.max(0, (cfg.saldo||0) - nominal);
+    cfg.log.push({tgl, jenis, nominal: -nominal, nama, ket: ket||'Pencairan darurat', oleh:'kanit'});
+  } else {
+    cfg.saldo = (cfg.saldo||0) + nominal;
+    cfg.log.push({tgl, jenis, nominal, nama, ket: ket||(JENIS_LBL[jenis]||jenis), oleh:'kanit'});
+  }
+
+  hrSet(key, cfg);
+
+  // Kosongkan form
+  ['k-dana-nama','k-dana-nominal','k-dana-ket'].forEach(id=>{ const el=g(id); if(el) el.value=''; });
+
+  statusEl.style.color='var(--green)';
+  statusEl.textContent=`✅ Tersimpan! Saldo ${nama} sekarang ${fmt(cfg.saldo)}`;
+
+  renderKanitDana();
+  toast(`✅ Dana ${nama} diperbarui → ${fmt(cfg.saldo)}`);
+
+  // Sync ke sheets jika ada GAS_URL
+  syncDanaKanitSheets(nama, jenis, nominal, ket||JENIS_LBL[jenis]||jenis, cfg.saldo);
+}
+
+async function syncDanaKanitSheets(nama, jenis, nominal, ket, saldoAkhir){
+  return kirimKeSheets('DanaDarurat', [[
+    new Date().toISOString().split('T')[0], nama, jenis,
+    nominal, ket, saldoAkhir, 'kanit-input', APP_AREA
+  ]]);
+}
+
+function renderKanitDana(){
+  const semua  = getAllKaryawanNama();
+  const filter = (g('k-dana-filter')?.value||'').toLowerCase();
+
+  // Update datalist autocomplete
+  const dl = g('k-dana-nama-list');
+  if(dl) dl.innerHTML = semua.map(n=>`<option value="${n}">`).join('');
+
+  // Summary total
+  let totalSaldo = 0;
+  semua.forEach(n => { totalSaldo += getDanaSaldoNama(n); });
+  s('k-dana-total', fmt(totalSaldo));
+  s('k-dana-count', semua.length + ' karyawan terdaftar');
+
+  // Daftar karyawan
+  const listEl = g('k-dana-list');
+  if(listEl){
+    if(!semua.length){
+      listEl.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">Belum ada data — isi form di bawah untuk mulai</div>';
+    } else {
+      listEl.innerHTML = semua.map(nama=>{
+        const saldo = getDanaSaldoNama(nama);
+        const pct   = Math.min(100, Math.round(saldo/DANA_TARGET*100));
+        const col   = pct>=100?'var(--green)':pct>=50?'var(--accent2)':'var(--orange)';
+        return `<div style="background:var(--s3);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div style="font-size:13px;font-weight:700">${nama}</div>
+            <div style="font-family:var(--mono);font-size:14px;font-weight:800;color:${col}">${fmt(saldo)}</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border-radius:99px;height:5px;overflow:hidden;margin-bottom:4px">
+            <div style="height:100%;border-radius:99px;background:${col};width:${pct}%;transition:width 0.4s"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted2)">
+            <span>${pct}% dari target ${fmt(DANA_TARGET)}</span>
+            <button onclick="isiNamaKanit('${nama}')" style="background:none;border:none;color:var(--accent2);font-size:10px;cursor:pointer;font-weight:600;font-family:var(--sans)">✏️ Top Up</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // Log semua transaksi (dengan filter)
+  const logEl = g('k-dana-log');
+  if(logEl){
+    let allLog = [];
+    semua.forEach(nama=>{
+      const logs = getDanaLogNama(nama);
+      logs.forEach(l => allLog.push({...l, nama_kartu: nama}));
+    });
+    // Tambahkan log pengajuan pencairan staff
+    hrDana.forEach(x=>{
+      if(x.status==='approved'){
+        allLog.push({tgl:x.tgl_ajukan, jenis:'pencairan_staff', nominal:-x.nominal, nama_kartu:x.nama, ket:x.alasan, oleh:'staff'});
+      }
+    });
+    allLog.sort((a,b)=>(b.tgl||'').localeCompare(a.tgl||''));
+
+    const filtered = filter ? allLog.filter(x=>(x.nama_kartu||'').toLowerCase().includes(filter)) : allLog;
+
+    if(!filtered.length){
+      logEl.innerHTML='<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px">Belum ada riwayat transaksi</div>';
+    } else {
+      const JENIS_ICO = {topup:'➕',potongan:'✂️',koreksi:'🔧',pencairan:'💸',akumulasi:'🔄',pencairan_staff:'💸'};
+      const JENIS_COL = {topup:'var(--green)',potongan:'var(--orange)',koreksi:'var(--accent2)',pencairan:'var(--red)',akumulasi:'var(--green)',pencairan_staff:'var(--red)'};
+      logEl.innerHTML = filtered.slice(0,60).map(x=>{
+        const plus = x.nominal>=0;
+        const col  = plus?'var(--green)':'var(--red)';
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border2)">
+          <div>
+            <div style="font-size:12px;font-weight:600">${JENIS_ICO[x.jenis]||'•'} ${x.nama_kartu||x.nama} <span style="color:var(--muted2);font-weight:400;font-size:11px">· ${x.ket||x.jenis}</span></div>
+            <div style="font-size:10px;color:var(--muted2)">${x.tgl||'—'} · by ${x.oleh||'sistem'}</div>
+          </div>
+          <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:${col}">${plus?'+':''}${fmt(Math.abs(x.nominal||0))}</div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // Pengajuan pending
+  renderKanitDanaPending();
+}
+
+function isiNamaKanit(nama){
+  const el = g('k-dana-nama');
+  if(el){ el.value = nama; el.focus(); }
+  // scroll ke form
+  const form = g('k-dana-nama');
+  if(form) form.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function renderKanitDanaPending(){
+  const pendingEl = g('k-dana-pending');
+  if(!pendingEl) return;
+  const pending = hrDana.filter(x=>x.status==='pending').sort((a,b)=>b.id-a.id);
+  if(!pending.length){
+    pendingEl.innerHTML='<div style="text-align:center;padding:12px;color:var(--muted);font-size:12px">Tidak ada pengajuan pending ✅</div>';
+    return;
+  }
+  const ALASAN={sakit:'🏥 Sakit/RS',keluarga:'👨‍👩‍👧 Keluarga',bencana:'🌊 Bencana',lain:'📦 Mendesak'};
+  pendingEl.innerHTML = pending.map(x=>{
+    const saldo = getDanaSaldoNama(x.nama);
+    const bisa  = x.nominal <= saldo;
+    return `<div style="background:var(--s3);border:1px solid rgba(245,208,32,0.25);border-radius:12px;padding:12px 14px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div>
+          <div style="font-size:13px;font-weight:700">${x.nama}</div>
+          <div style="font-size:11px;color:var(--muted2)">${ALASAN[x.alasan]||x.alasan} · ${x.tgl_ajukan}</div>
+          ${x.ket?`<div style="font-size:11px;color:var(--muted2);margin-top:2px">"${x.ket}"</div>`:''}
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:var(--mono);font-weight:800;color:var(--yellow);font-size:14px">${fmt(x.nominal)}</div>
+          <div style="font-size:10px;color:${bisa?'var(--green)':'var(--red)'};margin-top:2px">${bisa?'Saldo cukup':'⚠️ Saldo kurang'}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="kanitApprDana(${x.id})" ${!bisa?'disabled':''} style="flex:1;padding:8px;background:${bisa?'rgba(62,207,142,0.15)':'var(--s2)'};border:1px solid ${bisa?'rgba(62,207,142,0.4)':'var(--border)'};border-radius:8px;color:${bisa?'var(--green)':'var(--muted2)'};font-size:12px;font-weight:600;cursor:${bisa?'pointer':'not-allowed'};font-family:var(--sans)">✅ Setujui & Kurangi Saldo</button>
+        <button onclick="kanitRejectDana(${x.id})" style="padding:8px 14px;background:rgba(245,99,66,0.1);border:1px solid rgba(245,99,66,0.3);border-radius:8px;color:var(--red);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans)">❌ Tolak</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function kanitApprDana(id){
+  const idx = hrDana.findIndex(x=>x.id===id);
+  if(idx<0) return;
+  const entry = hrDana[idx];
+  const key   = 'dana_cfg_' + entry.nama;
+  const cfg   = hrGet(key) || {saldo:0, log:[]};
+
+  if(entry.nominal > cfg.saldo){
+    toast(`❌ Saldo ${entry.nama} tidak cukup (${fmt(cfg.saldo)})`); return;
+  }
+
+  // Kurangi saldo
+  cfg.saldo = Math.max(0, cfg.saldo - entry.nominal);
+  cfg.log   = cfg.log || [];
+  cfg.log.push({
+    tgl: new Date().toISOString().split('T')[0],
+    jenis:'pencairan', nominal:-entry.nominal,
+    nama: entry.nama, ket: entry.alasan, oleh:'kanit-approved'
+  });
+  hrSet(key, cfg);
+
+  hrDana[idx].status = 'approved';
+  hrSet('dana', hrDana);
+
+  syncDanaKanitSheets(entry.nama,'pencairan',entry.nominal,entry.alasan,cfg.saldo);
+  renderKanitDana();
+  toast(`✅ Pencairan ${entry.nama} disetujui. Saldo → ${fmt(cfg.saldo)}`);
+}
+
+function kanitRejectDana(id){
+  const idx = hrDana.findIndex(x=>x.id===id);
+  if(idx<0) return;
+  hrDana[idx].status = 'rejected';
+  hrSet('dana', hrDana);
+  renderKanitDana();
+  toast('❌ Pengajuan ditolak');
+}
+
+function exportDanaKanitCSV(){
+  const semua = getAllKaryawanNama();
+  const h = ['Tanggal','Nama Karyawan','Jenis','Nominal','Keterangan','Saldo Akhir','Oleh','Cabang'];
+  const rows = [];
+
+  semua.forEach(nama=>{
+    const logs  = getDanaLogNama(nama);
+    let running = 0;
+    // Sort ascending buat running balance
+    [...logs].sort((a,b)=>(a.tgl||'').localeCompare(b.tgl||'')).forEach(l=>{
+      running += (l.nominal||0);
+      rows.push([l.tgl||'', nama, l.jenis||'', Math.abs(l.nominal||0), l.ket||'', Math.max(0,running), l.oleh||'sistem', APP_AREA]);
+    });
+  });
+
+  // Juga tambahkan pengajuan staff
+  hrDana.forEach(x=>{
+    rows.push([x.tgl_ajukan, x.nama, 'pengajuan_'+x.status, x.nominal, x.alasan+(x.ket?' - '+x.ket:''), '', 'staff', APP_AREA]);
+  });
+
+  rows.sort((a,b)=>(b[0]||'').localeCompare(a[0]||''));
+
+  if(!rows.length){ toast('⚠️ Belum ada data dana untuk di-export'); return; }
+  downloadCSV(`dana_darurat_semua_${today()}.csv`, buatCSV(h,rows));
+  toast('✅ Excel dana darurat semua karyawan diunduh!');
 }
 
 function approveRejectDana(id, status){
-  const idx = hrDana.findIndex(x=>x.id===id);
-  if(idx<0) return;
-  hrDana[idx].status = status;
-  hrSet('dana', hrDana);
-  renderDanaDarurat();
-  toast(status==='approved' ? '✅ Pencairan disetujui' : '❌ Pengajuan ditolak');
+  if(status === 'approved') kanitApprDana(id);
+  else kanitRejectDana(id);
 }
 
 // Init HR saat masuk tab HR
@@ -4310,17 +5907,19 @@ function akumulasiDanaBulanIni(nama, bulan){
   if(hrGet(keyDone)) return; // sudah diakumulasi bulan ini
   const tabungan = getDanaTabunganBulanan();
   if(!tabungan) return;
-  const cfg = hrGet('dana_cfg') || {saldo:0, log:[]};
+  const key = 'dana_cfg_' + nama;
+  const cfg = hrGet(key) || {saldo:0, log:[]};
   cfg.saldo = (cfg.saldo||0) + tabungan;
   cfg.log   = cfg.log || [];
-  cfg.log.push({tgl: bulan+'-01', jenis:'akumulasi', nominal: tabungan, nama});
-  hrSet('dana_cfg', cfg);
-  hrSet(keyDone, true); // tandai sudah diakumulasi
+  cfg.log.push({tgl: bulan+'-01', jenis:'akumulasi', nominal: tabungan, nama, oleh:'sistem'});
+  hrSet(key, cfg);
+  hrSet(keyDone, true);
 }
 
 // ===== INIT =====
 function initStaff(){
   loadFee();
+  try{ const myKey=staffInfo?.nama?Object.keys(LB_NAMES).find(k=>LB_NAMES[k].toLowerCase()===(staffInfo.nama).toLowerCase()):null; lbInit(myKey); }catch(e){ console.warn("lbInit err:",e); }
   hitungAudit();
   renderCart();
   cl_calc();
@@ -4332,6 +5931,7 @@ function initStaff(){
 
 function initKanit(){
   loadFee();
+  try{ lbInit(null); }catch(e){ console.warn("lbInit err:",e); }
   renderPool();
   hitungAudit();
   updateDashboard();
@@ -4340,11 +5940,2038 @@ function initKanit(){
   renderMasterVP();
   renderKanitAuditVPResult();
   renderKanitAuditAccResult();
+  renderKanitDana();
   g('k-hdr-sub').textContent = '📍 ' + APP_AREA + ' • ' + new Date().toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
 }
 
 setInterval(hitungAudit, 60000);
 hitungAudit();
+
+
+// ══════════════════════════════════════════════════════
+//  LEADERBOARD — DATA & STATE  (prefix: lb_ / klb)
+// ══════════════════════════════════════════════════════
+
+// Storage helpers
+function lbGet(k)    { try{ return JSON.parse(localStorage.getItem('lb_'+k)); }catch(e){ return null; } }
+function lbSet(k, v) { try{ localStorage.setItem('lb_'+k, JSON.stringify(v)); }catch(e){} }
+
+// Default targets
+const LB_DEFAULT_TARGETS = {
+  senior:  { tf:750, tt:875, voucher:2500, acc:0, hp:4, label:'Senior Operational', cabang:'Cabang 1 (Pusat)', reward:300000, periode:'bulanan' },
+  pram_c1: { tf:120, tt:120, voucher:600,  acc:0, hp:2, label:'Pramuniaga C1', cabang:'Cabang 1', reward:0, periode:'2minggu' },
+  pram_c2: { tf:72,  tt:72,  voucher:60,   acc:25,hp:0, label:'Pramuniaga C2', cabang:'Cabang 2', reward:0, periode:'2minggu' },
+  pram_c3: { tf:96,  tt:96,  voucher:84,   acc:48,hp:4, label:'Pramuniaga C3', cabang:'Cabang 3', reward:200000, periode:'2minggu' },
+};
+
+function lbGetTargets() {
+  return lbGet('targets') || JSON.parse(JSON.stringify(LB_DEFAULT_TARGETS));
+}
+function lbGetActual() {
+  const def = {};
+  const tgt = lbGetTargets();
+  Object.keys(tgt).forEach(k => def[k] = { tf:0, tt:0, voucher:0, acc:0, hp:0 });
+  const saved = lbGet('actual') || {};
+  // merge
+  Object.keys(tgt).forEach(k => { if(saved[k]) Object.assign(def[k], saved[k]); });
+  return def;
+}
+function lbGetPengaturan() {
+  return lbGet('pengaturan') || { brand:'Saudara Cell Pusat', pram:'1–14 Mei 2025', senior:'Mei 2025', hari:'6 / 14' };
+}
+
+// Calculations
+function lbPct(tgt, act) {
+  const metrics = ['tf','tt','voucher','acc','hp'].filter(m => tgt[m] > 0);
+  if(!metrics.length) return 0;
+  return Math.round(metrics.reduce((s,m) => s + Math.min((act[m]/tgt[m])*100, 100), 0) / metrics.length);
+}
+function lbReward(tgt, act) {
+  const pct = lbPct(tgt, act);
+  const max = tgt.reward || 0;
+  if(!max) return { amount:0, label:'Tidak ada reward', col:'var(--muted2)' };
+  if(pct >= 100) return { amount:max,            label:'✅ Reward penuh terkunci!', col:'var(--green)' };
+  if(pct >= 80)  return { amount:Math.round(max*0.5), label:'🟡 50% reward (>80%)', col:'var(--yellow)' };
+  return { amount:0, label:'⚠️ Belum capai 80%', col:'var(--orange)' };
+}
+const LB_COLORS = ['var(--yellow)','var(--blue)','var(--green)','var(--orange)','var(--purple)','var(--accent2)'];
+function lbColor(idx) { return LB_COLORS[idx % LB_COLORS.length]; }
+
+// ══════════════════════════════════════════════════════
+//  KANIT LEADERBOARD — RENDER & INPUT
+// ══════════════════════════════════════════════════════
+
+function initLbKanit() {
+  const cfg = lbGetPengaturan();
+  const el_brand  = g('klb-brand');
+  const el_pram   = g('klb-period-pram');
+  const el_senior = g('klb-period-senior');
+  const el_hari   = g('klb-period-hari');
+  if(el_brand)  el_brand.value  = cfg.brand  || '';
+  if(el_pram)   el_pram.value   = cfg.pram   || '';
+  if(el_senior) el_senior.value = cfg.senior || '';
+  if(el_hari)   el_hari.value   = cfg.hari   || '';
+  klbRenderInputGrid();
+  klbRenderManage();
+  klbRenderPreview();
+}
+
+function klbSavePengaturan() {
+  const cfg = {
+    brand:  (g('klb-brand')?.value  || '').trim() || 'Saudara Cell Pusat',
+    pram:   (g('klb-period-pram')?.value || '').trim(),
+    senior: (g('klb-period-senior')?.value || '').trim(),
+    hari:   (g('klb-period-hari')?.value || '').trim(),
+  };
+  lbSet('pengaturan', cfg);
+  const st = g('klb-cfg-status');
+  if(st){ st.style.color='var(--green)'; st.textContent='✅ Pengaturan disimpan!'; setTimeout(()=>st.textContent='',2500); }
+  klbRenderPreview();
+}
+
+function klbRenderInputGrid() {
+  const el = g('klb-input-grid'); if(!el) return;
+  const targets = lbGetTargets();
+  const actual  = lbGetActual();
+  const METRICS = { tf:'Transfer', tt:'Tartun', voucher:'Voucher', acc:'ACC HP', hp:'Service HP' };
+  const keys = Object.keys(targets);
+
+  el.innerHTML = keys.map((key, ki) => {
+    const tgt = targets[key];
+    const act = actual[key] || {};
+    const col = lbColor(ki);
+    const pct = lbPct(tgt, act);
+    const pctCol = pct>=100?'var(--green)':pct>=80?'var(--yellow)':'var(--orange)';
+
+    const metricFields = Object.keys(METRICS).filter(m => tgt[m] > 0).map(m => `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <label style="font-size:11px;color:var(--muted2);width:110px">${METRICS[m]} (target: ${tgt[m]})</label>
+        <input type="number" class="finp" id="klb_inp_${key}_${m}" value="${act[m]||0}" min="0"
+          style="width:90px;text-align:right;font-family:var(--mono)"
+          oninput="klbLiveUpdate('${key}')">
+      </div>`).join('');
+
+    return `<div class="card" style="margin-bottom:8px;border-left:3px solid ${col}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div>
+          <div style="font-size:13px;font-weight:700">${tgt.label}</div>
+          <div style="font-size:11px;color:var(--muted2)">${tgt.cabang} · ${tgt.periode==='bulanan'?'Bulanan':'Per 2 Minggu'}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:800;color:${pctCol}" id="klb_pct_${key}">${pct}%</div>
+          <div style="font-size:10px;color:var(--muted2)">KPI</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:99px;height:4px;margin-bottom:12px;overflow:hidden">
+        <div id="klb_bar_${key}" style="height:100%;border-radius:99px;background:${col};width:${pct}%;transition:width 0.3s"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+        <div class="field" style="margin:0">
+          <label style="font-size:10px">Nama Karyawan</label>
+          <input class="finp" id="klb_inp_${key}_name" value="${tgt.label}" style="font-size:12px">
+        </div>
+        <div class="field" style="margin:0">
+          <label style="font-size:10px">Nama Cabang</label>
+          <input class="finp" id="klb_inp_${key}_cabang" value="${tgt.cabang}" style="font-size:12px">
+        </div>
+      </div>
+      <div style="margin-top:10px">${metricFields}</div>
+      <button onclick="klbSaveOne('${key}')"
+        style="margin-top:8px;padding:8px 16px;background:${col}22;border:1px solid ${col}55;border-radius:8px;color:${col};font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%">
+        💾 Simpan ${tgt.label}
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function klbLiveUpdate(key) {
+  const targets = lbGetTargets();
+  const actual  = lbGetActual();
+  const tgt = targets[key];
+  const act = actual[key] || {};
+  // Read current input values
+  ['tf','tt','voucher','acc','hp'].forEach(m => {
+    const el = g(`klb_inp_${key}_${m}`);
+    if(el) act[m] = parseFloat(el.value)||0;
+  });
+  const pct = lbPct(tgt, act);
+  const pctCol = pct>=100?'var(--green)':pct>=80?'var(--yellow)':'var(--orange)';
+  const pctEl = g(`klb_pct_${key}`);
+  const barEl = g(`klb_bar_${key}`);
+  if(pctEl){ pctEl.textContent = pct+'%'; pctEl.style.color = pctCol; }
+  if(barEl) barEl.style.width = pct+'%';
+}
+
+function klbSaveOne(key) {
+  const targets = lbGetTargets();
+  const actual  = lbGetActual();
+
+  // Save name/cabang
+  const nameEl   = g(`klb_inp_${key}_name`);
+  const cabangEl = g(`klb_inp_${key}_cabang`);
+  if(nameEl   && nameEl.value.trim())   targets[key].label  = nameEl.value.trim();
+  if(cabangEl && cabangEl.value.trim()) targets[key].cabang = cabangEl.value.trim();
+
+  // Save metrics
+  ['tf','tt','voucher','acc','hp'].forEach(m => {
+    const el = g(`klb_inp_${key}_${m}`);
+    if(el) actual[key][m] = parseFloat(el.value)||0;
+  });
+
+  lbSet('targets', targets);
+  lbSet('actual',  actual);
+  klbRenderPreview();
+  lbRenderStaff();
+  toast('✅ Data tersimpan! Staff bisa lihat realtime.');
+}
+
+function klbSaveAll() {
+  const targets = lbGetTargets();
+  const actual  = lbGetActual();
+
+  Object.keys(targets).forEach(key => {
+    const nameEl   = g(`klb_inp_${key}_name`);
+    const cabangEl = g(`klb_inp_${key}_cabang`);
+    if(nameEl   && nameEl.value.trim())   targets[key].label  = nameEl.value.trim();
+    if(cabangEl && cabangEl.value.trim()) targets[key].cabang = cabangEl.value.trim();
+    ['tf','tt','voucher','acc','hp'].forEach(m => {
+      const el = g(`klb_inp_${key}_${m}`);
+      if(el) actual[key][m] = parseFloat(el.value)||0;
+    });
+  });
+
+  lbSet('targets', targets);
+  lbSet('actual',  actual);
+
+  const st = g('klb-save-status');
+  if(st){ st.style.color='var(--green)'; st.textContent='✅ Semua data disimpan! Staff sudah bisa lihat.'; setTimeout(()=>st.textContent='',3000); }
+  klbRenderPreview();
+  klbRenderManage();
+  lbRenderStaff();
+}
+
+function klbTambahKaryawan() {
+  const nama   = (g('klb-new-name')?.value   || '').trim();
+  const cabang = (g('klb-new-cabang')?.value || '').trim();
+  if(!nama || !cabang) {
+    const st = g('klb-tambah-status');
+    if(st){ st.style.color='var(--orange)'; st.textContent='⚠️ Nama dan cabang wajib diisi'; }
+    return;
+  }
+  const targets = lbGetTargets();
+  const actual  = lbGetActual();
+  const key = 'custom_' + Date.now();
+  targets[key] = {
+    tf:      parseInt(g('klb-new-tf')?.value)      || 0,
+    tt:      parseInt(g('klb-new-tt')?.value)      || 0,
+    voucher: parseInt(g('klb-new-voucher')?.value)  || 0,
+    acc:     parseInt(g('klb-new-acc')?.value)      || 0,
+    hp:      parseInt(g('klb-new-hp')?.value)       || 0,
+    reward:  parseInt(g('klb-new-reward')?.value)   || 0,
+    periode: g('klb-new-periode')?.value || '2minggu',
+    label:   nama,
+    cabang:  cabang,
+  };
+  actual[key] = { tf:0, tt:0, voucher:0, acc:0, hp:0 };
+  lbSet('targets', targets);
+  lbSet('actual',  actual);
+  // Clear fields
+  ['klb-new-name','klb-new-cabang','klb-new-tf','klb-new-tt','klb-new-voucher','klb-new-acc','klb-new-hp','klb-new-reward']
+    .forEach(id => { const el=g(id); if(el) el.value=''; });
+  const st = g('klb-tambah-status');
+  if(st){ st.style.color='var(--green)'; st.textContent=`✅ ${nama} ditambahkan!`; setTimeout(()=>st.textContent='',2500); }
+  klbRenderInputGrid();
+  klbRenderManage();
+  klbRenderPreview();
+  lbRenderStaff();
+}
+
+function klbHapus(key) {
+  if(!confirm('Hapus karyawan ini dari leaderboard?')) return;
+  const targets = lbGetTargets();
+  const actual  = lbGetActual();
+  delete targets[key];
+  delete actual[key];
+  lbSet('targets', targets);
+  lbSet('actual',  actual);
+  klbRenderInputGrid();
+  klbRenderManage();
+  klbRenderPreview();
+  lbRenderStaff();
+}
+
+function klbRenderManage() {
+  const el = g('klb-manage-list'); if(!el) return;
+  const targets = lbGetTargets();
+  const actual  = lbGetActual();
+  const keys = Object.keys(targets);
+  if(!keys.length){ el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:8px">Belum ada karyawan.</div>'; return; }
+  el.innerHTML = keys.map((key,ki) => {
+    const tgt = targets[key]; const act = actual[key]||{};
+    const pct = lbPct(tgt, act);
+    const col = lbColor(ki);
+    const isCustom = key.startsWith('custom_');
+    return `<div style="display:flex;align-items:center;justify-content:space-between;background:var(--s3);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;margin-bottom:6px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:${col};flex-shrink:0"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700">${tgt.label}</div>
+          <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">${tgt.cabang} · ${tgt.periode==='bulanan'?'Bulanan':'2 Minggu'} · ${pct}%</div>
+        </div>
+      </div>
+      ${isCustom ? `<button onclick="klbHapus('${key}')" style="padding:5px 12px;background:rgba(245,99,66,0.12);border:1px solid rgba(245,99,66,0.3);border-radius:7px;color:var(--red);font-size:11px;cursor:pointer;font-family:var(--sans)">Hapus</button>` : '<span style="font-size:10px;color:var(--muted2)">default</span>'}
+    </div>`;
+  }).join('');
+}
+
+function klbRenderPreview() {
+  const el = g('klb-preview'); if(!el) return;
+  const targets = lbGetTargets();
+  const actual  = lbGetActual();
+  const cfg     = lbGetPengaturan();
+  const keys    = Object.keys(targets).sort((a,b) => lbPct(targets[b],actual[b]||{}) - lbPct(targets[a],actual[a]||{}));
+
+  if(!keys.length){ el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:8px">Belum ada data.</div>'; return; }
+
+  const MEDALS = ['🥇','🥈','🥉'];
+  el.innerHTML = `
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px">
+      <div style="font-size:10px;color:var(--muted2);margin-bottom:8px;font-family:var(--mono)">${cfg.brand} · ${cfg.pram} · Hari ke: ${cfg.hari}</div>
+      ${keys.slice(0,3).map((key,i) => {
+        const tgt = targets[key]; const act = actual[key]||{};
+        const pct = lbPct(tgt,act); const col = lbColor(Object.keys(targets).indexOf(key));
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border2)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">${MEDALS[i]||'·'}</span>
+            <div>
+              <div style="font-size:12px;font-weight:700">${tgt.label}</div>
+              <div style="font-size:10px;color:var(--muted2)">${tgt.cabang}</div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:var(--mono);font-size:14px;font-weight:800;color:${pct>=100?'var(--green)':pct>=80?'var(--yellow)':'var(--orange)'}">${pct}%</div>
+            ${lbReward(tgt,act).amount>0?`<div style="font-size:10px;color:var(--green)">${fmt(lbReward(tgt,act).amount)}</div>`:''}
+          </div>
+        </div>`;
+      }).join('')}
+      ${keys.length>3?`<div style="font-size:10px;color:var(--muted2);text-align:center;padding-top:6px">+${keys.length-3} karyawan lainnya</div>`:''}
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+//  STAFF LEADERBOARD — READ-ONLY VIEW
+// ══════════════════════════════════════════════════════
+
+function initLbStaff() {
+  lbRenderStaff();
+}
+
+function lbRenderStaff() {
+  const targets = lbGetTargets();
+  const actual  = lbGetActual();
+  const cfg     = lbGetPengaturan();
+  const nama    = staffInfo?.nama || '';
+
+  // Period header
+  const pEl = g('slb-period'); if(pEl) pEl.textContent = cfg.pram || '—';
+  const hEl = g('slb-hari');   if(hEl) hEl.textContent = 'Hari ke: ' + (cfg.hari||'—') + ' · Senior: ' + (cfg.senior||'—');
+
+  const keys = Object.keys(targets).sort((a,b) => lbPct(targets[b],actual[b]||{}) - lbPct(targets[a],actual[a]||{}));
+  if(!keys.length) {
+    const pl = g('slb-podium'); if(pl) pl.innerHTML='<div style="color:var(--muted);font-size:12px;text-align:center;padding:16px">Belum ada data dari kanit.</div>';
+    return;
+  }
+
+  // Match staff nama to key
+  const myKey = keys.find(k => targets[k].label.toLowerCase() === nama.toLowerCase());
+
+  // Podium (top 3)
+  const MEDALS = ['🥇','🥈','🥉'];
+  const PODIUM_COL = ['var(--yellow)','var(--muted2)','var(--orange)'];
+  const podiumEl = g('slb-podium');
+  if(podiumEl) podiumEl.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(${Math.min(keys.length,3)},1fr);gap:8px;margin-bottom:8px">
+      ${keys.slice(0,3).map((key,i) => {
+        const tgt = targets[key]; const act = actual[key]||{};
+        const pct = lbPct(tgt,act);
+        const isMe = key === myKey;
+        return `<div style="background:${isMe?'rgba(62,207,142,0.1)':'var(--s3)'};border:1px solid ${isMe?'rgba(62,207,142,0.4)':PODIUM_COL[i]+'44'};border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:24px">${MEDALS[i]}</div>
+          <div style="font-size:12px;font-weight:700;margin-top:4px">${tgt.label}${isMe?' 👈':''}</div>
+          <div style="font-size:10px;color:var(--muted2)">${tgt.cabang}</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:800;color:${pct>=100?'var(--green)':pct>=80?'var(--yellow)':'var(--orange)'};margin-top:6px">${pct}%</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  // Full ranking list
+  const listEl = g('slb-list');
+  if(listEl) listEl.innerHTML = keys.map((key,i) => {
+    const tgt = targets[key]; const act = actual[key]||{};
+    const pct = lbPct(tgt,act);
+    const col = lbColor(Object.keys(targets).indexOf(key));
+    const isMe = key === myKey;
+    return `<div style="background:${isMe?'rgba(62,207,142,0.08)':'var(--s3)'};border:1px solid ${isMe?'rgba(62,207,142,0.3)':'var(--border2)'};border-radius:10px;padding:10px 14px;margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="font-family:var(--mono);font-size:16px;font-weight:800;color:var(--muted2)">#${i+1}</div>
+          <div>
+            <div style="font-size:12px;font-weight:700">${tgt.label}${isMe?' <span style="color:var(--green);font-size:10px">← Kamu</span>':''}</div>
+            <div style="font-size:10px;color:var(--muted2)">${tgt.cabang} · ${tgt.periode==='bulanan'?'Bulanan':'2 Minggu'}</div>
+          </div>
+        </div>
+        <div style="font-family:var(--mono);font-size:16px;font-weight:800;color:${pct>=100?'var(--green)':pct>=80?'var(--yellow)':'var(--orange)'}">${pct}%</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:99px;height:4px;overflow:hidden">
+        <div style="height:100%;border-radius:99px;background:${col};width:${pct}%"></div>
+      </div>
+      ${isMe?`<div style="margin-top:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:10px;color:var(--muted2)">
+        <div>Transfer: <b style="color:var(--text)">${act.tf||0}</b></div>
+        <div>Tartun: <b style="color:var(--text)">${act.tt||0}</b></div>
+        <div>Voucher: <b style="color:var(--text)">${act.voucher||0}</b></div>
+        ${tgt.acc>0?`<div>ACC: <b style="color:var(--text)">${act.acc||0}</b></div>`:''}
+        ${tgt.hp>0?`<div>Service: <b style="color:var(--text)">${act.hp||0}</b></div>`:''}
+      </div>`:''}
+    </div>`;
+  }).join('');
+
+  // KPI per layanan (hanya milik staff ini)
+  const kpiEl = g('slb-kpi');
+  if(kpiEl && myKey) {
+    const tgt = targets[myKey]; const act = actual[myKey]||{};
+    const METRICS = { tf:'Transfer', tt:'Tartun', voucher:'Voucher', acc:'ACC HP', hp:'Service HP' };
+    kpiEl.innerHTML = `<div class="card">
+      <div class="ctit">${tgt.label} — Detail KPI</div>
+      ${Object.keys(METRICS).filter(m=>tgt[m]>0).map(m => {
+        const pct2 = Math.min(Math.round((act[m]||0)/tgt[m]*100),100);
+        const col2 = pct2>=100?'var(--green)':pct2>=80?'var(--yellow)':'var(--orange)';
+        return `<div style="margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+            <span style="color:var(--muted2)">${METRICS[m]}</span>
+            <span style="font-family:var(--mono);color:${col2};font-weight:700">${act[m]||0} / ${tgt[m]} (${pct2}%)</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border-radius:99px;height:5px;overflow:hidden">
+            <div style="height:100%;border-radius:99px;background:${col2};width:${pct2}%"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  } else if(kpiEl) {
+    kpiEl.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:8px">Data KPI kamu belum tersedia. Hubungi kanit.</div>';
+  }
+
+  // Reward status
+  const rwEl = g('slb-reward');
+  if(rwEl) {
+    const rwKeys = keys.filter(k => (targets[k].reward||0) > 0);
+    if(!rwKeys.length){ rwEl.innerHTML='<div style="font-size:12px;color:var(--muted);padding:8px">Tidak ada reward aktif periode ini.</div>'; }
+    else rwEl.innerHTML = rwKeys.map(key => {
+      const tgt = targets[key]; const act = actual[key]||{};
+      const rw  = lbReward(tgt, act);
+      const pct = lbPct(tgt, act);
+      const isMe = key === myKey;
+      return `<div style="background:${isMe?'rgba(62,207,142,0.08)':'var(--s3)'};border:1px solid ${isMe?'rgba(62,207,142,0.25)':'var(--border2)'};border-radius:12px;padding:12px 14px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div>
+            <div style="font-size:12px;font-weight:700">${tgt.label}${isMe?' 👈':''}</div>
+            <div style="font-size:10px;color:var(--muted2)">${tgt.cabang}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:var(--mono);font-size:14px;font-weight:800;color:${rw.col}">${fmt(rw.amount)}</div>
+            <div style="font-size:10px;color:var(--muted2)">/ ${fmt(tgt.reward)} max</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:${rw.col};margin-bottom:6px">${rw.label}</div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:99px;height:4px;overflow:hidden">
+          <div style="height:100%;border-radius:99px;background:${rw.col};width:${pct}%"></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+
+
+
+// ═══════════════════════════════════════════════════════════════
+//  LEADERBOARD MODULE — dari saudara-cell-leaderboard.html
+//  Semua variabel/fungsi pakai prefix LB_ / lb agar tidak bentrok
+// ═══════════════════════════════════════════════════════════════
+
+// DATA
+let LB_TARGETS = {
+  senior:  { tf:750, tt:875, voucher:2500, acc:0, hp:4,  label:'Senior Operational', cabang:'C1 (Pusat)', reward:300000, periode:'bulanan', tag:'lb-tag-senior' },
+  pram_c1: { tf:120, tt:120, voucher:600,  acc:0, hp:2,  label:'Pramuniaga C1',       cabang:'Cabang 1',  reward:0,      periode:'2minggu', tag:'lb-tag-c1' },
+  pram_c2: { tf:72,  tt:72,  voucher:60,   acc:25,hp:0,  label:'Pramuniaga C2',       cabang:'Cabang 2',  reward:0,      periode:'2minggu', tag:'lb-tag-c2' },
+  pram_c3: { tf:96,  tt:96,  voucher:84,   acc:48,hp:4,  label:'Pramuniaga C3',       cabang:'Cabang 3',  reward:200000, periode:'2minggu', tag:'lb-tag-c3' },
+};
+
+let LB_NAMES = {
+  senior:  localStorage.getItem('lb_name_senior')  || 'Senior',
+  pram_c1: localStorage.getItem('lb_name_pram_c1') || 'Pramuniaga C1',
+  pram_c2: localStorage.getItem('lb_name_pram_c2') || 'Pramuniaga C2',
+  pram_c3: localStorage.getItem('lb_name_pram_c3') || 'Pramuniaga C3',
+};
+
+let LB_CABANG = {
+  senior:  localStorage.getItem('lb_cabang_senior')  || 'Cabang 1 (Pusat)',
+  pram_c1: localStorage.getItem('lb_cabang_pram_c1') || 'Cabang 1',
+  pram_c2: localStorage.getItem('lb_cabang_pram_c2') || 'Cabang 2',
+  pram_c3: localStorage.getItem('lb_cabang_pram_c3') || 'Cabang 3',
+};
+
+let LB_PERIODS = {
+  pram:   localStorage.getItem('lb_period_pram')   || '1–14 Mei 2025',
+  senior: localStorage.getItem('lb_period_senior') || 'Mei 2025',
+  hari:   localStorage.getItem('lb_period_hari')   || '6 / 14',
+  brand:  localStorage.getItem('lb_brand_name')    || 'SAUDARA CELL',
+};
+
+let LB_actual = {
+  senior:  { tf:412, tt:480, voucher:1380, acc:0, hp:2 },
+  pram_c1: { tf:58,  tt:62,  voucher:290,  acc:0, hp:1 },
+  pram_c2: { tf:30,  tt:28,  voucher:32,   acc:10,hp:0 },
+  pram_c3: { tf:52,  tt:60,  voucher:48,   acc:22,hp:2 },
+};
+
+let LB_streaks = {
+  senior:  [1,1,1,0,1,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
+  pram_c1: [1,1,0,1,1,1,null,null,null,null,null,null,null,null],
+  pram_c2: [1,0,1,1,0,1,null,null,null,null,null,null,null,null],
+  pram_c3: [1,1,1,1,0,1,null,null,null,null,null,null,null,null],
+};
+
+const LB_COLORS2 = ['#e67e22','#1abc9c','#e74c3c','#3498db','#9b59b6','#f39c12','#2ecc71','#e91e63'];
+let lbColorIdx = 4;
+
+// ── Calculations ──
+function lbGetPct(key) {
+  const t = LB_TARGETS[key], a = LB_actual[key];
+  const ms = ['tf','tt','voucher','acc','hp'].filter(m => t[m] > 0);
+  return Math.round(ms.reduce((s,m) => s + Math.min((a[m]/t[m])*100,100), 0) / ms.length);
+}
+
+function lbGetFillColor(key) {
+  const map = { senior:'#f5c842', pram_c1:'#4a9eff', pram_c2:'#2ecc71', pram_c3:'#ff6b6b' };
+  return map[key] || (LB_TARGETS[key].color || '#9b59b6');
+}
+
+function lbGetReward(key) {
+  const pct = lbGetPct(key), max = LB_TARGETS[key].reward;
+  if (!max) return { amount:0, status:'na', text:'Tidak ada reward' };
+  if (pct>=100) return { amount:max, status:'lb-earned', text:'✅ Reward penuh terkunci!' };
+  if (pct>=80)  return { amount:Math.round(max*.5), status:'lb-partial', text:'🟡 Reward sebagian (80%+ tercapai)' };
+  return { amount:0, status:'lb-at-risk', text:'⚠️ Reward berisiko hangus' };
+}
+
+function lbGetPctColor(pct) { return pct>=100?'var(--green)':pct>=80?'#f5c842':'#ff6b6b'; }
+
+// ── Render Podium ──
+function lbRenderPodium(elId, myKey) {
+  const el = document.getElementById(elId); if (!el) return;
+  const keys = Object.keys(LB_TARGETS).sort((a,b)=>lbGetPct(b)-lbGetPct(a));
+  const medals = ['🥇','🥈','🥉'], rcls = ['lb-r1','lb-r2','lb-r3'];
+  el.innerHTML = '<div class="lb-podium">' + keys.slice(0,3).map((k,i) => {
+    const pct = lbGetPct(k), isMe = k===myKey;
+    return '<div class="lb-podium-card ' + rcls[i] + (isMe?' lb-me':'') + '">' +
+      '<div class="lb-podium-medal">' + medals[i] + '</div>' +
+      '<div class="lb-podium-name">' + LB_NAMES[k] + (isMe?' 👈':'') + '</div>' +
+      '<div class="lb-podium-cabang">' + LB_CABANG[k] + '</div>' +
+      '<div class="lb-podium-score" style="color:' + lbGetPctColor(pct) + '">' + pct + '%</div>' +
+      '<div class="lb-podium-score-lbl">KPI Tercapai</div>' +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+// ── Render Leaderboard Table ──
+function lbRenderTable(elId, myKey) {
+  const el = document.getElementById(elId); if (!el) return;
+  const keys = Object.keys(LB_TARGETS).sort((a,b)=>lbGetPct(b)-lbGetPct(a));
+  el.innerHTML = keys.map((k,i) => {
+    const pct = lbGetPct(k), col = lbGetFillColor(k), isMe = k===myKey;
+    return '<div class="lb-tr' + (isMe?' lb-me':'') + '" style="animation-delay:' + (i*.07) + 's">' +
+      '<div class="lb-rank-num' + (i===0?' lb-top':'') + '">' + (i+1) + '</div>' +
+      '<div><div class="lb-pname">' + LB_NAMES[k] + (isMe?' <span style="color:var(--green);font-size:9px">← Kamu</span>':'') + '</div>' +
+        '<div class="lb-prole">' + LB_CABANG[k] + '</div>' +
+        '<span class="lb-role-tag ' + LB_TARGETS[k].tag + '">' + (k==='senior'?'Senior':'Pram') + '</span></div>' +
+      '<div class="lb-stat">' + LB_actual[k].tf + '</div>' +
+      '<div class="lb-stat">' + LB_actual[k].tt + '</div>' +
+      '<div class="lb-stat">' + LB_actual[k].voucher + '</div>' +
+      '<div class="lb-stat">' + (LB_actual[k].acc||'-') + '</div>' +
+      '<div class="lb-prog-wrap"><div class="lb-prog-lbl">' + pct + '%</div>' +
+        '<div class="lb-prog-bar"><div class="lb-prog-fill" style="width:' + pct + '%;background:' + col + '"></div></div></div>' +
+    '</div>';
+  }).join('');
+}
+
+// ── Render Streak ──
+function lbRenderStreak(elId) {
+  const el = document.getElementById(elId); if (!el) return;
+  el.innerHTML = Object.keys(LB_TARGETS).map(k => {
+    const days = LB_streaks[k] || [], len = LB_TARGETS[k].periode==='bulanan'?25:14;
+    const dots = Array.from({length:len},(_,i)=>{
+      const d=days[i];
+      const cls = d===1?'lb-s-hit':d===0?'lb-s-miss':'lb-s-empty';
+      return '<div class="lb-streak-day ' + cls + '">' + (i+1) + '</div>';
+    }).join('');
+    const hits = days.filter(d=>d===1).length;
+    return '<div class="lb-streak-card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+        '<div style="font-size:12px;font-weight:700">' + LB_NAMES[k] + ' <span style="color:var(--muted2);font-size:10px;font-weight:400">— ' + LB_CABANG[k] + '</span></div>' +
+        '<div style="font-size:10px;color:var(--green);font-family:var(--mono)">✅ ' + hits + ' hari hit</div>' +
+      '</div><div class="lb-streak-row">' + dots + '</div></div>';
+  }).join('');
+}
+
+// ── Render KPI ──
+function lbRenderKPI(elId, filterKey) {
+  const el = document.getElementById(elId); if (!el) return;
+  const metricLbl = {tf:'Transfer',tt:'Tartun',voucher:'Voucher',acc:'ACC HP',hp:'Service HP'};
+  const keys = filterKey ? [filterKey] : Object.keys(LB_TARGETS);
+  el.innerHTML = keys.map(k => {
+    const t=LB_TARGETS[k], a=LB_actual[k], col=lbGetFillColor(k);
+    const rows = Object.keys(metricLbl).filter(m=>t[m]>0).map(m => {
+      const pct2=Math.min(Math.round((a[m]/t[m])*100),100);
+      const pcls = pct2>=100?'lb-pct-great':pct2>=80?'lb-pct-ok':'lb-pct-low';
+      return '<div class="lb-kpi-row"><div class="lb-kpi-label">' + metricLbl[m] + '</div>' +
+        '<div class="lb-kpi-bar-wrap"><div class="lb-kpi-bar"><div class="lb-kpi-fill" style="width:' + pct2 + '%;background:' + (pct2>=100?'#2ecc71':col) + '"></div></div></div>' +
+        '<div class="lb-kpi-pct ' + pcls + '">' + pct2 + '%</div></div>' +
+        '<div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:6px;padding-left:84px">' + a[m] + '/' + t[m] + (m==='hp'?' unit':' trx') + '</div>';
+    }).join('');
+    return '<div class="lb-breakdown-card"><div class="lb-breakdown-hdr">' +
+      '<div class="lb-breakdown-name"><span class="lb-role-tag ' + t.tag + '" style="margin-right:6px">' + (k==='senior'?'Senior':'Pram') + '</span>' + LB_NAMES[k] + '</div>' +
+      '<div class="lb-breakdown-period">' + (t.periode==='bulanan'?'Bulanan':'2 Minggu') + '</div></div>' +
+      rows +
+      '<div style="font-size:10px;color:var(--muted2);padding-top:8px;border-top:1px solid var(--border)">Overall: <strong style="color:var(--text)">' + lbGetPct(k) + '%</strong></div>' +
+    '</div>';
+  }).join('');
+}
+
+// ── Render Reward ──
+function lbRenderReward(elId) {
+  const el = document.getElementById(elId); if (!el) return;
+  const html = Object.keys(LB_TARGETS).map(k => {
+    const r = lbGetReward(k); if (r.status==='na') return '';
+    const pct=lbGetPct(k), col=lbGetFillColor(k);
+    return '<div class="lb-reward-card ' + r.status + '">' +
+      '<div class="lb-reward-top"><div>' +
+        '<div class="lb-reward-person">' + LB_NAMES[k] + '</div>' +
+        '<div style="font-size:9px;color:var(--muted2)">' + LB_CABANG[k] + ' · ' + (LB_TARGETS[k].periode==='bulanan'?'Bulanan':'2 Minggu') + '</div>' +
+      '</div><div>' +
+        '<div class="lb-reward-amount">Rp ' + Math.round(r.amount/1000) + 'k</div>' +
+        '<div style="font-size:9px;color:var(--muted2);text-align:right">/ Rp ' + Math.round(LB_TARGETS[k].reward/1000) + 'k max</div>' +
+      '</div></div>' +
+      '<div class="lb-reward-status">' + r.text + '</div>' +
+      (pct<100?'<div class="lb-reward-missing">Kurang ' + (100-pct) + '% untuk reward penuh</div>':'') +
+      '<div class="lb-prog-bar" style="margin-top:8px"><div class="lb-prog-fill" style="width:' + pct + '%;background:' + col + '"></div></div>' +
+    '</div>';
+  }).join('');
+  el.innerHTML = html || '<div style="color:var(--muted2);font-size:12px;padding:8px">Tidak ada reward aktif.</div>';
+}
+
+// ── Render WA ──
+function lbRenderWA(elId) {
+  const el = document.getElementById(elId); if (!el) return;
+  const tgl = new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  let msg = '📊 *REKAP KPI ' + LB_PERIODS.brand.toUpperCase() + '*\n📅 ' + tgl + '\n' + '─'.repeat(28) + '\n\n';
+  Object.keys(LB_TARGETS).sort((a,b)=>lbGetPct(b)-lbGetPct(a)).forEach(k => {
+    const pct=lbGetPct(k), em=pct>=100?'✅':pct>=80?'🟡':'🔴';
+    msg += em + ' *' + LB_NAMES[k] + '* (' + LB_CABANG[k] + ')\n';
+    msg += '   Transfer: ' + LB_actual[k].tf + ' trx\n';
+    msg += '   Tartun: '   + LB_actual[k].tt + ' trx\n';
+    msg += '   Voucher: '  + LB_actual[k].voucher + ' trx\n';
+    if (LB_TARGETS[k].acc>0) msg += '   ACC: ' + LB_actual[k].acc + ' trx\n';
+    msg += '   Progress: *' + pct + '%*\n\n';
+  });
+  const leader = Object.keys(LB_TARGETS).sort((a,b)=>lbGetPct(b)-lbGetPct(a))[0];
+  if (leader) msg += '─'.repeat(28) + '\n🏆 Leader: *' + LB_NAMES[leader] + '*\n_Keep Growing! 💪_';
+  el.textContent = msg;
+}
+
+// ── Copy WA ──
+function lbCopyWA(elId) {
+  const el = document.getElementById(elId); if (!el) return;
+  navigator.clipboard?.writeText(el.textContent).then(() => {
+    const btn = el.previousElementSibling?.querySelector('.lb-copy-btn') || document.querySelector('.lb-copy-btn');
+    if (btn) { btn.textContent = '✅ Copied!'; setTimeout(()=>btn.textContent='Copy', 2000); }
+  });
+}
+
+// ── Period bar update ──
+function lbUpdatePeriodBar() {
+  const ids = {
+    'slb-brand': LB_PERIODS.brand, 'slb-period': LB_PERIODS.pram,
+    'slb-period-senior': LB_PERIODS.senior, 'slb-hari': LB_PERIODS.hari,
+    'klb-brand': LB_PERIODS.brand, 'klb-period-pram-vis': LB_PERIODS.pram,
+    'klb-period-senior-vis': LB_PERIODS.senior, 'klb-hari-vis': LB_PERIODS.hari,
+  };
+  Object.entries(ids).forEach(([id,val]) => { const el=document.getElementById(id); if(el) el.textContent=val; });
+}
+
+// ── Motivation banner ──
+function lbUpdateMotivation() {
+  const msgs = [];
+  Object.keys(LB_TARGETS).forEach(k => {
+    const pct = lbGetPct(k);
+    if (pct>=100) msgs.push('🎉 <strong>' + LB_NAMES[k] + '</strong> sudah 100%! Reward terkunci!');
+    else if (pct>=80) msgs.push('⚡ <strong>' + LB_NAMES[k] + '</strong> di ' + pct + '% — hampir reward penuh!');
+    else msgs.push('🔥 <strong>' + LB_NAMES[k] + '</strong> masih ' + pct + '% — butuh ' + (100-pct) + '% lagi!');
+  });
+  if (!msgs.length) return;
+  const idx = Math.floor(Date.now()/5000) % msgs.length;
+  ['slb-motivation','klb-motivation'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.innerHTML = msgs[idx];
+  });
+}
+
+// ── Render ALL (kanit = all keys, staff = myKey) ──
+function lbRenderAll(myKey) {
+  lbUpdatePeriodBar();
+  // Staff panel
+  lbRenderPodium('slb-podium', myKey);
+  lbRenderTable('slb-list', myKey);
+  lbRenderStreak('slb-streak');
+  lbRenderKPI('slb-kpi', myKey || null);
+  lbRenderReward('slb-reward');
+  lbRenderWA('slb-wa-text');
+  // Kanit panel
+  lbRenderPodium('klb-podium', null);
+  lbRenderTable('klb-lb-body', null);
+  lbRenderStreak('klb-streak');
+  lbRenderKPI('klb-kpi-breakdown', null);
+  lbRenderReward('klb-reward-cards');
+  lbRenderWA('klb-wa-text');
+  // Input grid (kanit)
+  lbRenderInputGrid();
+  lbRenderManageList();
+  lbUpdateMotivation();
+}
+
+// ── Input grid (kanit tab) ──
+function lbRenderInputGrid() {
+  const el = document.getElementById('klb-input-grid'); if (!el) return;
+  const metricLbl = {tf:'Transfer (trx)',tt:'Tartun (trx)',voucher:'Voucher (trx)',acc:'ACC HP (trx)',hp:'Service HP (unit)'};
+  const btnCls = {senior:'lb-btn-gold',pram_c1:'lb-btn-blue',pram_c2:'lb-btn-green',pram_c3:'lb-btn-red'};
+  const dotCol = {senior:'#f5c842',pram_c1:'#4a9eff',pram_c2:'#2ecc71',pram_c3:'#ff6b6b'};
+  el.innerHTML = '<div class="lb-input-grid">' + Object.keys(LB_TARGETS).map(k => {
+    const t=LB_TARGETS[k], a=LB_actual[k];
+    const col = LB_TARGETS[k].color || dotCol[k] || '#9b59b6';
+    const fields = Object.keys(metricLbl).filter(m=>t[m]>0).map(m =>
+      '<div class="lb-input-row"><div class="lb-input-label">' + metricLbl[m] + ' (target: ' + t[m] + ')</div>' +
+      '<input class="lb-input-field" type="number" id="lbi_' + k + '_' + m + '" value="' + a[m] + '" min="0" placeholder="0"></div>'
+    ).join('');
+    return '<div class="lb-input-card">' +
+      '<div class="lb-input-card-title"><div class="lb-dot" style="background:' + col + '"></div>' + LB_CABANG[k] + '</div>' +
+      '<div class="lb-input-row"><div class="lb-input-label">👤 Nama Karyawan</div>' +
+        '<input class="lb-input-field" type="text" id="lbi_' + k + '_name" value="' + LB_NAMES[k] + '" placeholder="Nama..."></div>' +
+      '<div class="lb-input-row"><div class="lb-input-label">🏪 Nama Cabang</div>' +
+        '<input class="lb-input-field" type="text" id="lbi_' + k + '_cabang" value="' + LB_CABANG[k] + '" placeholder="Cabang..."></div>' +
+      '<div style="height:1px;background:var(--border);margin:8px 0"></div>' +
+      fields +
+      '<button class="lb-save-btn ' + (btnCls[k]||'lb-btn-purple') + '" onclick="lbSaveOne(\'' + k + '\')">SIMPAN</button>' +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+function lbSaveOne(key) {
+  const nameEl = document.getElementById('lbi_' + key + '_name');
+  if (nameEl?.value.trim()) { LB_NAMES[key]=nameEl.value.trim(); try{localStorage.setItem('lb_name_'+key,LB_NAMES[key]);}catch(e){} }
+  const cabangEl = document.getElementById('lbi_' + key + '_cabang');
+  if (cabangEl?.value.trim()) { LB_CABANG[key]=cabangEl.value.trim(); try{localStorage.setItem('lb_cabang_'+key,LB_CABANG[key]);}catch(e){} }
+  ['tf','tt','voucher','acc','hp'].forEach(m => {
+    const el = document.getElementById('lbi_' + key + '_' + m);
+    if (el) LB_actual[key][m] = parseInt(el.value)||0;
+  });
+  lbRenderAll(null);
+  toast('✅ Data ' + LB_NAMES[key] + ' diperbarui!');
+}
+
+function lbSaveAll() {
+  Object.keys(LB_TARGETS).forEach(k => lbSaveOne(k));
+}
+
+function lbRenderManageList() {
+  const el = document.getElementById('klb-manage-list'); if (!el) return;
+  const keys = Object.keys(LB_TARGETS);
+  if (!keys.length) { el.innerHTML='<div style="color:var(--muted2);font-size:12px">Belum ada karyawan.</div>'; return; }
+  el.innerHTML = keys.map(k => {
+    const isCustom = k.startsWith('custom_');
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--s2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px">' +
+      '<div><div style="font-size:12px;font-weight:700">' + LB_NAMES[k] + '</div>' +
+        '<div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">' + LB_CABANG[k] + ' · ' + (LB_TARGETS[k].periode==='bulanan'?'Bulanan':'2 Minggu') + ' · ' + lbGetPct(k) + '%</div>' +
+      '</div>' +
+      (isCustom?'<button onclick="lbHapus(\''+k+'\')" style="background:rgba(224,48,80,.12);border:1px solid rgba(224,48,80,.25);color:var(--red);padding:4px 10px;border-radius:6px;font-size:10px;cursor:pointer;font-family:var(--sans)">Hapus</button>':'<span style="font-size:9px;color:var(--muted2)">default</span>') +
+    '</div>';
+  }).join('');
+}
+
+function lbHapus(key) {
+  if (!confirm('Hapus ' + LB_NAMES[key] + ' dari leaderboard?')) return;
+  delete LB_TARGETS[key]; delete LB_NAMES[key]; delete LB_CABANG[key];
+  delete LB_actual[key]; delete LB_streaks[key];
+  lbRenderAll(null); toast('🗑️ Karyawan dihapus');
+}
+
+// ── Tambah Karyawan (pakai form existing di kanit) ──
+function lbTambahKaryawan() {
+  // Pakai input dari form lama (klb-new-*)
+  const name   = (document.getElementById('klb-new-name')?.value||'').trim();
+  const cabang = (document.getElementById('klb-new-cabang')?.value||'').trim();
+  const tf     = parseInt(document.getElementById('klb-new-tf')?.value)||0;
+  const tt     = parseInt(document.getElementById('klb-new-tt')?.value)||0;
+  const voucher= parseInt(document.getElementById('klb-new-voucher')?.value)||0;
+  const accVal = parseInt(document.getElementById('klb-new-acc')?.value)||0;
+  const hp     = parseInt(document.getElementById('klb-new-hp')?.value)||0;
+  const reward = parseInt(document.getElementById('klb-new-reward')?.value)||0;
+  const periode= document.getElementById('klb-new-periode')?.value||'2minggu';
+  if (!name||!cabang) { toast('⚠️ Nama dan cabang wajib diisi!'); return; }
+  const key = 'custom_' + Date.now();
+  const color = LB_COLORS2[lbColorIdx % LB_COLORS.length]; lbColorIdx++;
+  LB_TARGETS[key] = {tf,tt,voucher,acc:accVal,hp,label:name,reward,periode,tag:'lb-tag-custom',color};
+  LB_NAMES[key] = name; LB_CABANG[key] = cabang;
+  LB_actual[key] = {tf:0,tt:0,voucher:0,acc:0,hp:0};
+  LB_streaks[key] = Array(periode==='bulanan'?25:14).fill(null);
+  ['klb-new-name','klb-new-cabang','klb-new-tf','klb-new-tt','klb-new-voucher','klb-new-acc','klb-new-hp','klb-new-reward'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  lbRenderAll(null); toast('✅ ' + name + ' (' + cabang + ') ditambahkan!');
+}
+
+// Override klbTambahKaryawan agar pakai fungsi LB yang baru
+if (typeof klbTambahKaryawan !== 'undefined') {
+  window.klbTambahKaryawan = lbTambahKaryawan;
+}
+
+// ── Pengaturan ──
+function lbSavePengaturan() {
+  const bn = (document.getElementById('klb-brand')?.value||'').trim();
+  if (bn) { LB_PERIODS.brand=bn; try{localStorage.setItem('lb_brand_name',bn);}catch(e){} }
+  const pp = (document.getElementById('klb-period-pram')?.value||'').trim();
+  if (pp) { LB_PERIODS.pram=pp; try{localStorage.setItem('lb_period_pram',pp);}catch(e){} }
+  const ps = (document.getElementById('klb-period-senior')?.value||'').trim();
+  if (ps) { LB_PERIODS.senior=ps; try{localStorage.setItem('lb_period_senior',ps);}catch(e){} }
+  const ph = (document.getElementById('klb-period-hari')?.value||'').trim();
+  if (ph) { LB_PERIODS.hari=ph; try{localStorage.setItem('lb_period_hari',ph);}catch(e){} }
+  lbUpdatePeriodBar();
+  toast('✅ Pengaturan disimpan!');
+}
+
+// Override klbSavePengaturan
+if (typeof klbSavePengaturan !== 'undefined') {
+  window.klbSavePengaturan = lbSavePengaturan;
+}
+
+// ── Tab switcher staff ──
+function lbStaffTab(name, btn) {
+  document.querySelectorAll('#s-leaderboard .lb-tab-content').forEach(el=>el.classList.remove('lb-active'));
+  document.querySelectorAll('#s-leaderboard .lb-tab-btn').forEach(el=>el.classList.remove('lb-active'));
+  const el=document.getElementById('slb-tab-'+name); if(el) el.classList.add('lb-active');
+  if(btn) btn.classList.add('lb-active');
+}
+
+// ── Tab switcher kanit ──
+function lbKanitTab(name, btn) {
+  document.querySelectorAll('#k-leaderboard .lb-tab-content').forEach(el=>el.classList.remove('lb-active'));
+  document.querySelectorAll('#k-leaderboard .lb-tab-btn').forEach(el=>el.classList.remove('lb-active'));
+  const el=document.getElementById('klb-tab-'+name); if(el) el.classList.add('lb-active');
+  if(btn) btn.classList.add('lb-active');
+  // Render WA on-demand
+  if(name==='wa') lbRenderWA('klb-wa-text');
+}
+
+// ── Period toggle ──
+function lbTogglePeriod(type, btn) {
+  document.querySelectorAll('.lb-toggle-btn').forEach(b=>b.classList.remove('lb-toggle-on'));
+  btn.classList.add('lb-toggle-on');
+}
+
+// ── Init LB (dipanggil dari initStaff dan initKanit) ──
+function lbInit(myKey) {
+  lbRenderAll(myKey);
+  setInterval(lbUpdateMotivation, 5000);
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   LEADERBOARD JS
+═══════════════════════════════════════════════════════════════ */
+
+// ============================================================
+// DATA STATE
+// ============================================================
+let TARGETS = {
+  senior: { tf: 750, tt: 875, voucher: 2500, acc: 0, hp: 4, label: 'Senior Operational', cabang: 'C1 (Pusat)', reward: 300000, periode: 'bulanan', tag: 'tag-senior' },
+  pram_c1: { tf: 120, tt: 120, voucher: 600, acc: 0, hp: 2, label: 'Pramuniaga C1', cabang: 'Cabang 1', reward: 0, periode: '2minggu', tag: 'tag-c1' },
+  pram_c2: { tf: 72, tt: 72, voucher: 60, acc: 25, hp: 0, label: 'Pramuniaga C2', cabang: 'Cabang 2', reward: 0, periode: '2minggu', tag: 'tag-c2' },
+  pram_c3: { tf: 96, tt: 96, voucher: 84, acc: 48, hp: 4, label: 'Pramuniaga C3', cabang: 'Cabang 3', reward: 200000, periode: '2minggu', tag: 'tag-c3' },
+};
+
+let NAMES = {
+  senior: localStorage.getItem('name_senior') || 'Senior',
+  pram_c1: localStorage.getItem('name_pram_c1') || 'Pramuniaga C1',
+  pram_c2: localStorage.getItem('name_pram_c2') || 'Pramuniaga C2',
+  pram_c3: localStorage.getItem('name_pram_c3') || 'Pramuniaga C3',
+};
+
+let CABANG_LABELS = {
+  senior: localStorage.getItem('cabang_senior') || 'Cabang 1 (Pusat)',
+  pram_c1: localStorage.getItem('cabang_pram_c1') || 'Cabang 1',
+  pram_c2: localStorage.getItem('cabang_pram_c2') || 'Cabang 2',
+  pram_c3: localStorage.getItem('cabang_pram_c3') || 'Cabang 3',
+};
+
+let BRAND_NAME = localStorage.getItem('brand_name') || 'SAUDARA CELL PUSAT';
+
+// Whitelist nama karyawan yang boleh login (diatur oleh admin)
+let WHITELIST = JSON.parse(localStorage.getItem('whitelist') || '[]');
+
+let PERIODS = {
+  pram: localStorage.getItem('period_pram') || '1–14 Mei 2025',
+  senior: localStorage.getItem('period_senior') || 'Mei 2025',
+  hari: localStorage.getItem('period_hari') || '6 / 14',
+};
+
+function renderPeriodBar() {
+  const bn = document.getElementById('brand-name-display');
+  if (bn) bn.textContent = BRAND_NAME;
+  const pp = document.getElementById('period-pram-display');
+  if (pp) pp.textContent = PERIODS.pram;
+  const ps = document.getElementById('period-senior-display');
+  if (ps) ps.textContent = PERIODS.senior;
+  const ph = document.getElementById('hari-ke-display');
+  if (ph) ph.textContent = PERIODS.hari;
+}
+
+// Simulasi data aktual (nanti diisi dari input)
+let actual = {
+  senior: { tf: 412, tt: 480, voucher: 1380, acc: 0, hp: 2 },
+  pram_c1: { tf: 58, tt: 62, voucher: 290, acc: 0, hp: 1 },
+  pram_c2: { tf: 30, tt: 28, voucher: 32, acc: 10, hp: 0 },
+  pram_c3: { tf: 52, tt: 60, voucher: 48, acc: 22, hp: 2 },
+};
+
+// Streak data (1=hit, 0=miss, null=belum)
+const streaks = {
+  senior:  [1,1,1,0,1,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
+  pram_c1: [1,1,0,1,1,1,null,null,null,null,null,null,null,null],
+  pram_c2: [1,0,1,1,0,1,null,null,null,null,null,null,null,null],
+  pram_c3: [1,1,1,1,0,1,null,null,null,null,null,null,null,null],
+};
+
+// ============================================================
+// CALCULATIONS
+// ============================================================
+// Returns keys visible to current user
+function getVisibleKeys() {
+  const all = Object.keys(TARGETS);
+  if (currentMode === 'admin') return all;
+  // Karyawan: only see their own key
+  if (currentUser) return all.filter(k => k === currentUser);
+  return all;
+}
+
+function getPct(key) {
+  const t = TARGETS[key];
+  const a = actual[key];
+  const metrics = ['tf','tt','voucher','acc','hp'].filter(m => t[m] > 0);
+  const avg = metrics.reduce((sum, m) => sum + Math.min((a[m]/t[m])*100, 100), 0) / metrics.length;
+  return Math.round(avg);
+}
+
+function getScore(key) {
+  // Score = total transaksi berbobot (tf&tt lebih berat)
+  const a = actual[key];
+  return (a.tf * 2) + (a.tt * 2) + a.voucher + (a.acc * 3) + (a.hp * 10);
+}
+
+function getRewardStatus(key) {
+  const pct = getPct(key);
+  const maxReward = TARGETS[key].reward;
+  if (maxReward === 0) return { amount: 0, status: 'na', text: 'Tidak ada reward periode ini' };
+  if (pct >= 100) return { amount: maxReward, status: 'earned', text: '✅ Reward penuh terkunci!' };
+  if (pct >= 80) return { amount: Math.round(maxReward * 0.5), status: 'partial', text: '🟡 Reward sebagian (80%+ tercapai)' };
+  return { amount: 0, status: 'at-risk', text: `⚠️ Reward berisiko hangus — capai 80% dulu` };
+}
+
+function getFillClass(key) {
+  const map = { senior: 'fill-gold', pram_c1: 'fill-blue', pram_c2: 'fill-green', pram_c3: 'fill-red' };
+  if (map[key]) return map[key];
+  // Custom cabang — inline style handled separately
+  return 'fill-custom';
+}
+
+function getFillStyle(key) {
+  if (key.startsWith('custom_') && TARGETS[key].color) {
+    return `background:${TARGETS[key].color}`;
+  }
+  return '';
+}
+
+// ============================================================
+// RENDER PODIUM
+// ============================================================
+function renderPodium() {
+  const keys = getVisibleKeys();
+  const sorted = keys.sort((a,b) => getPct(b) - getPct(a));
+  const medals = ['🥇','🥈','🥉'];
+  const rankClass = ['rank-1','rank-2','rank-3'];
+
+  document.getElementById('podium-container').innerHTML = sorted.slice(0,3).map((key, i) => `
+    <div class="podium-card ${rankClass[i]}" onclick="switchTab('kpi')">
+      <div class="rank-badge">${medals[i]}</div>
+      <div class="podium-name">${NAMES[key]}</div>
+      <div class="podium-cabang">${CABANG_LABELS[key]}</div>
+      <div class="podium-score">${getPct(key)}%</div>
+      <div class="podium-score-label">KPI Tercapai</div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// RENDER LEADERBOARD
+// ============================================================
+function renderLeaderboard() {
+  const keys = getVisibleKeys();
+  const sorted = keys.sort((a,b) => getPct(b) - getPct(a));
+
+  document.getElementById('lb-body').innerHTML = sorted.map((key, i) => {
+    const pct = getPct(key);
+    const fill = getFillClass(key);
+    const rankTop = i === 0 ? 'top' : '';
+    return `
+      <div class="lb-row" onclick="switchTab('kpi')" style="animation-delay:${i*0.08}s">
+        <div class="lb-rank ${rankTop}">${i+1}</div>
+        <div class="lb-person">
+          <div class="lb-person-name">${NAMES[key]}</div>
+          <div class="lb-person-role">${CABANG_LABELS[key]}</div>
+          <span class="lb-role-tag ${TARGETS[key].tag}">${key === 'senior' ? 'Senior' : 'Pramuniaga'}</span>
+        </div>
+        <div class="lb-stat">${actual[key].tf}</div>
+        <div class="lb-stat">${actual[key].tt}</div>
+        <div class="lb-stat">${actual[key].voucher}</div>
+        <div class="lb-stat">${actual[key].acc || '-'}</div>
+        <div class="progress-wrap">
+          <div class="progress-label">${pct}%</div>
+          <div class="progress-bar">
+            <div class="progress-fill ${fill}" style="width:${pct}%;${getFillStyle(key)}"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// RENDER STREAK
+// ============================================================
+function renderStreak() {
+  const html = getVisibleKeys().map(key => {
+    const days = streaks[key];
+    const periode = TARGETS[key].periode === 'bulanan' ? 25 : 14;
+    const dots = Array.from({length: periode}, (_, i) => {
+      const d = days[i];
+      if (d === null) return `<div class="streak-day streak-empty">${i+1}</div>`;
+      if (d === 1) return `<div class="streak-day streak-hit">${i+1}</div>`;
+      return `<div class="streak-day streak-miss">${i+1}</div>`;
+    }).join('');
+
+    const hitCount = days.filter(d => d === 1).length;
+    return `
+      <div class="breakdown-card" style="margin-bottom:12px">
+        <div class="breakdown-card-header">
+          <div class="breakdown-name">${NAMES[key]} <span style="color:var(--text-dim);font-weight:400;font-size:11px">— ${CABANG_LABELS[key]}</span></div>
+          <div class="breakdown-period">✅ ${hitCount} hari hit</div>
+        </div>
+        <div class="streak-row">${dots}</div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('streak-container').innerHTML = html;
+}
+
+// ============================================================
+// RENDER KPI BREAKDOWN
+// ============================================================
+function renderKPI() {
+  const metricLabels = { tf: 'Transfer', tt: 'Tartun', voucher: 'Voucher', acc: 'ACC HP', hp: 'Service HP' };
+
+  document.getElementById('kpi-breakdown').innerHTML = getVisibleKeys().map(key => {
+    const t = TARGETS[key];
+    const a = actual[key];
+    const fill = getFillClass(key);
+
+    const rows = Object.keys(metricLabels).filter(m => t[m] > 0).map(m => {
+      const pct = Math.min(Math.round((a[m]/t[m])*100), 100);
+      const pctClass = pct >= 100 ? 'pct-great' : pct >= 80 ? 'pct-ok' : 'pct-low';
+      return `
+        <div class="kpi-row">
+          <div class="kpi-label">${metricLabels[m]}</div>
+          <div class="kpi-bar-wrap">
+            <div class="kpi-bar">
+              <div class="kpi-fill ${fill}" style="width:${pct}%; background: ${pct>=100?'#2ecc71':''}"></div>
+            </div>
+          </div>
+          <div class="kpi-pct ${pctClass}">${pct}%</div>
+        </div>
+        <div style="font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;margin-bottom:8px;padding-left:88px">
+          ${a[m]} / ${t[m]} ${m==='hp'?'unit':'trx'}
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="breakdown-card">
+        <div class="breakdown-card-header">
+          <div class="breakdown-name">
+            <span class="lb-role-tag ${t.tag}" style="margin-right:6px">${key==='senior'?'Senior':'Pram'}</span>
+            ${NAMES[key]}
+          </div>
+          <div class="breakdown-period">${t.periode === 'bulanan' ? 'Bulanan' : 'Per 2 Minggu'}</div>
+        </div>
+        ${rows}
+        <div style="font-size:11px;color:var(--text-dim);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
+          Overall: <strong style="color:var(--text)">${getPct(key)}%</strong>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// RENDER REWARD
+// ============================================================
+function renderReward() {
+  const html = getVisibleKeys().map(key => {
+    const r = getRewardStatus(key);
+    if (r.status === 'na') return '';
+    const cardClass = r.status;
+    const pct = getPct(key);
+    const missing = 100 - pct;
+
+    return `
+      <div class="reward-card ${cardClass}">
+        <div class="reward-card-top">
+          <div>
+            <div class="reward-person">${NAMES[key]}</div>
+            <div style="font-size:11px;color:var(--text-dim)">${CABANG_LABELS[key]} · ${TARGETS[key].periode === 'bulanan' ? 'Bulanan' : 'Per 2 Minggu'}</div>
+          </div>
+          <div>
+            <div class="reward-amount">Rp ${(r.amount/1000).toFixed(0)}k</div>
+            <div style="font-size:10px;color:var(--text-dim);text-align:right">/ Rp ${(TARGETS[key].reward/1000).toFixed(0)}k max</div>
+          </div>
+        </div>
+        <div class="reward-status-text">${r.text}</div>
+        ${missing > 0 ? `<div class="reward-missing">Kurang ${missing}% untuk reward penuh</div>` : ''}
+        <div class="progress-bar" style="margin-top:10px">
+          <div class="progress-fill ${getFillClass(key)}" style="width:${Math.min(pct,100)}%"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('reward-cards').innerHTML = html || '<div style="color:var(--text-dim);font-size:13px">Pilih periode untuk melihat reward.</div>';
+  generateWA();
+}
+
+// ============================================================
+// WA MESSAGE GENERATOR
+// ============================================================
+function generateWA() {
+  const today = new Date().toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'});
+  let msg = `📊 *REKAP KPI SAUDARA CELL*\n`;
+  msg += `📅 ${today}\n`;
+  msg += `${'─'.repeat(30)}\n\n`;
+
+  getVisibleKeys().forEach(key => {
+    const pct = getPct(key);
+    const emoji = pct >= 100 ? '✅' : pct >= 80 ? '🟡' : '🔴';
+    msg += `${emoji} *${NAMES[key]}* (${CABANG_LABELS[key]})\n`;
+    msg += `   Transfer: ${actual[key].tf} trx\n`;
+    msg += `   Tartun: ${actual[key].tt} trx\n`;
+    msg += `   Voucher: ${actual[key].voucher} trx\n`;
+    if (TARGETS[key].acc > 0) msg += `   ACC: ${actual[key].acc} trx\n`;
+    msg += `   Progress: *${pct}%*\n\n`;
+  });
+
+  msg += `${'─'.repeat(30)}\n`;
+  msg += `🏆 Leader: *${NAMES[Object.keys(TARGETS).sort((a,b)=>getPct(b)-getPct(a))[0]]}*\n`;
+  msg += `_Saudara Cell — Keep Growing! 💪_`;
+
+  document.getElementById('wa-text').textContent = msg;
+}
+
+function copyWA() {
+  const text = document.getElementById('wa-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+// ============================================================
+// RENDER INPUT
+// ============================================================
+function renderInput() {
+  const metricLabels = { tf: 'Transfer (trx)', tt: 'Tartun (trx)', voucher: 'Voucher/Pulsa (trx)', acc: 'ACC HP (trx)', hp: 'Service HP (unit)' };
+  const btnClass = { senior: 'btn-gold', pram_c1: 'btn-blue', pram_c2: 'btn-green', pram_c3: 'btn-red' };
+  const dotColor = { senior: '#f5c842', pram_c1: '#4a9eff', pram_c2: '#2ecc71', pram_c3: '#ff6b6b' };
+
+  document.getElementById('input-grid').innerHTML = Object.keys(TARGETS).map(key => {
+    const t = TARGETS[key];
+    const a = actual[key];
+
+    const nameField = `
+      <div class="input-row">
+        <div class="input-label">👤 Nama Karyawan</div>
+        <input class="input-field" type="text" id="inp_${key}_name" value="${NAMES[key]}" placeholder="Masukkan nama...">
+      </div>
+      <div class="input-row">
+        <div class="input-label">🏪 Nama / Urutan Cabang</div>
+        <input class="input-field" type="text" id="inp_${key}_cabang" value="${CABANG_LABELS[key]}" placeholder="cth: Cabang 1, Toko Utama...">
+      </div>
+      <div style="height:1px;background:var(--border);margin:10px 0"></div>
+    `;
+
+    const fields = Object.keys(metricLabels).filter(m => t[m] > 0).map(m => `
+      <div class="input-row">
+        <div class="input-label">${metricLabels[m]} (target: ${t[m]})</div>
+        <input class="input-field" type="number" id="inp_${key}_${m}" value="${a[m]}" min="0" max="${t[m]*2}" placeholder="0">
+      </div>
+    `).join('');
+
+    return `
+      <div class="input-card">
+        <div class="input-card-title">
+          <div class="dot" style="background:${dotColor[key]}"></div>
+          ${CABANG_LABELS[key]}
+        </div>
+        ${nameField}
+        ${fields}
+        <button class="save-btn ${btnClass[key]}" onclick="saveOne('${key}')">SIMPAN</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function saveOne(key) {
+  // Save name
+  const nameEl = document.getElementById(`inp_${key}_name`);
+  if (nameEl && nameEl.value.trim()) {
+    NAMES[key] = nameEl.value.trim();
+    try { localStorage.setItem(`name_${key}`, NAMES[key]); } catch(e) {}
+  }
+
+  // Save cabang label
+  const cabangEl = document.getElementById(`inp_${key}_cabang`);
+  if (cabangEl && cabangEl.value.trim()) {
+    CABANG_LABELS[key] = cabangEl.value.trim();
+    try { localStorage.setItem(`cabang_${key}`, CABANG_LABELS[key]); } catch(e) {}
+  }
+
+  // Save metrics
+  const metrics = ['tf','tt','voucher','acc','hp'];
+  metrics.forEach(m => {
+    const el = document.getElementById(`inp_${key}_${m}`);
+    if (el) actual[key][m] = parseInt(el.value) || 0;
+  });
+
+  renderAll();
+  updateMotivation();
+  alert(`✅ Data ${NAMES[key]} berhasil diupdate!`);
+}
+
+function saveData() {
+  if (currentMode !== 'admin') return;
+  Object.keys(TARGETS).forEach(key => saveOne(key));
+}
+
+function savePengaturan() {
+  const bn = document.getElementById('inp_brand_name').value.trim();
+  if (bn) {
+    BRAND_NAME = bn;
+    try { localStorage.setItem('brand_name', BRAND_NAME); } catch(e) {}
+  }
+  const pp = document.getElementById('inp_period_pram').value.trim();
+  if (pp) {
+    PERIODS.pram = pp;
+    try { localStorage.setItem('period_pram', pp); } catch(e) {}
+  }
+  const ps = document.getElementById('inp_period_senior').value.trim();
+  if (ps) {
+    PERIODS.senior = ps;
+    try { localStorage.setItem('period_senior', ps); } catch(e) {}
+  }
+  const ph = document.getElementById('inp_period_hari').value.trim();
+  if (ph) {
+    PERIODS.hari = ph;
+    try { localStorage.setItem('period_hari', ph); } catch(e) {}
+  }
+  renderPeriodBar();
+  // Repopulate input placeholders with saved values
+  document.getElementById('inp_brand_name').placeholder = BRAND_NAME;
+  document.getElementById('inp_period_pram').placeholder = PERIODS.pram;
+  document.getElementById('inp_period_senior').placeholder = PERIODS.senior;
+  document.getElementById('inp_period_hari').placeholder = PERIODS.hari;
+  alert('✅ Pengaturan berhasil disimpan!');
+}
+
+// ============================================================
+// MOTIVATION BANNER (Neuro: Loss aversion + proximity)
+// ============================================================
+function updateMotivation() {
+  const msgs = [];
+  getVisibleKeys().forEach(key => {
+    const pct = getPct(key);
+    if (pct >= 100) {
+      msgs.push(`🎉 <strong>${NAMES[key]}</strong> sudah mencapai target 100%! Reward terkunci!`);
+    } else if (pct >= 80) {
+      msgs.push(`⚡ <strong>${NAMES[key]}</strong> di ${pct}% — tinggal sedikit lagi untuk reward penuh!`);
+    } else {
+      const missing = 100 - pct;
+      msgs.push(`🔥 <strong>${NAMES[key]}</strong> masih di ${pct}% — butuh dorongan ${missing}% lagi sebelum periode berakhir!`);
+    }
+  });
+  const idx = Math.floor(Date.now() / 5000) % msgs.length;
+  document.getElementById('motivation-text').innerHTML = msgs[idx];
+  setTimeout(updateMotivation, 5000);
+}
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const content = document.getElementById(`tab-${name}`);
+  if (content) content.classList.add('active');
+  // Activate matching button by data or text match
+  const allBtns = document.querySelectorAll('.tab-btn');
+  allBtns.forEach(btn => {
+    if (btn.getAttribute('onclick') === `switchTab('${name}')`) btn.classList.add('active');
+  });
+}
+
+function togglePeriod(type, btn) {
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ============================================================
+// TAMBAH / HAPUS CABANG
+// ============================================================
+const COLORS = ['#e67e22','#1abc9c','#e74c3c','#3498db','#9b59b6','#f39c12','#2ecc71','#e91e63'];
+let colorIdx = 4;
+
+function tambahCabang() {
+  const name = document.getElementById('new_name').value.trim();
+  const cabang = document.getElementById('new_cabang').value.trim();
+  const tf = parseInt(document.getElementById('new_tf').value) || 0;
+  const tt = parseInt(document.getElementById('new_tt').value) || 0;
+  const voucher = parseInt(document.getElementById('new_voucher').value) || 0;
+  const acc = parseInt(document.getElementById('new_acc').value) || 0;
+  const hp = parseInt(document.getElementById('new_hp').value) || 0;
+  const reward = parseInt(document.getElementById('new_reward').value) || 0;
+  const periode = document.getElementById('new_periode').value;
+
+  if (!name || !cabang) { alert('Nama karyawan dan nama cabang wajib diisi!'); return; }
+
+  const key = 'custom_' + Date.now();
+  const color = COLORS[colorIdx % COLORS.length];
+  colorIdx++;
+
+  TARGETS[key] = { tf, tt, voucher, acc, hp, label: name, reward, periode, tag: 'tag-custom', color };
+  NAMES[key] = name;
+  CABANG_LABELS[key] = cabang;
+  actual[key] = { tf: 0, tt: 0, voucher: 0, acc: 0, hp: 0 };
+  streaks[key] = Array(periode === 'bulanan' ? 25 : 14).fill(null);
+
+  // Clear fields
+  ['new_name','new_cabang','new_tf','new_tt','new_voucher','new_acc','new_hp','new_reward'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+
+  renderAll();
+  alert(`✅ ${name} (${cabang}) berhasil ditambahkan!`);
+}
+
+function hapusCabang(key) {
+  if (!confirm(`Hapus ${NAMES[key]} dari leaderboard?`)) return;
+  delete TARGETS[key];
+  delete NAMES[key];
+  delete CABANG_LABELS[key];
+  delete actual[key];
+  delete streaks[key];
+  renderAll();
+}
+
+function renderManageList() {
+  const list = document.getElementById('manage-list');
+  if (!list) return;
+  const keys = Object.keys(TARGETS);
+  if (!keys.length) { list.innerHTML = '<div style="color:var(--text-dim);font-size:13px">Belum ada karyawan.</div>'; return; }
+  list.innerHTML = keys.map(key => {
+    const pct = getPct(key);
+    const isCustom = key.startsWith('custom_');
+    return `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">${NAMES[key]}</div>
+          <div style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace">${CABANG_LABELS[key]} · ${TARGETS[key].periode === 'bulanan' ? 'Bulanan' : 'Per 2 Minggu'} · ${pct}%</div>
+        </div>
+        ${isCustom ? `<button onclick="hapusCabang('${key}')" style="background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.3);color:#e74c3c;padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Hapus</button>` : '<span style="font-size:10px;color:var(--text-dim)">default</span>'}
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// WHITELIST MANAGEMENT
+// ============================================================
+function renderWhitelistDisplay() {
+  const el = document.getElementById('whitelist-display');
+  if (!el) return;
+  if (!WHITELIST.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text-dim);padding:10px 0">Belum ada nama. Tambahkan nama karyawan dulu.</div>';
+    return;
+  }
+  el.innerHTML = WHITELIST.map((nama, i) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--green)"></div>
+        <span style="font-size:13px;font-weight:500;color:var(--text)">${nama}</span>
+      </div>
+      <button onclick="hapusWhitelist(${i})" style="background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);color:#e74c3c;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Hapus</button>
+    </div>
+  `).join('');
+}
+
+function tambahWhitelist() {
+  const el = document.getElementById('inp_whitelist_nama');
+  const nama = el.value.trim();
+  if (!nama) return;
+  if (WHITELIST.find(w => w.toLowerCase() === nama.toLowerCase())) {
+    alert('Nama sudah ada di daftar!');
+    return;
+  }
+  WHITELIST.push(nama);
+  try { localStorage.setItem('whitelist', JSON.stringify(WHITELIST)); } catch(e) {}
+  el.value = '';
+  renderWhitelistDisplay();
+}
+
+function hapusWhitelist(idx) {
+  const nama = WHITELIST[idx];
+  if (!confirm(`Hapus "${nama}" dari daftar login?`)) return;
+  WHITELIST.splice(idx, 1);
+  try { localStorage.setItem('whitelist', JSON.stringify(WHITELIST)); } catch(e) {}
+  renderWhitelistDisplay();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function renderAll() {
+  renderPeriodBar();
+  renderWhitelistDisplay();
+  renderPodium();
+  renderLeaderboard();
+  renderStreak();
+  renderKPI();
+  renderReward();
+  renderInput();
+  renderManageList();
+}
+
+
+// ============================================================
+// AUTH SYSTEM — Staff / Kanit
+// ============================================================
+const PIN_ADMIN    = '888888';   // Kanit
+const PIN_KARYAWAN = '777888';   // Staff
+
+let currentMode = null;            // 'admin' | 'karyawan'
+let currentUser = null;            // key di NAMES (mode karyawan)
+let currentWhitelistName = null;   // nama asli dari whitelist
+let selectedRole = null;           // 'staff' | 'kanit'
+
+function pilihRole(role) {
+  selectedRole = role;
+  document.getElementById('step-role').style.display = 'none';
+  document.getElementById('step-pin').style.display  = 'block';
+  const lbl = document.getElementById('pin-label');
+  lbl.textContent = role === 'kanit' ? '👑 PIN Kanit' : '👤 PIN Staff';
+  document.getElementById('pin-input').focus();
+}
+
+function kembaliKeRole() {
+  selectedRole = null;
+  document.getElementById('step-pin').style.display  = 'none';
+  document.getElementById('step-nama').style.display = 'none';
+  document.getElementById('step-role').style.display = 'block';
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').textContent = '';
+}
+
+function checkPin() {
+  const pin = document.getElementById('pin-input').value.trim();
+  const err = document.getElementById('pin-error');
+
+  if (selectedRole === 'kanit') {
+    if (pin === PIN_ADMIN) {
+      currentMode = 'admin';
+      loginSuccess();
+    } else {
+      err.textContent = 'PIN Kanit salah, coba lagi.';
+      document.getElementById('pin-input').value = '';
+      setTimeout(() => err.textContent = '', 2500);
+    }
+  } else {
+    // Staff
+    if (pin === PIN_KARYAWAN) {
+      currentMode = 'karyawan';
+      document.getElementById('step-pin').style.display  = 'none';
+      document.getElementById('step-nama').style.display = 'block';
+      document.getElementById('nama-input').focus();
+    } else {
+      err.textContent = 'PIN Staff salah, coba lagi.';
+      document.getElementById('pin-input').value = '';
+      setTimeout(() => err.textContent = '', 2500);
+    }
+  }
+}
+
+function checkNama() {
+  const nama = document.getElementById('nama-input').value.trim();
+  const err  = document.getElementById('nama-error');
+
+  if (!nama) { err.textContent = 'Nama tidak boleh kosong.'; return; }
+
+  const inWhitelist = WHITELIST.find(w => w.toLowerCase() === nama.toLowerCase());
+  if (!inWhitelist) {
+    err.textContent = 'Nama tidak diizinkan. Hubungi Kanit.';
+    setTimeout(() => err.textContent = '', 3000);
+    return;
+  }
+
+  const matchedKey = Object.keys(NAMES).find(k =>
+    NAMES[k].toLowerCase() === nama.toLowerCase()
+  );
+
+  currentUser = matchedKey || null;
+  currentWhitelistName = inWhitelist;
+  loginSuccess();
+}
+
+function loginSuccess() {
+  document.getElementById('lb-login-screen').style.display = 'none';
+  document.getElementById('lb-main-container').style.display = 'block';
+  document.getElementById('lb-user-badge').style.display = 'block';
+  document.getElementById('lb-logout-btn').style.display  = 'block';
+
+  if (currentMode === 'admin') {
+    // KANIT — lihat semua tab termasuk Input Data
+    document.getElementById('lb-user-badge').textContent = '👑 Kanit';
+    document.body.classList.remove('mode-karyawan');
+    document.querySelectorAll('.tab-kanit-only').forEach(el => el.style.display = '');
+  } else {
+    // STAFF — sembunyikan tab Input Data
+    document.getElementById('lb-user-badge').textContent = '👤 ' + (currentWhitelistName || NAMES[currentUser] || 'Staff');
+    document.body.classList.add('mode-karyawan');
+    document.querySelectorAll('.tab-kanit-only').forEach(el => el.style.display = 'none');
+  }
+
+  // Selalu mulai di tab Leaderboard
+  switchTab('leaderboard');
+  renderAll();
+  updateMotivation();
+}
+
+function doLogout() {
+  currentMode           = null;
+  currentUser           = null;
+  currentWhitelistName  = null;
+  selectedRole          = null;
+
+  document.getElementById('lb-login-screen').style.display = 'flex';
+  document.getElementById('lb-main-container').style.display = 'none';
+  document.getElementById('lb-user-badge').style.display  = 'none';
+  document.getElementById('lb-logout-btn').style.display  = 'none';
+
+  // Reset login steps
+  document.getElementById('step-role').style.display = 'block';
+  document.getElementById('step-pin').style.display  = 'none';
+  document.getElementById('step-nama').style.display = 'none';
+  document.getElementById('pin-input').value  = '';
+  document.getElementById('nama-input').value = '';
+  document.getElementById('pin-error').textContent  = '';
+  document.getElementById('nama-error').textContent = '';
+  document.body.classList.remove('mode-karyawan');
+}
+
+// Enter key support
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pin-input').addEventListener('keydown',  e => { if (e.key === 'Enter') checkPin(); });
+  document.getElementById('nama-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkNama(); });
+  const wlInput = document.getElementById('inp_whitelist_nama');
+  if (wlInput) wlInput.addEventListener('keydown', e => { if (e.key === 'Enter') tambahWhitelist(); });
+
+  const bn = document.getElementById('login-brand');
+  if (bn) bn.textContent = BRAND_NAME;
+});
+
+// renderAll and updateMotivation called after login
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PERBAIKAN kirimKeSheets — simpan lokal + kirim ke GAS
+   Data closing staff otomatis tersimpan di Google Sheets
+═══════════════════════════════════════════════════════════════ */
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   DATABASE PATCH — Kirim closing otomatis ke Google Sheets
+   Setiap karyawan klik "Kirim Closing" → data masuk Google Sheets
+   Data juga tersimpan lokal sebagai backup offline
+═══════════════════════════════════════════════════════════════ */
+
+// ── 1. kirimKeSheets yang benar (simpan lokal + kirim ke GAS) ──
+kirimKeSheets = async function(sheet, rows) {
+  // Simpan ke localStorage dulu (backup offline)
+  try {
+    const q = JSON.parse(localStorage.getItem('sc_queue') || '[]');
+    q.push({ sheet, rows, ts: new Date().toISOString() });
+    if (q.length > 300) q.splice(0, q.length - 300);
+    localStorage.setItem('sc_queue', JSON.stringify(q));
+  } catch(e) {}
+
+  // Kirim ke GAS jika URL sudah diset
+  const gasUrl = localStorage.getItem('sc_gas_url') || '';
+  if (!gasUrl) return false;
+  try {
+    await fetch(gasUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ sheet, rows })
+    });
+    return true;
+  } catch(e) { return false; }
+};
+
+// ── 2. Patch kirimClosing: setelah kirim ke Google Forms,
+//       JUGA kirim data lengkap ke Google Sheets via GAS ──
+const __origKirimClosing__ = kirimClosing;
+kirimClosing = async function() {
+  // Jalankan fungsi closing asli (kirim ke Google Forms)
+  await __origKirimClosing__();
+
+  // Kumpulkan semua data dari form closing
+  const gv  = id => parseFloat(document.getElementById(id)?.value) || 0;
+  const gvs = id => document.getElementById(id)?.value || '';
+  const nama  = (typeof staffInfo !== 'undefined' && staffInfo?.nama) || '-';
+  const shift = (typeof staffInfo !== 'undefined' && staffInfo?.shift) || '1';
+  const area  = (typeof APP_AREA !== 'undefined') ? APP_AREA : '-';
+  const tgl   = new Date().toLocaleDateString('id-ID', {
+    day:'2-digit', month:'2-digit', year:'numeric',
+    hour:'2-digit', minute:'2-digit'
+  });
+
+  const baris = [
+    tgl,                          // Tanggal & Jam
+    nama,                         // Nama Karyawan
+    shift,                        // Shift
+    area,                         // Lokasi/Cabang
+    gv('p_cash_pagi'),            // Cash Pagi
+    gv('p_tambah_kasmod'),        // Tambah Kasmod
+    gv('p_cash'),                 // Cash Akhir
+    gv('p_pinjam_bank'),          // Pinjam Bank
+    // Transaksi
+    gv('p_trx_tarik'),            // Tarik Nominal
+    gv('p_trx_tarik_n'),          // Tarik Jumlah Trx
+    gv('p_trx_transfer'),         // Transfer Nominal
+    gv('p_trx_transfer_n'),       // Transfer Jumlah Trx
+    gv('p_trx_pulsa'),            // Pulsa Nominal
+    gv('p_trx_pulsa_n'),          // Pulsa Jumlah Trx
+    gv('p_trx_data'),             // Data Nominal
+    gv('p_trx_data_n'),           // Data Jumlah Trx
+    gv('p_trx_ptsel'),            // Telkomsel Nominal
+    gv('p_trx_ptsel_n'),          // Telkomsel Jumlah
+    gv('p_trx_pxl'),              // XL Nominal
+    gv('p_trx_pxl_n'),            // XL Jumlah
+    gv('p_trx_paxis'),            // Axis Nominal
+    gv('p_trx_paxis_n'),          // Axis Jumlah
+    gv('p_trx_pbyu'),             // ByU Nominal
+    gv('p_trx_pbyu_n'),           // ByU Jumlah
+    gv('p_trx_psfren'),           // Sfren Nominal
+    gv('p_trx_psfren_n'),         // Sfren Jumlah
+    gv('p_trx_pindo'),            // Indosat Nominal
+    gv('p_trx_pindo_n'),          // Indosat Jumlah
+    gv('p_trx_total'),            // Total Nominal
+    gv('p_trx_total_n'),          // Total Jumlah Trx
+    // Bank & Digital
+    gv('p_bca_awal'), gv('p_bca_close'),
+    gv('p_bni_awal'), gv('p_bni_close'),
+    gv('p_bri_awal'), gv('p_bri_close'),
+    gv('p_dana_awal'), gv('p_dana_close'),
+    gv('p_digital_awal'), gv('p_digital_close'),
+    gv('p_digipos_awal'), gv('p_digipos_close'),
+    gv('p_rita_awal'), gv('p_rita_close'),
+    gv('p_sidiva_awal'), gv('p_sidiva_close'),
+    gv('p_bcax_awal'), gv('p_bcax_close'),
+    // Pengeluaran
+    gv('p_makan'),                // Makan
+    gv('p_lainlain'),             // Lain-lain
+    gvs('p_ket'),                 // Keterangan
+    gv('p_omset_preview'),        // Omset
+  ];
+
+  await kirimKeSheets('Closing', [baris]);
+};
+
+// ── 3. Export CSV — bisa dibuka langsung di Excel ──
+function exportCSV(type) {
+  const queue = JSON.parse(localStorage.getItem('sc_queue') || '[]');
+  let csv = '', filename = '';
+
+  if (type === 'closing') {
+    const rows = queue.filter(q => q.sheet === 'Closing');
+    if (!rows.length) { if(typeof toast==='function') toast('Belum ada data closing'); return; }
+    filename = 'closing_' + new Date().toISOString().slice(0,10) + '.csv';
+    const header = 'Tanggal,Nama,Shift,Lokasi,Cash Pagi,Tambah Kasmod,Cash Akhir,Pinjam Bank,' +
+      'Tarik Nom,Tarik N,Transfer Nom,Transfer N,Pulsa Nom,Pulsa N,Data Nom,Data N,' +
+      'Telkomsel Nom,Telkomsel N,XL Nom,XL N,Axis Nom,Axis N,ByU Nom,ByU N,' +
+      'Sfren Nom,Sfren N,Indosat Nom,Indosat N,Total Nom,Total N,' +
+      'BCA Awal,BCA Akhir,BNI Awal,BNI Akhir,BRI Awal,BRI Akhir,Dana Awal,Dana Akhir,' +
+      'Digital Awal,Digital Akhir,Digipos Awal,Digipos Akhir,Rita Awal,Rita Akhir,' +
+      'Sidiva Awal,Sidiva Akhir,BCA-X Awal,BCA-X Akhir,' +
+      'Makan,Lain-lain,Keterangan,Omset\n';
+    csv = header;
+    rows.forEach(r => r.rows.forEach(row => { csv += row.map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',') + '\n'; }));
+  } else {
+    if (!queue.length) { if(typeof toast==='function') toast('Belum ada data'); return; }
+    filename = 'semua_data_' + new Date().toISOString().slice(0,10) + '.csv';
+    csv = 'Waktu,Sheet,Data\n';
+    queue.forEach(r => r.rows.forEach(row => {
+      csv += ['"'+r.ts+'"', '"'+r.sheet+'"', '"'+row.map(v=>String(v).replace(/"/g,'""')).join(';')+'"'].join(',') + '\n';
+    }));
+  }
+
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  if(typeof toast==='function') toast('\u2705 File ' + filename + ' diunduh!');
+}
+
+// ── 4. Kode GAS yang di-paste ke Apps Script ──
+const GAS_SCRIPT_CODE = 'function doPost(e){try{var data=JSON.parse(e.postData.contents);var sheetName=data.sheet||"Data";var rows=data.rows||[];var ss=SpreadsheetApp.getActiveSpreadsheet();var ws=ss.getSheetByName(sheetName);if(!ws){ws=ss.insertSheet(sheetName);var headers={"Closing":["Tanggal","Nama","Shift","Lokasi","Cash Pagi","Tambah Kasmod","Cash Akhir","Pinjam Bank","Tarik Nom","Tarik N","Transfer Nom","Transfer N","Pulsa Nom","Pulsa N","Data Nom","Data N","Telkomsel Nom","Telkomsel N","XL Nom","XL N","Axis Nom","Axis N","ByU Nom","ByU N","Sfren Nom","Sfren N","Indosat Nom","Indosat N","Total Nom","Total N","BCA Awal","BCA Akhir","BNI Awal","BNI Akhir","BRI Awal","BRI Akhir","Dana Awal","Dana Akhir","Digital Awal","Digital Akhir","Digipos Awal","Digipos Akhir","Rita Awal","Rita Akhir","Sidiva Awal","Sidiva Akhir","BCAX Awal","BCAX Akhir","Makan","Lain","Keterangan","Omset"],"Leaderboard":["Tanggal","Nama","Cabang","Transfer","Tartun","Voucher","ACC","Service HP","Progress%"],"AuditAcc":["Tanggal","Nama","Kode","Produk","Stok Awal","Stok Fisik","Terjual"]};if(headers[sheetName])ws.appendRow(headers[sheetName]);}rows.forEach(function(row){ws.appendRow(row);});return ContentService.createTextOutput(JSON.stringify({status:"ok",added:rows.length})).setMimeType(ContentService.MimeType.JSON);}catch(err){return ContentService.createTextOutput(JSON.stringify({status:"error",msg:err.message})).setMimeType(ContentService.MimeType.JSON);}}function doGet(e){return ContentService.createTextOutput("Saudaraku GAS aktif OK").setMimeType(ContentService.MimeType.TEXT);}';
+
+function tampilKodeGAS() {
+  var el = document.getElementById('gas-code-box');
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  el.textContent = GAS_SCRIPT_CODE;
+}
+
+function copyKodeGAS() {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(GAS_SCRIPT_CODE).then(function() {
+      if(typeof toast==='function') toast('\u2705 Kode GAS berhasil dicopy!');
+    }).catch(function() { tampilKodeGAS(); });
+  } else {
+    tampilKodeGAS();
+  }
+}
+
+
+function simpanGasUrlBaru() {
+  const el = document.getElementById('gas-url-input');
+  if (!el) return;
+  const url = el.value.trim();
+  if (!url) { if(typeof toast==='function') toast('URL tidak boleh kosong!'); return; }
+  if (!url.startsWith('https://')) { if(typeof toast==='function') toast('URL harus diawali https://'); return; }
+  localStorage.setItem('sc_gas_url', url);
+  if(typeof toast==='function') toast('\u2705 GAS URL tersimpan! Database siap digunakan.');
+  renderGASPanel();
+}
+
 </script>
+
+<!-- SCREEN LEADERBOARD (login terpisah) -->
+<div class="scr" id="sc-leaderboard" style="min-height:100vh;background:#0a0a0f;flex-direction:column;">
+  <div style="position:fixed;top:10px;left:10px;z-index:9999;">
+    <button onclick="showScreen('sc-login')" style="background:#12121a;border:1px solid #2a2a3a;color:#7a7a9a;padding:7px 16px;border-radius:20px;font-size:11px;cursor:pointer;">&#8592; Menu Utama</button>
+  </div>
+  <div id="sc-leaderboard-inner" style="font-family:'DM Sans',sans-serif;color:#e8e8f0;min-height:100vh;">
+<!-- LOGIN SCREEN -->
+<div id="lb-login-screen">
+  <div class="login-box">
+    <div class="login-logo" id="login-brand">SAUDARA CELL PUSAT</div>
+    <div class="login-sub">Performance Board</div>
+
+    <!-- Step 1: Pilih Role -->
+    <div class="login-step" id="step-role">
+      <div class="login-label" style="text-align:center;margin-bottom:16px">Masuk sebagai</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
+        <button class="login-btn" style="font-size:14px;padding:16px 10px;background:rgba(74,158,255,0.15);border:1.5px solid rgba(74,158,255,0.4);color:#4a9eff;border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s" onclick="pilihRole('staff')" onmouseover="this.style.background='rgba(74,158,255,0.25)'" onmouseout="this.style.background='rgba(74,158,255,0.15)'">
+          👤<br><span style="font-size:18px;font-family:'Bebas Neue',sans-serif;letter-spacing:2px">STAFF</span>
+        </button>
+        <button class="login-btn" style="font-size:14px;padding:16px 10px;background:rgba(245,200,66,0.12);border:1.5px solid rgba(245,200,66,0.4);color:#f5c842;border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s" onclick="pilihRole('kanit')" onmouseover="this.style.background='rgba(245,200,66,0.22)'" onmouseout="this.style.background='rgba(245,200,66,0.12)'">
+          👑<br><span style="font-size:18px;font-family:'Bebas Neue',sans-serif;letter-spacing:2px">KANIT</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: PIN -->
+    <div class="login-step" id="step-pin" style="display:none">
+      <div class="login-label" id="pin-label">Masukkan PIN</div>
+      <input class="pin-input" type="password" id="pin-input" maxlength="6" placeholder="••••••" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <button class="login-btn" onclick="checkPin()">MASUK</button>
+      <button onclick="kembaliKeRole()" style="width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;">← Kembali</button>
+      <div class="login-error" id="pin-error"></div>
+    </div>
+
+    <!-- Step 3: Nama (staff only) -->
+    <div class="login-step" id="step-nama" style="display:none">
+      <div class="login-label">Siapa kamu?</div>
+      <input class="name-input" type="text" id="nama-input" placeholder="Ketik nama kamu..." autocomplete="off">
+      <button class="login-btn" onclick="checkNama()">LANJUT</button>
+      <div class="login-error" id="nama-error"></div>
+    </div>
+  </div>
+</div>
+
+<!-- USER BADGE & LOGOUT -->
+<div class="user-badge" id="lb-user-badge" style="display:none"></div>
+<button class="logout-btn" id="lb-logout-btn" style="display:none" onclick="doLogout()">Keluar</button>
+
+<div class="container" id="lb-main-container" style="display:none">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">
+      <div class="brand-name" id="brand-name-display">SAUDARA CELL PUSAT</div>
+      <div class="brand-sub">Performance Leaderboard</div>
+    </div>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      LIVE
+    </div>
+  </div>
+
+  <!-- PERIOD BAR -->
+  <div class="period-bar">
+    <div class="period-chip">Pramuniaga: <span id="period-pram-display">—</span></div>
+    <div class="period-chip">Senior: <span id="period-senior-display">—</span></div>
+    <div class="period-chip">Hari ke: <span id="hari-ke-display">—</span></div>
+  </div>
+
+  <!-- MOTIVATION BANNER (Neuro: Priming positif) -->
+  <div class="motivation-banner" id="motivation-text">
+    🔥 3 hari lagi periode berakhir — <strong>Rini</strong> butuh 12 trx lagi untuk kunci reward penuh!
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-nav" id="main-tab-nav">
+    <button class="tab-btn active" onclick="switchTab('leaderboard')">🏆 Leaderboard</button>
+    <button class="tab-btn" onclick="switchTab('kpi')">📊 KPI Detail</button>
+    <button class="tab-btn" onclick="switchTab('reward')">💰 Reward</button>
+    <button class="tab-btn tab-kanit-only" onclick="switchTab('input')" style="display:none">✏️ Input Data</button>
+  </div>
+
+  <!-- TAB: LEADERBOARD -->
+  <div class="tab-content active" id="tab-leaderboard">
+
+    <div class="section-title">TOP PERFORMER</div>
+
+    <!-- PODIUM -->
+    <div class="podium" id="podium-container">
+      <!-- Generated by JS -->
+    </div>
+
+    <!-- LEADERBOARD TABLE -->
+    <div class="section-title">RANKING LENGKAP</div>
+    <div class="leaderboard">
+      <div class="lb-header">
+        <div style="text-align:center">#</div>
+        <div>Nama</div>
+        <div style="text-align:center">Transfer</div>
+        <div style="text-align:center">Tartun</div>
+        <div style="text-align:center">Voucher</div>
+        <div style="text-align:center">ACC</div>
+        <div style="text-align:center">Progress</div>
+      </div>
+      <div id="lb-body">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- STREAK (Neuro: Habit visualization) -->
+    <div class="section-title">STREAK HARIAN — PERIODE INI</div>
+    <div id="streak-container">
+      <!-- Generated by JS -->
+    </div>
+
+  </div>
+
+  <!-- TAB: KPI DETAIL -->
+  <div class="tab-content" id="tab-kpi">
+    <div class="section-title">PROGRESS KPI PER LAYANAN</div>
+    <div class="breakdown-grid" id="kpi-breakdown">
+      <!-- Generated by JS -->
+    </div>
+    <!-- Neuroscience note -->
+    <div class="neuro-tip">
+      <strong>🧠 Mengapa progress bar penting?</strong> Otak merespons visual progress dengan melepaskan dopamin — semakin dekat ke 100%, semakin kuat dorongan untuk menyelesaikannya. Ini disebut <strong>goal gradient effect</strong>: motivasi meningkat drastis saat tujuan terasa sudah dekat.
+    </div>
+  </div>
+
+  <!-- TAB: REWARD -->
+  <div class="tab-content" id="tab-reward">
+    <div class="section-title">STATUS REWARD</div>
+
+    <!-- Period toggle -->
+    <div class="period-toggle">
+      <button class="toggle-btn active" onclick="togglePeriod('2minggu', this)">Per 2 Minggu</button>
+      <button class="toggle-btn" onclick="togglePeriod('bulanan', this)">Bulanan</button>
+    </div>
+
+    <div class="reward-cards" id="reward-cards">
+      <!-- Generated by JS -->
+    </div>
+
+    <!-- WA Preview -->
+    <div class="section-title">REKAP WA OTOMATIS</div>
+    <div class="wa-preview">
+      <div class="wa-preview-header">
+        Preview pesan WhatsApp
+        <button class="copy-btn" onclick="copyWA()">Copy</button>
+      </div>
+      <div id="wa-text"></div>
+    </div>
+
+  </div>
+
+  <!-- TAB: INPUT DATA -->
+  <div class="tab-content" id="tab-input">
+    <div class="section-title">INPUT DATA HARIAN</div>
+
+    <!-- Pengaturan Umum -->
+    <div class="input-card" style="margin-bottom:16px">
+      <div class="input-card-title">
+        <div class="dot" style="background:#f5c842"></div>
+        ⚙️ Pengaturan Umum
+      </div>
+      <div class="input-row">
+        <div class="input-label">🏷️ Nama Dashboard</div>
+        <input class="input-field" type="text" id="inp_brand_name" value="" placeholder="cth: Saudara Cell Pusat">
+      </div>
+      <div style="height:1px;background:var(--border);margin:10px 0"></div>
+      <div class="input-row">
+        <div class="input-label">📅 Periode Pramuniaga</div>
+        <input class="input-field" type="text" id="inp_period_pram" value="" placeholder="cth: 1–14 Mei 2025">
+      </div>
+      <div class="input-row">
+        <div class="input-label">📅 Periode Senior</div>
+        <input class="input-field" type="text" id="inp_period_senior" value="" placeholder="cth: Mei 2025">
+      </div>
+      <div class="input-row">
+        <div class="input-label">📆 Hari ke</div>
+        <input class="input-field" type="text" id="inp_period_hari" value="" placeholder="cth: 6 / 14">
+      </div>
+      <button class="save-btn btn-gold" style="margin-top:12px" onclick="savePengaturan()">SIMPAN PENGATURAN</button>
+    </div>
+
+    <!-- Whitelist Nama Karyawan -->
+    <div class="input-card" style="margin-bottom:16px">
+      <div class="input-card-title">
+        <div class="dot" style="background:#2ecc71"></div>
+        🔐 Daftar Nama yang Boleh Login
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:14px;line-height:1.6">
+        Hanya nama di daftar ini yang bisa masuk dengan PIN karyawan. Nama harus sama persis dengan yang diinput di data karyawan.
+      </div>
+      <div id="whitelist-display" style="margin-bottom:14px"></div>
+      <div style="display:flex;gap:8px">
+        <input class="input-field" type="text" id="inp_whitelist_nama" placeholder="Ketik nama karyawan..." style="flex:1">
+        <button class="save-btn btn-green" style="width:auto;padding:0 16px;margin:0;font-size:13px" onclick="tambahWhitelist()">+ Tambah</button>
+      </div>
+    </div>
+
+    <div class="input-grid" id="input-grid">
+      <!-- Generated by JS -->
+    </div>
+    <button class="save-btn btn-gold" style="max-width:400px;display:block;margin:0 auto;margin-bottom:20px" onclick="saveData()">SIMPAN & UPDATE LEADERBOARD</button>
+
+    <!-- Tambah Cabang Baru -->
+    <div class="section-title" style="margin-top:8px">TAMBAH KARYAWAN / CABANG BARU</div>
+    <div class="input-card" style="margin-bottom:16px">
+      <div class="input-card-title">
+        <div class="dot" style="background:#9b59b6"></div>
+        ➕ Karyawan / Cabang Baru
+      </div>
+      <div class="input-row">
+        <div class="input-label">👤 Nama Karyawan</div>
+        <input class="input-field" type="text" id="new_name" placeholder="cth: Pramuniaga Cabang 4">
+      </div>
+      <div class="input-row">
+        <div class="input-label">🏪 Nama Cabang</div>
+        <input class="input-field" type="text" id="new_cabang" placeholder="cth: Cabang 4 - Cisoka">
+      </div>
+      <div style="height:1px;background:var(--border);margin:10px 0"></div>
+      <div class="input-row">
+        <div class="input-label">🔄 Transfer — Target/periode</div>
+        <input class="input-field" type="number" id="new_tf" placeholder="cth: 96" min="0">
+      </div>
+      <div class="input-row">
+        <div class="input-label">💵 Tartun — Target/periode</div>
+        <input class="input-field" type="number" id="new_tt" placeholder="cth: 96" min="0">
+      </div>
+      <div class="input-row">
+        <div class="input-label">📦 Voucher — Target/periode</div>
+        <input class="input-field" type="number" id="new_voucher" placeholder="cth: 84" min="0">
+      </div>
+      <div class="input-row">
+        <div class="input-label">📱 ACC HP — Target/periode</div>
+        <input class="input-field" type="number" id="new_acc" placeholder="cth: 48" min="0">
+      </div>
+      <div class="input-row">
+        <div class="input-label">🔧 Service HP — Target/periode</div>
+        <input class="input-field" type="number" id="new_hp" placeholder="cth: 4" min="0">
+      </div>
+      <div style="height:1px;background:var(--border);margin:10px 0"></div>
+      <div class="input-row">
+        <div class="input-label">💰 Max Reward (Rp)</div>
+        <input class="input-field" type="number" id="new_reward" placeholder="cth: 200000" min="0">
+      </div>
+      <div class="input-row">
+        <div class="input-label">📅 Periode KPI</div>
+        <select class="input-field" id="new_periode">
+          <option value="2minggu">Per 2 Minggu (Pramuniaga)</option>
+          <option value="bulanan">Bulanan (Senior)</option>
+        </select>
+      </div>
+      <button class="save-btn" style="background:#9b59b6;color:white;margin-top:12px" onclick="tambahCabang()">➕ TAMBAH KE LEADERBOARD</button>
+    </div>
+
+    <!-- Daftar cabang aktif + hapus -->
+    <div class="section-title">KELOLA KARYAWAN AKTIF</div>
+    <div id="manage-list" style="margin-bottom:24px"></div>
+  </div>
+
+</div>
+  </div>
+</div>
+
+</body>
+</html>
 </body>
 </html>
