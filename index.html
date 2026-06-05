@@ -1704,10 +1704,6 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
         <span>Total Omset</span>
         <span class="cg" style="font-family:var(--mono)" id="s-total">Rp 0</span>
       </div>
-      <div class="rrow">
-        <span class="rl">Est. Laba Kotor</span>
-        <span class="cy" style="font-family:var(--mono)" id="s-laba">Rp 0</span>
-      </div>
     </div>
   </div>
 
@@ -1964,10 +1960,17 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
     <div class="stit">7️⃣ Setoran & Rekonsiliasi Kas</div>
     <div class="card" id="setoran-card">
 
+      <!-- FIELD: CUSTOMER BAYAR VIA TRANSFER -->
+      <div style="background:var(--s3);border:1px solid rgba(48,96,192,0.3);border-radius:12px;padding:14px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px">📲 Customer Bayar via Transfer</div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px;line-height:1.6">Jumlah total penjualan yang dibayar customer via transfer/QRIS.<br>Sudah termasuk di Cash Penjualan, tapi uangnya masuk rekening — bukan laci.</div>
+        <input type="text" inputmode="decimal" class="finp" id="p_cust_transfer" placeholder="Contoh: 200.000" oninput="fmtInput(this);cl_calc_setor()" style="font-size:14px;font-family:var(--mono)">
+      </div>
+
       <!-- A: CASH FISIK OTOMATIS -->
       <div style="background:linear-gradient(135deg,rgba(245,208,32,0.07),rgba(245,208,32,0.02));border:1px solid rgba(245,208,32,0.22);border-radius:12px;padding:14px;margin-bottom:12px">
         <div style="font-size:11px;font-weight:700;color:var(--yellow);margin-bottom:4px">💵 Total Cash Fisik di Tangan</div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px">Dihitung otomatis: Modal Pagi + Cash Penjualan + Transfer</div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px">Dihitung otomatis: Cash Pagi + Cash Penjualan + Fee BriLink − Bayar Transfer</div>
         <div style="font-size:24px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="p_cash_fisik_auto">Rp 0</div>
         <input type="hidden" id="p_cash_fisik_manual" value="">
       </div>
@@ -1990,15 +1993,19 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       <div style="background:linear-gradient(135deg,rgba(245,208,32,0.1),rgba(245,208,32,0.03));border:1px solid rgba(245,208,32,0.3);border-radius:12px;padding:12px 14px;margin-bottom:8px">
         <div style="font-size:9px;font-weight:700;color:var(--yellow);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">💵 Total Cash Fisik di Tangan</div>
         <div style="font-size:26px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="setor_cash_fisik_alert">Rp 0</div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">Cash Pagi + Penjualan + Transfer</div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">Cash Pagi + Penjualan − Bayar Transfer</div>
       </div>
 
       <!-- C: BREAKDOWN SETORAN -->
       <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:12px">
         <div style="font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">📊 Rincian Setoran</div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
-          <span style="color:var(--muted2)">💵 Cash Fisik di Tangan</span>
+          <span style="color:var(--muted2)">💵 Cash Pagi + Penjualan + Fee BriLink</span>
           <span style="font-family:var(--mono);font-weight:700;color:var(--green)" id="setor_cash_fisik">Rp 0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span style="color:var(--muted2)">− Bayar via Transfer</span>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="setor_cust_transfer">Rp 0</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
           <span style="color:var(--muted2)">− Modal Brankas Kembali</span>
@@ -2101,17 +2108,21 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
 
           <!-- Kas Masuk -->
           <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:8px">
-            <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:0.5px;margin-bottom:10px">📥 KAS MASUK</div>
+            <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:0.5px;margin-bottom:10px">📥 OMSET / KAS MASUK</div>
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">Cash Penjualan</span>
+              <span style="color:var(--muted2)">Cash Penjualan <span style="font-size:9px">(tunai + bayar tf + digital)</span></span>
               <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_penjualan">—</span>
             </div>
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">Cash Fisik Transfer (Tarik + TF)</span>
-              <span style="font-family:var(--mono);font-weight:600;color:var(--blue)" id="rp_cash_transfer">—</span>
+              <span style="color:var(--muted2)">Fee Komisi BRILink Transfer</span>
+              <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_transfer">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+              <span style="color:var(--muted2)">− Bayar via Transfer (customer)</span>
+              <span style="font-family:var(--mono);font-weight:600;color:var(--red)" id="rp_cust_transfer">—</span>
             </div>
             <div style="display:flex;justify-content:space-between;padding:8px 0 0;font-size:12px;font-weight:700">
-              <span>Total Kas Masuk</span>
+              <span>Cash Fisik Masuk ke Laci</span>
               <span style="font-family:var(--mono);color:var(--green)" id="rp_total_masuk">—</span>
             </div>
           </div>
@@ -2203,8 +2214,12 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
           <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:14px">
             <div style="font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">📊 Rincian Setoran</div>
             <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">💵 Cash Fisik di Tangan</span>
+              <span style="color:var(--muted2)">💵 Cash Pagi + Penjualan + Fee BriLink</span>
               <span style="font-family:var(--mono);font-weight:700;color:var(--green)" id="popup_cash_fisik">Rp 0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
+              <span style="color:var(--muted2)">− Bayar via Transfer</span>
+              <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="popup_cust_transfer">Rp 0</span>
             </div>
             <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
               <span style="color:var(--muted2)">− Modal Brankas Kembali</span>
@@ -2312,38 +2327,113 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
     </div>
     <!-- ══════ END SETOR POPUP ══════ -->
 
-    <!-- ══════ PREVIEW OMSET ══════ -->
+    <!-- ══════ RINGKASAN KEUANGAN ══════ -->
     <div style="background:var(--s2);border:1px solid var(--border2);border-radius:16px;overflow:hidden;margin-bottom:12px;">
-      <!-- Rincian -->
-      <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
-        <div style="font-size:9px;font-weight:700;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">💰 RINCIAN OMSET</div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;">
-          <span style="color:var(--muted2)">Cash Penjualan Fisik</span>
-          <span style="font-family:var(--mono);font-weight:600;color:var(--text)" id="prev_cash_jual">Rp 0</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;">
-          <span style="color:var(--muted2)">Pemakaian Saldo Server (Pos 2)</span>
-          <span style="font-family:var(--mono);font-weight:600;color:var(--text)" id="prev_pos2">Rp 0</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;">
-          <span style="color:var(--muted2)">Cash Masuk Transfer (BRILink)</span>
-          <span style="font-family:var(--mono);font-weight:600;color:var(--text)" id="prev_tf_masuk">Rp 0</span>
-        </div>
+
+      <!-- Header -->
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase">📊 Ringkasan Keuangan Shift</div>
+        <button onclick="cl_toggleRumus(this)" style="background:var(--s3);border:1px solid var(--border2);border-radius:8px;padding:3px 10px;color:var(--accent2);font-size:10px;font-weight:700;cursor:pointer;font-family:var(--sans)">❓ Rumus</button>
       </div>
-      <!-- Total Omset -->
-      <div style="padding:16px;background:linear-gradient(135deg,rgba(62,207,142,0.1),rgba(62,207,142,0.04));">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
+
+      <!-- Baris angka -->
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:0">
+
+        <!-- Omset -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
           <div>
-            <div style="font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-transform:uppercase">📊 Total Omset Hari Ini</div>
-            <div style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:3px">Cash Jual + Pos 2 + Transfer Masuk</div>
+            <div style="font-size:12px;font-weight:700;color:var(--text)">💰 Omset</div>
+            <div style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:2px">Total penjualan shift ini</div>
           </div>
-          <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--green)" id="p_omset_preview">Rp 0</div>
+          <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:var(--green)" id="p_omset_preview">Rp 0</div>
+        </div>
+
+        <!-- Pengeluaran (pengurang) -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--text)">💸 Pengeluaran Shift</div>
+            <div style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:2px">Makan + lain-lain</div>
+          </div>
+          <div style="font-size:16px;font-weight:700;font-family:var(--mono);color:var(--red)" id="p_pengeluaran_preview">− Rp 0</div>
+        </div>
+
+        <!-- Kas Bersih Shift -->
+        <div style="padding:12px 0;border-bottom:1px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--yellow)">💵 Kas Bersih Shift</div>
+              <div style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:2px">Omset − Pengeluaran</div>
+            </div>
+            <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="p_kasbersih_preview">Rp 0</div>
+          </div>
+        </div>
+
+        <!-- Laba — dikunci -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--muted2)">📈 Laba</div>
+            <div style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:2px">Dihitung Kanit</div>
+          </div>
+          <div style="font-size:11px;font-weight:700;font-family:var(--mono);color:var(--muted2);background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:4px 12px">🔒 Kanit</div>
+        </div>
+
+      </div>
+
+      <!-- Box Rumus (toggle) -->
+      <div id="cl_rumus_box" style="display:none;border-top:1px solid var(--border);padding:14px 16px;background:var(--s3)">
+        <div style="font-size:10px;font-weight:800;color:var(--accent2);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">📚 Rumus Dasar Akuntansi</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:11px;font-family:var(--mono);line-height:1.8">
+
+          <div style="background:var(--s2);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:10px 12px">
+            <div style="font-weight:700;color:var(--green);margin-bottom:3px">💰 OMSET (Pendapatan)</div>
+            <div style="color:var(--muted2)">= Harga Jual × Qty Terjual</div>
+            <div style="color:var(--muted2)">= Semua uang masuk dari penjualan</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:4px">Pengeluaran TIDAK mengurangi omset</div>
+          </div>
+
+          <div style="background:var(--s2);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:10px 12px">
+            <div style="font-weight:700;color:var(--red);margin-bottom:3px">💸 BEBAN OPERASIONAL</div>
+            <div style="color:var(--muted2)">= Gaji + Sewa + Listrik + Operasional</div>
+            <div style="color:var(--muted2)">= Termasuk pengeluaran shift kamu</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:4px">Mengurangi kas, bukan omset</div>
+          </div>
+
+          <div style="background:var(--s2);border-left:3px solid var(--yellow);border-radius:0 8px 8px 0;padding:10px 12px">
+            <div style="font-weight:700;color:var(--yellow);margin-bottom:3px">💵 KAS BERSIH SHIFT</div>
+            <div style="color:var(--muted2)">= Omset − Pengeluaran Shift</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:4px">Uang yang harus kamu pertanggungjawabkan</div>
+          </div>
+
+          <div style="background:var(--s2);border-left:3px solid var(--yellow);border-radius:0 8px 8px 0;padding:10px 12px">
+            <div style="font-weight:700;color:var(--yellow);margin-bottom:3px">📦 LABA BRUTO (Gross Profit)</div>
+            <div style="color:var(--muted2)">= Omset − HPP</div>
+            <div style="color:var(--muted2)">= Omset − Modal beli barang terjual</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:4px">HPP = Harga Pokok Penjualan</div>
+          </div>
+
+          <div style="background:var(--s2);border-left:3px solid var(--accent2);border-radius:0 8px 8px 0;padding:10px 12px">
+            <div style="font-weight:700;color:var(--accent2);margin-bottom:3px">✨ LABA BERSIH (Net Profit)</div>
+            <div style="color:var(--muted2)">= Laba Bruto − Semua Beban Operasional</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:4px">Keuntungan sesungguhnya — dihitung Kanit</div>
+          </div>
+
         </div>
       </div>
+
     </div>
-    <!-- ══════ END PREVIEW OMSET ══════ -->
+    <!-- ══════ END RINGKASAN KEUANGAN ══════ -->
+    <span id="prev_cash_jual" style="display:none">0</span>
+    <span id="prev_tf_masuk" style="display:none">0</span>
+    <span id="prev_cash_jual" style="display:none">0</span>
+    <span id="prev_tf_masuk" style="display:none">0</span>
+    <!-- hidden ids tetap ada agar calc lama tidak error -->
+    <span id="prev_cash_jual" style="display:none">0</span>
+    <span id="prev_tf_masuk" style="display:none">0</span>
 
     <button class="bigbtn" onclick="kirimClosing()">📤 Kirim Closing ke Sheets</button>
+    <button onclick="exportPDF('closing-staff')" style="width:100%;padding:14px;background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(239,68,68,0.05));border:1px solid rgba(239,68,68,0.4);border-radius:14px;color:#ef4444;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px">
+      📄 Export PDF Closing
+    </button>
     <div class="kstatus" id="cl-status"></div>
   </div>
 
@@ -2821,6 +2911,9 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       <div class="rrow"><span class="rl">Jumlah Transaksi</span><span class="rv" id="kc-trx">0</span></div>
     </div>
     <button class="bigbtn" onclick="kirimClosingKanit()">📤 Kirim Closing Kanit ke Sheets</button>
+    <button onclick="exportPDF('closing-kanit')" style="width:100%;padding:14px;background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(239,68,68,0.05));border:1px solid rgba(239,68,68,0.4);border-radius:14px;color:#ef4444;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px">
+      📄 Export PDF Closing
+    </button>
     <div class="kstatus" id="kc-status"></div>
   </div>
 
@@ -2929,11 +3022,29 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       <div style="font-size:11px;color:var(--muted2);margin-bottom:14px;line-height:1.6">
         Input manual — konfirmasi potongan gaji, top up awal, atau koreksi saldo. Tersimpan <b style="color:var(--text)">permanen</b> per karyawan.
       </div>
+
+      <!-- Tombol hitung otomatis -->
+      <button onclick="popupHitungDana()" style="width:100%;padding:11px;background:linear-gradient(135deg,rgba(108,99,255,0.18),rgba(108,99,255,0.08));border:1px solid rgba(108,99,255,0.4);border-radius:10px;color:var(--accent2);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px">
+        🧮 Hitung Otomatis Potongan / Tunggakan
+      </button>
+
       <div class="field">
         <label>Nama Karyawan</label>
-        <input class="finp" id="k-dana-nama" placeholder="Nama sesuai absensi" list="k-dana-nama-list">
+        <input class="finp" id="k-dana-nama" placeholder="Nama sesuai absensi" list="k-dana-nama-list" oninput="previewSaldoDana()">
         <datalist id="k-dana-nama-list"></datalist>
       </div>
+      <!-- Preview saldo karyawan yang dipilih -->
+      <div id="k-dana-saldo-preview" style="display:none;background:var(--s3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;margin:-4px 0 12px;font-size:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="color:var(--muted2)">Saldo saat ini</span>
+          <span style="font-family:var(--mono);font-weight:800;color:var(--green)" id="k-dana-saldo-val">Rp 0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+          <span style="color:var(--muted2)">Kekurangan ke target</span>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--orange)" id="k-dana-kurang-val">Rp 0</span>
+        </div>
+      </div>
+
       <div class="field">
         <label>Jenis</label>
         <select class="finp" id="k-dana-jenis">
@@ -2955,11 +3066,68 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       <div class="kstatus" id="k-dana-status"></div>
     </div>
 
+    <!-- ══ POPUP HITUNG OTOMATIS ══ -->
+    <div id="popup-hitung-dana" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:9990;align-items:flex-end;justify-content:center;padding:0">
+      <div style="background:var(--bg);border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+          <div style="font-size:15px;font-weight:800">🧮 Hitung Otomatis Dana Darurat</div>
+          <button onclick="g('popup-hitung-dana').style.display='none'" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--muted2);font-size:12px;cursor:pointer;font-family:var(--sans)">✕ Tutup</button>
+        </div>
+        <div style="margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--muted2);margin-bottom:6px">Nama Karyawan</div>
+          <input class="finp" id="hitung-nama" placeholder="Ketik nama..." list="k-dana-nama-list" oninput="hitungDanaOtomatis()" style="font-size:14px">
+        </div>
+        <div style="margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--muted2);margin-bottom:6px">Mode Hitung</div>
+          <select class="finp" id="hitung-mode" onchange="hitungDanaOtomatis()" style="font-size:13px">
+            <option value="tunggakan">📅 Hitung Tunggakan Potongan Bulanan</option>
+            <option value="bulan">🔢 Potongan N Bulan ke Depan</option>
+            <option value="lunas">🎯 Top Up agar Langsung Lunas (capai target)</option>
+            <option value="custom">✏️ Kalkulasi Bebas (angka × jumlah)</option>
+          </select>
+        </div>
+        <div id="hitung-input-bulan" style="display:none;margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--muted2);margin-bottom:6px">Jumlah Bulan</div>
+          <input type="number" class="finp" id="hitung-n-bulan" value="1" min="1" max="24" oninput="hitungDanaOtomatis()" style="font-size:14px">
+        </div>
+        <div id="hitung-input-custom" style="display:none;margin-bottom:12px">
+          <div style="display:flex;gap:8px">
+            <div style="flex:1">
+              <div style="font-size:11px;font-weight:700;color:var(--muted2);margin-bottom:6px">Nominal per unit (Rp)</div>
+              <input type="text" inputmode="decimal" class="finp" id="hitung-custom-nominal" placeholder="100.000" oninput="fmtInput(this);hitungDanaOtomatis()" style="font-size:14px">
+            </div>
+            <div style="flex:1">
+              <div style="font-size:11px;font-weight:700;color:var(--muted2);margin-bottom:6px">Jumlah</div>
+              <input type="number" class="finp" id="hitung-custom-qty" value="1" min="1" oninput="hitungDanaOtomatis()" style="font-size:14px">
+            </div>
+          </div>
+        </div>
+        <div id="hitung-hasil" style="display:none;background:linear-gradient(135deg,rgba(62,207,142,0.1),rgba(62,207,142,0.04));border:1px solid rgba(62,207,142,0.3);border-radius:14px;padding:16px;margin-bottom:16px">
+          <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">📊 Hasil Kalkulasi</div>
+          <div id="hitung-detail" style="font-size:12px;color:var(--muted2);line-height:2;margin-bottom:12px"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(62,207,142,0.2);padding-top:12px">
+            <span style="font-size:13px;font-weight:700">Total yang diinput</span>
+            <span style="font-size:22px;font-weight:800;font-family:var(--mono);color:var(--green)" id="hitung-total">Rp 0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+            <span style="font-size:11px;color:var(--muted2)">Saldo setelah transaksi</span>
+            <span style="font-size:15px;font-weight:700;font-family:var(--mono)" id="hitung-saldo-setelah">Rp 0</span>
+          </div>
+        </div>
+        <button id="hitung-pakai-btn" onclick="pakaiHasilHitung()" style="display:none;width:100%;padding:14px;background:linear-gradient(135deg,var(--green),#28a06e);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--sans)">
+          ✅ Pakai Angka Ini — Isi Form Otomatis
+        </button>
+      </div>
+    </div>
+
     <!-- Riwayat semua transaksi dana -->
     <div class="card" style="margin-top:4px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <div class="ctit" style="margin:0">📋 Riwayat Semua Transaksi Dana</div>
-        <button onclick="exportDanaKanitCSV()" style="padding:6px 12px;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--green);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)">📥 Excel</button>
+        <div style="display:flex;gap:6px">
+          <button onclick="exportDanaKanitRekap()" style="padding:6px 12px;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--green);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)">📊 Rekap Excel</button>
+          <button onclick="exportPDF('dana')" style="padding:6px 12px;background:var(--s2);border:1px solid rgba(239,68,68,0.4);border-radius:8px;color:#ef4444;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)">📄 PDF</button>
+        </div>
       </div>
       <div style="margin-bottom:10px">
         <input class="finp" id="k-dana-filter" placeholder="Filter nama karyawan..." oninput="renderKanitDana()" style="font-size:12px">
@@ -3375,23 +3543,46 @@ function cl_calc(){
   const pos1Alert = g('pos1-alert-total');
   if(pos1Alert) pos1Alert.style.display = pos1Pakai > 0 ? 'block' : 'none';
 
-  // ── PREVIEW OMSET ─────────────────────────────────────────
-  const cashMasukTransferPreview = parseRp(g('p_trx_transfer')?.value) || 0;
-  const omset = cashPenjualan + dig2 + cashMasukTransferPreview;
-
+  // ── RINGKASAN KEUANGAN ──────────────────────────────────
+  // Omset = Cash Penjualan saja (pengeluaran TIDAK mengurangi omset — akuntansi dasar)
+  const cashMasukTransferPreview = parseRp(g('p_trx_transfer')?.value) || 0; // untuk setoran
   const sv = (id, val) => { const el = g(id); if(el) el.textContent = fmt(val); };
   sv('prev_cash_jual', cashPenjualan);
-  sv('prev_pos2',      dig2);
   sv('prev_tf_masuk',  cashMasukTransferPreview);
-
-  const prev = g('p_omset_preview');
-  if(prev){
-    prev.textContent = fmt(omset);
-    prev.style.color = 'var(--green)';
-  }
+  // Preview omset diupdate oleh cl_updatePreviewOmset() via cl_hitungTrx()
 
   cl_hitungTrx();
   cl_calc_setor();
+}
+
+// Toggle box rumus akuntansi
+function cl_toggleRumus(btn){
+  const box = g('cl_rumus_box');
+  if(!box) return;
+  const open = box.style.display === 'none' || box.style.display === '';
+  box.style.display = open ? 'block' : 'none';
+  if(btn) btn.textContent = open ? '✕ Tutup' : '❓ Rumus';
+}
+
+// Update preview omset, pengeluaran, kas bersih — dipanggil dari cl_hitungTrx & cl_calc
+function cl_updatePreviewOmset(){
+  const makan = parseRp(g('p_makan')?.value) || 0;
+  const lain  = parseRp(g('p_lainlain')?.value) || 0;
+  const omset = _omsetTrx; // total nominal semua transaksi harian
+  const pengeluaran = makan + lain;
+  const kasBersih   = omset - pengeluaran;
+
+  // Omset
+  const elOmset = g('p_omset_preview');
+  if(elOmset){ elOmset.textContent = fmt(omset); elOmset.style.color = omset > 0 ? 'var(--green)' : 'var(--muted2)'; }
+
+  // Pengeluaran (dengan tanda minus)
+  const elPeng = g('p_pengeluaran_preview');
+  if(elPeng) elPeng.textContent = pengeluaran > 0 ? '− ' + fmt(pengeluaran) : 'Rp 0';
+
+  // Kas Bersih
+  const elKas = g('p_kasbersih_preview');
+  if(elKas){ elKas.textContent = fmt(kasBersih); elKas.style.color = kasBersih >= 0 ? 'var(--yellow)' : 'var(--red)'; }
 }
 
 function cl_hitungTrx(){
@@ -3416,6 +3607,8 @@ function cl_hitungTrx(){
   });
   s('p_trx_total',   fmt(totNom));
   s('p_trx_total_n', totN + ' kali');
+  _omsetTrx = totNom; // simpan ke global → dipakai preview omset
+  cl_updatePreviewOmset();
 
   // Double check: bandingkan dengan cash penjualan
   const cashPenjualan = parseRp(g('p_cash')?.value) || 0;
@@ -3442,29 +3635,37 @@ function cl_hitungTrx(){
 
 // ===== SETORAN & REKONSILIASI =====
 let _sudahSetor = false;
+let _omsetTrx   = 0; // total nominal transaksi harian — sumber omset
 
 // Helper: update komponen otomatis (dipanggil dari cl_calc)
 function cl_calc_setor(){
   const cashPenjualan  = parseRp(g('p_cash')?.value)       || 0;
   const makan          = parseRp(g('p_makan')?.value)      || 0;
   const lain           = parseRp(g('p_lainlain')?.value)   || 0;
-  const cashMasukTransfer = parseRp(g('p_trx_transfer')?.value) || 0; // customer kasih cash ke kita
+  const custTransfer      = parseRp(g('p_cust_transfer')?.value) || 0; // customer bayar via transfer
+  const cashMasukTransfer = parseRp(g('p_trx_transfer')?.value) || 0; // fee komisi BriLink
   const cashPagi          = parseRp(g('p_cash_pagi')?.value) || 0;
   const totalPengeluaran  = makan + lain;
-  const cashPagi2         = parseRp(g('p_cash_pagi')?.value) || 0;
   const modalBrankas2     = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
   const cashKeluarTarik   = parseRp(g('p_trx_tarik')?.value) || 0;
-  const cashFisikTotal    = cashPagi + cashPenjualan + cashMasukTransfer;
-  const harusSetor        = cashFisikTotal - modalBrankas2 - cashKeluarTarik - totalPengeluaran;
-  const totalFisikAuto    = cashFisikTotal;
+  // Harus Setor = Cash Pagi + Cash Penjualan - Tarik Tunai - Bayar Transfer Customer - Modal Brankas - Pengeluaran
+  // (Fee BriLink sudah include di Cash Penjualan)
+  const harusSetor        = cashPagi + cashPenjualan - cashKeluarTarik - custTransfer - modalBrankas2 - totalPengeluaran;
+  // Cash Fisik di tangan = Cash Pagi + Cash Penjualan - Bayar Transfer Customer
+  const cashFisikTotal    = cashPagi + cashPenjualan - custTransfer;
 
   // Update display otomatis cash fisik
   const elAuto = g('p_cash_fisik_auto');
-  if(elAuto) elAuto.textContent = fmt(totalFisikAuto);
+  if(elAuto) elAuto.textContent = fmt(cashFisikTotal);
 
   // Update display komponen otomatis
-  s('setor_cash_fisik',  fmt(cashFisikTotal));
+  s('setor_cash_fisik',       fmt(cashPagi + cashPenjualan));
   s('setor_cash_fisik_alert', fmt(cashFisikTotal));
+  s('setor_cust_transfer',    fmt(custTransfer));
+  s('setor_modal',            fmt(modalBrankas2));
+  s('setor_tarik',            fmt(cashKeluarTarik));
+  s('setor_pengeluaran',      fmt(totalPengeluaran));
+  s('setor_transfer',         fmt(cashMasukTransfer));
   s('setor_modal',       fmt(modalBrankas2));
   s('setor_tarik',       fmt(cashKeluarTarik));
   s('setor_pengeluaran', fmt(totalPengeluaran));
@@ -3507,20 +3708,24 @@ function cl_prosesHitung(){
   const lain           = parseRp(g('p_lainlain')?.value)    || 0;
   const modalBrankas   = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
   const cashPagi       = parseRp(g('p_cash_pagi')?.value) || 0;
-  const cashFisik      = cashPagi + cashPenjualan + (parseRp(g('p_trx_transfer')?.value) || 0);
+  const cashFisik      = cashPagi + cashPenjualan - (parseRp(g('p_cust_transfer')?.value) || 0);
   const hasCashFisik   = true;
 
-  const cashMasukTransfer = parseRp(g('p_trx_transfer')?.value) || 0; // customer kasih cash ke kita
-  const cashTransfer      = cashMasukTransfer; // untuk display
-  const totalMasuk        = cashPenjualan + cashMasukTransfer;
+  const cashMasukTransfer = parseRp(g('p_trx_transfer')?.value) || 0; // fee komisi BriLink
+  const custTransfer      = parseRp(g('p_cust_transfer')?.value) || 0; // bayar via transfer customer
+  const cashTransfer      = cashMasukTransfer;
+  // Cash fisik masuk ke laci = Cash Penjualan - Bayar Transfer Customer (fee BriLink sudah include di cashPenjualan)
+  const totalMasuk        = cashPenjualan - custTransfer;
   const totalKeluar       = makan + lain;
   const cashKeluarTarik3  = parseRp(g('p_trx_tarik')?.value) || 0;
-  const cashFisikTotal3   = cashPagi + cashPenjualan + cashMasukTransfer;
-  const harusSetor        = cashFisikTotal3 - modalBrankas - cashKeluarTarik3 - totalKeluar;
-  // Ekspektasi sistem = modal + kas masuk bersih
-  const ekspektasi     = modalBrankas + harusSetor;
-  const selisihFisik   = hasCashFisik ? (cashFisik - ekspektasi) : null;
-  const sisaAkhir      = hasCashFisik
+  // Harus Setor = Cash Pagi + Cash Penjualan - Tarik Tunai - Bayar Transfer Customer - Modal Brankas - Pengeluaran
+  // (fee BriLink sudah include di cashPenjualan)
+  const harusSetor        = cashPagi + cashPenjualan - cashKeluarTarik3 - custTransfer - modalBrankas - totalKeluar;
+  // Cash fisik di tangan = Cash Pagi + Cash Penjualan - Bayar Transfer Customer
+  const cashFisikTotal3   = cashPagi + cashPenjualan - custTransfer;
+  const ekspektasi        = modalBrankas + harusSetor;
+  const selisihFisik      = hasCashFisik ? (cashFisik - ekspektasi) : null;
+  const sisaAkhir         = hasCashFisik
     ? cashFisik - modalBrankas - harusSetor
     : ekspektasi - modalBrankas - harusSetor;
 
@@ -3530,6 +3735,7 @@ function cl_prosesHitung(){
 
   s('rp_cash_penjualan', fmt(cashPenjualan));
   s('rp_cash_transfer',  fmt(cashTransfer));
+  s('rp_cust_transfer',  fmt(custTransfer));
   s('rp_total_masuk',    fmt(totalMasuk));
   s('rp_makan',          fmt(makan));
   s('rp_lain',           fmt(lain));
@@ -3687,13 +3893,16 @@ function cl_bukaPanelSetor(){
   const _modal  = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
   const _makan  = parseRp(g('p_makan')?.value) || 0;
   const _lain   = parseRp(g('p_lainlain')?.value) || 0;
+  const _custTf = parseRp(g('p_cust_transfer')?.value) || 0;
+  // Harus Setor = Cash Pagi + Cash Penjualan + Fee BriLink - Tarik Tunai - Bayar Transfer Customer - Modal Brankas - Pengeluaran
   const _fisik     = _pagi + _jual + _tf;
-  const harusSetor = _fisik - _modal - _tarik - _makan - _lain;
+  const harusSetor = _fisik - _tarik - _custTf - _modal - _makan - _lain;
   const inp = g('p_setor_nominal');
   if(inp) inp.value = Math.max(0, harusSetor);
   s('konfirm_nominal_display', fmt(Math.max(0, harusSetor)));
-  const _cashFisikPop = _pagi + _jual + _tf;
-  s('popup_cash_fisik',  fmt(_cashFisikPop));
+  const _cashFisikPop = _fisik; // Cash Pagi + Penjualan + Fee BriLink
+  s('popup_cash_fisik',     fmt(_cashFisikPop));
+  s('popup_cust_transfer',  fmt(_custTf));
   s('popup_modal',       fmt(_modal));
   s('popup_tarik',       fmt(_tarik));
   s('popup_pengeluaran', fmt(_makan + _lain));
@@ -4075,7 +4284,8 @@ function renderMasterVP(){
 // ║  Dipakai staff & kanit — tampilannya sama    ║
 // ╚══════════════════════════════════════════════╝
 
-function _auditCard(item, rec, updateFn, idPrefix){
+function _auditCard(item, rec, updateFn, idPrefix, isKanit){
+  isKanit = !!isKanit;
   // ── Data ──
   const sa  = rec.stok_awal  !== undefined ? Number(rec.stok_awal)  : (item.stok_awal || item.so_fisik || 0);
   const sk  = rec.stok_akhir !== undefined && rec.stok_akhir !== '' ? Number(rec.stok_akhir) : '';
@@ -4088,8 +4298,9 @@ function _auditCard(item, rec, updateFn, idPrefix){
   const terjual  = hasAkhir ? Math.max(0, sa - skNum) : 0;
   const omset    = terjual * hj;
   const hasHPP   = hpp !== '' && !isNaN(hpp) && hj > 0;
-  const laba     = hasHPP && hasAkhir ? terjual * (hj - Number(hpp)) : null;
-  const margin   = (hasHPP && hasAkhir && omset > 0) ? ((laba / omset) * 100).toFixed(1) : null;
+  // Laba & margin hanya untuk kanit — staff tidak boleh lihat
+  const laba     = (isKanit && hasHPP && hasAkhir) ? terjual * (hj - Number(hpp)) : null;
+  const margin   = (isKanit && hasHPP && hasAkhir && omset > 0) ? ((laba / omset) * 100).toFixed(1) : null;
   const dblOk    = hasAkhir && (skNum + terjual === sa);
   const isEmpty  = hasAkhir && skNum <= 0;
   const isLow    = hasAkhir && !isEmpty && skNum <= (idPrefix === 'acc' ? 2 : 3);
@@ -4151,8 +4362,8 @@ function _auditCard(item, rec, updateFn, idPrefix){
     </div>
   </div>
 
-  <!-- HPP opsional -->
-  <div style="margin-bottom:12px">
+  <!-- HPP opsional — hanya kanit -->
+  ${isKanit ? `<div style="margin-bottom:12px">
     <div style="font-size:9px;color:var(--muted2);margin-bottom:5px;font-weight:700;letter-spacing:0.5px">
       HPP / MODAL per pcs (Rp)
       <span style="font-weight:400;color:var(--muted)"> — opsional, untuk hitung laba & margin</span>
@@ -4160,7 +4371,7 @@ function _auditCard(item, rec, updateFn, idPrefix){
     <input type="number" value="${hpp}" min="0" placeholder="kosongkan jika tidak tahu"
       class="audit-inp" data-fn="${updateFn}" data-kode="${item.kode}" data-field="hpp_audit"
       style="width:100%;background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:var(--mono);font-size:14px;outline:none;font-weight:600">
-  </div>
+  </div>` : ''}
 
   <!-- Hasil kalkulasi 3/4 kolom -->
   <div style="background:var(--s2);border-radius:10px;padding:12px;margin-bottom:8px">
@@ -4257,7 +4468,7 @@ function _patchCard(kode, idPrefix, updateFn, masterArr, dataArr, editedField){
   const activeKey = activeEl ? activeEl.dataset.field : null;
   const activeVal = activeEl ? activeEl.value : null;
   const tmp = document.createElement('div');
-  tmp.innerHTML = _auditCard(item, rec, updateFn, idPrefix);
+  tmp.innerHTML = _auditCard(item, rec, updateFn, idPrefix, role === 'kanit');
   card.replaceWith(tmp.firstElementChild);
   // Kembalikan fokus & nilai ke input yang sedang diedit
   const newCard = g('audit-card-' + uid);
@@ -4320,7 +4531,7 @@ function renderAuditVP(){
         <span style="font-size:10px;font-family:var(--mono)">Kanit tambah di SO Audit → Master VP.</span></div>`;
       s('audit-vp-terjual-tot','0 pcs'); s('audit-vp-nominal-tot','Rp 0'); return;
     }
-    wrap.innerHTML = items.map(item => _auditCard(item, auditVPData.find(x=>x.kode===item.kode)||{}, 'updateAuditVP', 'avp')).join('');
+    wrap.innerHTML = items.map(item => _auditCard(item, auditVPData.find(x=>x.kode===item.kode)||{}, 'updateAuditVP', 'avp', role === 'kanit')).join('');
     _initAuditContainer(wid);
     hitungAuditVP();
   });
@@ -4353,7 +4564,7 @@ function renderKanitAuditVPResult(){
     const t   = sk!==null ? Math.max(0,sa-sk) : 0;
     totT+=t; totN+=t*hj;
     if(hpp!==null) totL += t*(hj-hpp);
-    return _auditCard(item, rec, 'updateAuditVP', 'avp');
+    return _auditCard(item, rec, 'updateAuditVP', 'avp', true);
   }).join('');
   const totMargin = totN>0 ? ((totL/totN)*100).toFixed(1) : '0.0';
   wrap.innerHTML = (masterVP.length?cards:'<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px">Belum ada master produk VP</div>')
@@ -4376,7 +4587,7 @@ function renderAuditAcc(){
       <span style="font-size:10px;font-family:var(--mono)">Kanit tambah di tab SO Audit.</span></div>`;
     return;
   }
-  wrap.innerHTML = accBarang.map(item=>_auditCard(item,auditAccData.find(x=>x.kode===item.kode)||{},'updateAuditAcc','acc')).join('');
+  wrap.innerHTML = accBarang.map(item=>_auditCard(item,auditAccData.find(x=>x.kode===item.kode)||{},'updateAuditAcc','acc', role === 'kanit')).join('');
   _initAuditContainer('audit-acc-form');
   hitungAuditAcc();
 }
@@ -4412,7 +4623,7 @@ function renderKanitAuditAccResult(){
     const t   = sk!==null ? Math.max(0,sa-sk) : 0;
     totT+=t; totN+=t*hj;
     if(hpp!==null) totL += t*(hj-hpp);
-    return _auditCard(item,rec,'updateAuditAcc','acc');
+    return _auditCard(item,rec,'updateAuditAcc','acc', true);
   }).join('');
   const totMargin = totN>0 ? ((totL/totN)*100).toFixed(1) : '0.0';
   wrap.innerHTML = (accBarang.length?cards:'<div style="text-align:center;padding:12px;color:var(--muted);font-size:12px">Belum ada master produk Acc HP</div>')
@@ -5982,6 +6193,201 @@ function approveRejectDana(id, status){
   else kanitRejectDana(id);
 }
 
+// ── Preview saldo karyawan di form input ─────────────────────────────────────
+function previewSaldoDana(){
+  const nama = (g('k-dana-nama')?.value||'').trim();
+  const prev = g('k-dana-saldo-preview');
+  if(!prev) return;
+  if(!nama){ prev.style.display='none'; return; }
+  const semua = getAllKaryawanNama();
+  if(!semua.includes(nama)){ prev.style.display='none'; return; }
+  const saldo = getDanaSaldoNama(nama);
+  const kurang = Math.max(0, DANA_TARGET - saldo);
+  prev.style.display = 'block';
+  s('k-dana-saldo-val',  fmt(saldo));
+  s('k-dana-kurang-val', kurang > 0 ? fmt(kurang) : '✅ Sudah lunas');
+  if(g('k-dana-kurang-val')) g('k-dana-kurang-val').style.color = kurang > 0 ? 'var(--orange)' : 'var(--green)';
+}
+
+// ── Popup hitung otomatis ─────────────────────────────────────────────────────
+function popupHitungDana(){
+  const popup = g('popup-hitung-dana');
+  if(!popup) return;
+  popup.style.display = 'flex';
+  // Sinkron nama dari form utama jika sudah diisi
+  const namaForm = (g('k-dana-nama')?.value||'').trim();
+  if(namaForm && g('hitung-nama')) g('hitung-nama').value = namaForm;
+  hitungDanaOtomatis();
+}
+
+function hitungDanaOtomatis(){
+  const nama  = (g('hitung-nama')?.value||'').trim();
+  const mode  = vs('hitung-mode') || 'tunggakan';
+  const POTBUL = 100000; // potongan bulanan standar
+
+  // Tampil/sembunyikan input tambahan
+  const elBulan  = g('hitung-input-bulan');
+  const elCustom = g('hitung-input-custom');
+  if(elBulan)  elBulan.style.display  = mode === 'bulan'  ? 'block' : 'none';
+  if(elCustom) elCustom.style.display = mode === 'custom' ? 'block' : 'none';
+
+  const hasilEl = g('hitung-hasil');
+  const pakaiBtn = g('hitung-pakai-btn');
+  if(!nama){ if(hasilEl) hasilEl.style.display='none'; if(pakaiBtn) pakaiBtn.style.display='none'; return; }
+
+  const saldo   = getDanaSaldoNama(nama);
+  const kurang  = Math.max(0, DANA_TARGET - saldo);
+  const logs    = getDanaLogNama(nama);
+  const jmlPot  = logs.filter(l=>l.jenis==='potongan').length;
+
+  let total = 0, detail = '', jenisHitung = 'topup', ketHitung = '';
+
+  if(mode === 'tunggakan'){
+    // Hitung bulan berjalan sejak top up pertama, bandingkan dengan jumlah potongan yang sudah masuk
+    const tglPertama = logs.length ? [...logs].sort((a,b)=>(a.tgl||'').localeCompare(b.tgl||''))[0].tgl : null;
+    let bulanSeharusnya = 0;
+    if(tglPertama){
+      const tgl0  = new Date(tglPertama);
+      const now   = new Date();
+      bulanSeharusnya = (now.getFullYear()-tgl0.getFullYear())*12 + (now.getMonth()-tgl0.getMonth());
+    }
+    const tunggakan = Math.max(0, bulanSeharusnya - jmlPot);
+    total = tunggakan * POTBUL;
+    jenisHitung = 'potongan';
+    detail = `Seharusnya dipotong: <b>${bulanSeharusnya} bulan</b><br>
+              Sudah dipotong: <b>${jmlPot} bulan</b><br>
+              Tunggakan: <b style="color:var(--orange)">${tunggakan} bulan × ${fmt(POTBUL)}</b>`;
+    ketHitung = `Pelunasan tunggakan ${tunggakan} bulan`;
+  } else if(mode === 'bulan'){
+    const n = parseInt(g('hitung-n-bulan')?.value)||1;
+    total = n * POTBUL;
+    jenisHitung = 'potongan';
+    detail = `${n} bulan × ${fmt(POTBUL)} / bulan`;
+    ketHitung = `Potongan ${n} bulan`;
+  } else if(mode === 'lunas'){
+    total = kurang;
+    jenisHitung = 'topup';
+    detail = `Target: ${fmt(DANA_TARGET)}<br>Saldo sekarang: ${fmt(saldo)}<br>Kekurangan: <b style="color:var(--orange)">${fmt(kurang)}</b>`;
+    ketHitung = 'Top Up lunas ke target';
+  } else if(mode === 'custom'){
+    const nomPerUnit = parseFmt(g('hitung-custom-nominal')?.value)||0;
+    const qty = parseInt(g('hitung-custom-qty')?.value)||1;
+    total = nomPerUnit * qty;
+    jenisHitung = 'koreksi';
+    detail = `${fmt(nomPerUnit)} × ${qty} unit`;
+    ketHitung = `Kalkulasi custom ${qty}×${fmt(nomPerUnit)}`;
+  }
+
+  const saldoSetelah = jenisHitung==='potongan'
+    ? Math.max(0, saldo - total)
+    : Math.min(DANA_TARGET, saldo + total);
+
+  if(hasilEl){
+    hasilEl.style.display = 'block';
+    s('hitung-detail', detail);
+    s('hitung-total',  fmt(total));
+    const setelahEl = g('hitung-saldo-setelah');
+    if(setelahEl){
+      setelahEl.textContent = fmt(saldoSetelah);
+      setelahEl.style.color = saldoSetelah >= DANA_TARGET ? 'var(--green)' : 'var(--accent2)';
+    }
+  }
+
+  if(pakaiBtn){
+    pakaiBtn.style.display = total > 0 ? 'block' : 'none';
+    pakaiBtn._dana_total   = total;
+    pakaiBtn._dana_jenis   = jenisHitung;
+    pakaiBtn._dana_ket     = ketHitung;
+    pakaiBtn._dana_nama    = nama;
+  }
+}
+
+function pakaiHasilHitung(){
+  const btn = g('hitung-pakai-btn');
+  if(!btn) return;
+  const { _dana_total:total, _dana_jenis:jenis, _dana_ket:ket, _dana_nama:nama } = btn;
+  // Isi form utama
+  if(g('k-dana-nama'))    g('k-dana-nama').value = nama;
+  if(g('k-dana-jenis'))   g('k-dana-jenis').value = jenis;
+  if(g('k-dana-nominal')) g('k-dana-nominal').value = total.toLocaleString('id-ID');
+  if(g('k-dana-ket'))     g('k-dana-ket').value = ket;
+  previewSaldoDana();
+  // Tutup popup & scroll ke form
+  g('popup-hitung-dana').style.display = 'none';
+  const form = g('k-dana-nama');
+  if(form) form.scrollIntoView({behavior:'smooth', block:'center'});
+  toast('✅ Form diisi otomatis — cek lalu Simpan Permanen');
+}
+
+// ── Export rekap dana darurat (upgrade dari CSV biasa) ───────────────────────
+function exportDanaKanitRekap(){
+  const semua = getAllKaryawanNama();
+  if(!semua.length){ toast('⚠️ Belum ada data dana'); return; }
+
+  const tglCetak = new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'});
+  const bln = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+
+  // ── Sheet 1: Ringkasan per Karyawan ──
+  const hRing = ['No','Nama Karyawan','Saldo Saat Ini','Target','% Tercapai','Kekurangan','Jml Potongan','Jml Top Up','Status'];
+  const rowsRing = semua.map((nama, i)=>{
+    const saldo  = getDanaSaldoNama(nama);
+    const logs   = getDanaLogNama(nama);
+    const pct    = Math.min(100, Math.round(saldo/DANA_TARGET*100));
+    const jmlPot = logs.filter(l=>l.jenis==='potongan').length;
+    const jmlTop = logs.filter(l=>l.jenis==='topup').length;
+    const status = saldo >= DANA_TARGET ? 'LUNAS' : saldo > 0 ? 'BERJALAN' : 'BELUM MULAI';
+    return [i+1, nama, saldo, DANA_TARGET, pct+'%', Math.max(0,DANA_TARGET-saldo), jmlPot, jmlTop, status];
+  });
+  const totalSaldo = semua.reduce((s,n)=>s+getDanaSaldoNama(n),0);
+  rowsRing.push(['','TOTAL', totalSaldo, DANA_TARGET*semua.length, '', Math.max(0,DANA_TARGET*semua.length-totalSaldo),'','','']);
+
+  // ── Sheet 2: Detail Transaksi ──
+  const hDetail = ['No','Tanggal','Nama Karyawan','Jenis','Nominal','Keterangan','Saldo Setelah','Oleh'];
+  const rowsDetail = [];
+  let no = 1;
+  semua.forEach(nama=>{
+    const logs = getDanaLogNama(nama);
+    let running = 0;
+    [...logs].sort((a,b)=>(a.tgl||'').localeCompare(b.tgl||'')).forEach(l=>{
+      running += (l.nominal||0);
+      rowsDetail.push([no++, l.tgl||'', nama, l.jenis||'', l.nominal||0, l.ket||'', Math.max(0,running), l.oleh||'sistem']);
+    });
+  });
+  // Juga tambahkan pengajuan staff
+  hrDana.filter(x=>x.status==='approved').forEach(x=>{
+    rowsDetail.push([no++, x.tgl_ajukan, x.nama, 'pencairan_staff', -x.nominal, x.alasan, '', 'staff']);
+  });
+  rowsDetail.sort((a,b)=>(b[1]||'').localeCompare(a[1]||''));
+
+  // ── Gabung jadi satu CSV dengan separator section ──
+  const buatCSV2 = (header, rows) => {
+    const esc = v => {
+      const s = String(v==null?'':v);
+      return s.includes(',') || s.includes('"') || s.includes('\n') ? '"'+s.replace(/"/g,'""')+'"' : s;
+    };
+    return [header, ...rows].map(r=>r.map(esc).join(',')).join('\n');
+  };
+
+  const output = [
+    `REKAP DANA DARURAT KARYAWAN - ${APP_AREA}`,
+    `Dicetak: ${tglCetak}`,
+    `Total Karyawan: ${semua.length}  |  Total Dana Terkumpul: ${totalSaldo.toLocaleString('id-ID')}`,
+    '',
+    '=== RINGKASAN PER KARYAWAN ===',
+    buatCSV2(hRing, rowsRing),
+    '',
+    '=== DETAIL TRANSAKSI ===',
+    buatCSV2(hDetail, rowsDetail),
+  ].join('\n');
+
+  const blob = new Blob(['\uFEFF'+output], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `rekap_dana_darurat_${APP_AREA}_${today()}.csv`;
+  a.click();
+  toast('✅ Rekap dana darurat diunduh!');
+}
+
 // Init HR saat masuk tab HR
 function initHR(){
   initLogAbsensi();
@@ -5990,9 +6396,282 @@ function initHR(){
   if(tglEl) tglEl.valueAsDate = new Date();
 }
 
-// ╔══════════════════════════════════════════════╗
-// ║           SOP & KPI PANEL                    ║
-// ╚══════════════════════════════════════════════╝
+// ╔══════════════════════════════════════════════════════╗
+// ║              EXPORT PDF (print-to-pdf)               ║
+// ╚══════════════════════════════════════════════════════╝
+function exportPDF(type){
+  const R  = id => document.getElementById(id);
+  const rv = id => (R(id)?.textContent||'').trim();
+  const fv = id => (R(id)?.value||'').trim();
+  const tgl = new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const jam = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+  // Ambil dari staffInfo (session login), bukan APP_AREA hardcode
+  const area  = (typeof staffInfo !== 'undefined' && staffInfo?.area)  ? staffInfo.area  : (typeof APP_AREA !== 'undefined' ? APP_AREA : '');
+  const nama  = (typeof staffInfo !== 'undefined' && staffInfo?.nama)  ? staffInfo.nama  : (fv('nama-staff') || fv('p_nama') || '');
+  const nik   = (typeof staffInfo !== 'undefined' && staffInfo?.nik)   ? staffInfo.nik   : '';
+  const shift = (typeof staffInfo !== 'undefined' && staffInfo?.shift) ? staffInfo.shift : '';
+
+  // ── Baris helper ──────────────────────────────────────
+  const row = (label, val, color='') =>
+    `<tr><td style="padding:6px 10px;color:#555;font-size:12px">${label}</td>
+         <td style="padding:6px 10px;text-align:right;font-weight:700;font-size:12px;${color?'color:'+color:''}">${val}</td></tr>`;
+  const sec = title =>
+    `<tr><td colspan="2" style="padding:8px 10px 4px;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;border-top:2px solid #eee">${title}</td></tr>`;
+  const tbl = rows =>
+    `<table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;border:1px solid #eee;margin-bottom:14px">${rows}</table>`;
+
+  let title = '', body = '';
+
+  // ══════════════════════════════════════════
+  // CLOSING STAFF
+  // ══════════════════════════════════════════
+  if(type === 'closing-staff'){
+    title = `Closing Shift — ${area||'Cabang'}`;
+
+    // Kumpul data transaksi perdana
+    const perdana = [
+      ['Telkomsel', fv('p_trx_ptsel'), fv('p_trx_ptsel_n')],
+      ['XL',        fv('p_trx_pxl'),   fv('p_trx_pxl_n')],
+      ['Axis',      fv('p_trx_paxis'), fv('p_trx_paxis_n')],
+      ['ByU',       fv('p_trx_pbyu'),  fv('p_trx_pbyu_n')],
+      ['Smartfren', fv('p_trx_psfren'),fv('p_trx_psfren_n')],
+      ['Indosat',   fv('p_trx_pindo'), fv('p_trx_pindo_n')],
+    ].filter(x=>x[1]||x[2]);
+
+    // Pos 1 bank
+    const banks = [
+      ['🔵 BCA',      fv('p_bca_awal'),     fv('p_bca_close'),     rv('p_bca_delta')],
+      ['🟠 BNI',      fv('p_bni_awal'),     fv('p_bni_close'),     rv('p_bni_delta')],
+      ['🟢 BRI',      fv('p_bri_awal'),     fv('p_bri_close'),     rv('p_bri_delta')],
+      ['💚 Dana',     fv('p_dana_awal'),    fv('p_dana_close'),    rv('p_dana_delta')],
+    ].filter(x=>x[1]||x[2]);
+
+    // Pos 2 server
+    const servers = [
+      ['⚡ Digital',  fv('p_digital_awal'), fv('p_digital_close'), rv('p_digital_pakai')],
+      ['🖥️ Digipos', fv('p_digipos_awal'), fv('p_digipos_close'), rv('p_digipos_pakai')],
+      ['🟣 Rita',     fv('p_rita_awal'),    fv('p_rita_close'),    rv('p_rita_pakai')],
+      ['🔷 Sidiva',   fv('p_sidiva_awal'),  fv('p_sidiva_close'),  rv('p_sidiva_pakai')],
+      ['💡 Simple',   fv('p_simple_awal'),  fv('p_simple_close'),  rv('p_simple_pakai')],
+      ['🔵 BCA Xpresi',fv('p_bcax_awal'),  fv('p_bcax_close'),    rv('p_bcax_pakai')],
+    ].filter(x=>x[1]||x[2]);
+
+    body = `
+      ${tbl(
+        sec('💵 Cash') +
+        row('Cash Pagi (Modal Brankas)', fv('p_cash_pagi')||'—') +
+        row('Cash Penjualan Closing',    fv('p_cash')||'—') +
+        row('Ambil dari Bank',           fv('p_tambah_kasmod')||'0') +
+        row('Pinjam Saldo Bank',         fv('p_pinjam_bank')||'0')
+      )}
+      ${tbl(
+        sec('📊 Transaksi Harian') +
+        row('💸 Tarik Tunai',    fv('p_trx_tarik')||'0',    '#ef4444') +
+        row('  — Jumlah',        (fv('p_trx_tarik_n')||'0')+' kali') +
+        row('📲 Transfer',       fv('p_trx_transfer')||'0') +
+        row('  — Jumlah',        (fv('p_trx_transfer_n')||'0')+' kali') +
+        row('📱 Pulsa & Token',  fv('p_trx_pulsa')||'0') +
+        row('  — Jumlah',        (fv('p_trx_pulsa_n')||'0')+' kali') +
+        row('📦 Paket Data',     fv('p_trx_data')||'0') +
+        row('  — Jumlah',        (fv('p_trx_data_n')||'0')+' kali') +
+        sec('📱 Perdana') +
+        row('Telkomsel', (fv('p_trx_ptsel')||'0') + (fv('p_trx_ptsel_n') ? ' ('+fv('p_trx_ptsel_n')+'x)' : '')) +
+        row('XL',        (fv('p_trx_pxl')||'0')   + (fv('p_trx_pxl_n')   ? ' ('+fv('p_trx_pxl_n')+'x)'   : '')) +
+        row('Axis',      (fv('p_trx_paxis')||'0')  + (fv('p_trx_paxis_n') ? ' ('+fv('p_trx_paxis_n')+'x)' : '')) +
+        row('ByU',       (fv('p_trx_pbyu')||'0')   + (fv('p_trx_pbyu_n')  ? ' ('+fv('p_trx_pbyu_n')+'x)'  : '')) +
+        row('Smartfren', (fv('p_trx_psfren')||'0') + (fv('p_trx_psfren_n')? ' ('+fv('p_trx_psfren_n')+'x)': '')) +
+        row('Indosat',   (fv('p_trx_pindo')||'0')  + (fv('p_trx_pindo_n') ? ' ('+fv('p_trx_pindo_n')+'x)' : '')) +
+        sec('Total') +
+        row('Total Nominal Transaksi', rv('p_trx_total'), '#22c55e') +
+        row('Total Jumlah Transaksi',  rv('p_trx_total_n'))
+      )}
+      ${banks.length ? tbl(
+        sec('🏦 Pos 1 — Saldo Bank') +
+        banks.map(b => row(b[0], `Awal: ${b[1]||'0'} → Closing: ${b[2]||'0'} | ${b[3]}`)).join('') +
+        row('Total Pemakaian Pos 1', rv('p_bank_tot'), '#f97316')
+      ) : ''}
+      ${servers.length ? tbl(
+        sec('⚡ Pos 2 — Saldo Server') +
+        servers.map(s => row(s[0], `Awal: ${s[1]||'0'} → Closing: ${s[2]||'0'} | Pakai: ${s[3]}`)).join('') +
+        row('Total Pemakaian Pos 2', rv('p_dig_tot'), '#f97316')
+      ) : ''}
+      ${tbl(
+        sec('🛍️ Acc HP & 🔧 Service HP') +
+        (() => {
+          // Kumpul item acc HP dari rows
+          const accRows = document.getElementById('p_trx_acc_rows');
+          let accLines = '';
+          if(accRows){
+            accRows.querySelectorAll('[data-acc-nama]').forEach(el => {
+              const nama  = el.getAttribute('data-acc-nama') || '—';
+              const qty   = el.getAttribute('data-acc-qty')  || '1';
+              const sub   = el.getAttribute('data-acc-sub')  || el.querySelector?.('.ci-total')?.textContent || '—';
+              accLines += row(`📦 ${nama} (${qty}x)`, sub, '#f97316');
+            });
+            // fallback: ambil semua ci-name + ci-total kalau attribute tidak ada
+            if(!accLines){
+              accRows.querySelectorAll('.cart-item, .acc-row').forEach(el => {
+                const nama = el.querySelector?.('.ci-name, .acc-nama')?.textContent?.trim() || '';
+                const sub  = el.querySelector?.('.ci-total, .acc-sub')?.textContent?.trim() || '';
+                if(nama) accLines += row(`📦 ${nama}`, sub||'—', '#f97316');
+              });
+            }
+          }
+          // Kumpul item service HP
+          const svcRows = document.getElementById('p_service_rows');
+          let svcLines = '';
+          if(svcRows){
+            svcRows.querySelectorAll('input[id^="svc_nama"], input[id^="svc-nama"], .svc-nama, [data-svc-nama]').forEach((el,i) => {
+              const nama = el.value || el.getAttribute('data-svc-nama') || el.textContent?.trim() || `HP ${i+1}`;
+              const biayaEl = svcRows.querySelectorAll?.('input[id^="svc_biaya"], input[id^="svc-biaya"], .svc-biaya, [data-svc-biaya]')?.[i];
+              const biaya = biayaEl ? (biayaEl.value || biayaEl.textContent?.trim() || '—') : '—';
+              svcLines += row(`🔧 ${nama}`, biaya, '#3b82f6');
+            });
+            // fallback: ambil semua input pairs di service_rows
+            if(!svcLines){
+              const inputs = svcRows.querySelectorAll('input');
+              for(let i=0;i<inputs.length;i+=2){
+                const n = inputs[i]?.value?.trim();
+                const b = inputs[i+1]?.value?.trim();
+                if(n||b) svcLines += row(`🔧 ${n||'—'}`, b||'—', '#3b82f6');
+              }
+            }
+          }
+          return (accLines||row('Acc HP','Tidak ada data','#888')) +
+                 row('Total Acc HP', rv('p_trx_total')||'—', '#f97316') +
+                 sec('') +
+                 (svcLines||row('Service HP','Tidak ada data','#888')) +
+                 row('Total Jasa Service', rv('p_service_total')||'Rp 0', '#3b82f6');
+        })()
+      )}
+      ${tbl(
+        sec('💸 Pengeluaran') +
+        row('Uang Makan',   fv('p_makan')||'0') +
+        row('Lain-lain',    fv('p_lainlain')||'0') +
+        row('Keterangan',   fv('p_ket')||'—')
+      )}
+      ${tbl(
+        sec('📲 Setoran & Rekonsiliasi') +
+        row('Customer Bayar via Transfer', fv('p_cust_transfer')||'0', '#3b82f6') +
+        row('Modal Brankas Kembali',       fv('p_modal_brankas_kembali')||'0') +
+        row('Nominal Setor',               rv('p_setor_nominal')||rv('konfirm_nominal_display')||'—', '#22c55e') +
+        sec('📊 Omset Penjualan') +
+        row('Omset Penjualan Hari Ini', rv('p_omset_preview'), '#22c55e')
+      )}`;
+  }
+
+  // ══════════════════════════════════════════
+  // CLOSING KANIT
+  // ══════════════════════════════════════════
+  else if(type === 'closing-kanit'){
+    title = `Closing Kanit — ${area}`;
+    const bankRows = typeof BANKS_POOL !== 'undefined'
+      ? BANKS_POOL.map(b => {
+          const val = fv('kc-bank-'+b.replace(/\s/g,''));
+          return val ? row(b, val) : '';
+        }).join('')
+      : '';
+    body = tbl(
+      sec('🏦 Saldo Bank Closing') +
+      (bankRows || row('—','—')) +
+      sec('📊 Rekap Omset') +
+      row('Total Omset dari Kasir', rv('kc-omset'), '#22c55e') +
+      row('Laba Kotor',             rv('kc-laba'),  '#eab308') +
+      row('Jumlah Transaksi',       rv('kc-trx'))
+    );
+  }
+
+  // ══════════════════════════════════════════
+  // DANA DARURAT
+  // ══════════════════════════════════════════
+  else if(type === 'dana'){
+    title = `Rekap Dana Darurat Karyawan — ${area}`;
+    const semua = typeof getAllKaryawanNama === 'function' ? getAllKaryawanNama() : [];
+    const TARG  = typeof DANA_TARGET !== 'undefined' ? DANA_TARGET : 2000000;
+    const fmtRp = n => 'Rp '+Number(n).toLocaleString('id-ID');
+
+    let ringkasanRows = sec('👥 Ringkasan Per Karyawan') +
+      `<tr style="background:#f8f8f8">
+        <td style="padding:5px 10px;font-size:10px;font-weight:700;color:#888">NAMA</td>
+        <td style="padding:5px 10px;font-size:10px;font-weight:700;color:#888;text-align:right">SALDO</td>
+      </tr>`;
+    let totalSaldo = 0;
+    semua.forEach(nama => {
+      const saldo = typeof getDanaSaldoNama === 'function' ? getDanaSaldoNama(nama) : 0;
+      totalSaldo += saldo;
+      const pct   = Math.min(100, Math.round(saldo/TARG*100));
+      const status = saldo >= TARG ? '✅' : saldo > 0 ? '🟡' : '🔴';
+      ringkasanRows += row(`${status} ${nama}`, `${fmtRp(saldo)} (${pct}%)`,
+        saldo >= TARG ? '#22c55e' : saldo > 0 ? '#eab308' : '#ef4444');
+    });
+    ringkasanRows += row('TOTAL SEMUA', fmtRp(totalSaldo), '#22c55e');
+
+    // Detail 5 transaksi terakhir per karyawan
+    let detailRows = sec('📋 5 Transaksi Terakhir per Karyawan');
+    semua.forEach(nama => {
+      const logs = typeof getDanaLogNama === 'function'
+        ? [...getDanaLogNama(nama)].sort((a,b)=>(b.tgl||'').localeCompare(a.tgl||'')).slice(0,5)
+        : [];
+      if(!logs.length) return;
+      detailRows += `<tr><td colspan="2" style="padding:6px 10px 2px;font-size:11px;font-weight:700;color:#333">${nama}</td></tr>`;
+      logs.forEach(l => {
+        const plus = (l.nominal||0) >= 0;
+        detailRows += row(
+          `${l.tgl||'—'} · ${l.jenis||'—'}${l.ket?' · '+l.ket:''}`,
+          (plus?'+':'')+fmtRp(l.nominal||0),
+          plus?'#22c55e':'#ef4444'
+        );
+      });
+    });
+
+    body = tbl(ringkasanRows) + tbl(detailRows);
+  }
+
+  // ── Buat jendela print via Blob (tidak diblokir popup blocker) ──
+  const __htmlContent = `<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <title>${title}</title>
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0}
+      body{font-family:system-ui,sans-serif;background:#f5f5f5;padding:20px;color:#111}
+      .wrap{max-width:640px;margin:0 auto}
+      .hdr{background:#111;color:#fff;border-radius:12px;padding:20px 24px;margin-bottom:16px}
+      .hdr-title{font-size:18px;font-weight:800;margin-bottom:4px}
+      .hdr-sub{font-size:11px;color:#aaa}
+      .hdr-area{font-size:13px;color:#7dd3fc;font-weight:700;margin-top:6px}
+      table td{vertical-align:middle}
+      @media print{body{background:#fff;padding:0}.no-print{display:none}}
+    </style>
+  </head><body>
+    <div class="wrap">
+      <div class="hdr">
+        <div class="hdr-title">${title}</div>
+        <div class="hdr-area">📍 ${area}</div>
+        ${nama ? `<div style="font-size:13px;color:#fff;margin-top:6px;font-weight:700">👤 ${nama}${nik ? ' &nbsp;·&nbsp; NIK <span style="color:#7dd3fc">' + nik + '</span>' : ''}${shift ? ' &nbsp;·&nbsp; Shift <span style="color:#7dd3fc">' + shift + '</span>' : ''}</div>` : ''}
+        <div class="hdr-sub" style="margin-top:5px">${tgl} · ${jam}</div>
+      </div>
+      ${body}
+      <div style="text-align:center;font-size:10px;color:#aaa;margin-top:20px;padding-top:16px;border-top:1px solid #eee">
+        Dicetak ${tgl} pukul ${jam} · ${area}${nama ? ' · ' + nama : ''}${nik ? ' · NIK ' + nik : ''}
+      </div>
+      <div class="no-print" style="text-align:center;margin-top:16px">
+        <button onclick="window.print()" style="padding:12px 32px;background:#111;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">
+          🖨️ Print / Save PDF
+        </button>
+      </div>
+    </div>
+  </body></html>`;
+  const __blob = new Blob([__htmlContent], {type:'text/html'});
+  const __url  = URL.createObjectURL(__blob);
+  const __a    = document.createElement('a');
+  __a.href     = __url;
+  __a.target   = '_blank';
+  __a.rel      = 'noopener';
+  document.body.appendChild(__a);
+  __a.click();
+  document.body.removeChild(__a);
+  setTimeout(()=> URL.revokeObjectURL(__url), 15000);
+}
 
 function initSOP(){
   const root = g('sop-root');
