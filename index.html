@@ -1524,7 +1524,7 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       </div>
     </div>
   </button>
-  <button class="role-btn staff" onclick="showScreen('sc-pin-staff')">
+  <button class="role-btn staff" onclick="showScreen('sc-pin-staff');initFingerprintUI()">
     <div class="rb-ico" style="background:rgba(62,207,142,0.12)">👤</div>
     <div>
       <div class="rb-title">Staff</div>
@@ -1599,6 +1599,16 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
         <button class="pk" onclick="pinStaff('0')">0</button>
         <button class="pk sm" onclick="delPinStaff()">⌫</button>
       </div>
+      <!-- Fingerprint button -->
+      <div id="fp-btn-wrap" style="margin-top:14px;display:none">
+        <button onclick="loginSidikJari()" style="width:100%;background:var(--s3);border:1.5px solid var(--border2);border-radius:12px;padding:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sans);color:var(--text);font-size:13px;font-weight:700;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green)';this.style.background='rgba(62,207,142,0.07)'" onmouseout="this.style.borderColor='var(--border2)';this.style.background='var(--s3)'">
+          <span style="font-size:24px">🫆</span> Masuk dengan Sidik Jari
+        </button>
+        <div style="margin-top:8px;text-align:center">
+          <span onclick="daftarSidikJari()" style="font-size:11px;color:var(--muted2);cursor:pointer;font-family:var(--mono);text-decoration:underline;opacity:0.7">+ Daftarkan sidik jari perangkat ini</span>
+        </div>
+      </div>
+      <div id="fp-not-supported" style="margin-top:10px;text-align:center;font-size:11px;color:var(--muted);font-family:var(--mono);display:none">⚠️ Perangkat tidak mendukung sidik jari</div>
       <div class="pin-err" id="pin-err-staff"></div>
     </div>
   </div>
@@ -1922,13 +1932,21 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
         </div>
         <div style="font-size:11px;color:var(--orange);font-family:var(--mono);margin-top:4px">Pemakaian: <span id="p_simple_pakai">Rp 0</span></div>
       </div>
-      <div style="background:var(--s3);border-radius:10px;padding:10px">
+      <div style="background:var(--s3);border-radius:10px;padding:10px;margin-bottom:8px">
         <div style="font-size:11px;font-weight:700;margin-bottom:8px">🔵 BCA Xpresi</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
           <div class="field"><label>Saldo awal</label><input type="text" inputmode="decimal" class="finp" id="p_bcax_awal" placeholder="0" oninput="cl_calc()" style="font-size:12px;padding:8px"></div>
           <div class="field"><label>Saldo closing</label><input type="text" inputmode="decimal" class="finp" id="p_bcax_close" placeholder="0" oninput="cl_calc()" style="font-size:12px;padding:8px"></div>
         </div>
         <div style="font-size:11px;color:var(--orange);font-family:var(--mono);margin-top:4px">Pemakaian: <span id="p_bcax_pakai">Rp 0</span></div>
+      </div>
+      <div style="background:var(--s3);border-radius:10px;padding:10px">
+        <div style="font-size:11px;font-weight:700;margin-bottom:8px">🟠 Rembo</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="field"><label>Saldo awal</label><input type="text" inputmode="decimal" class="finp" id="p_rembo_awal" placeholder="0" oninput="cl_calc()" style="font-size:12px;padding:8px"></div>
+          <div class="field"><label>Saldo closing</label><input type="text" inputmode="decimal" class="finp" id="p_rembo_close" placeholder="0" oninput="cl_calc()" style="font-size:12px;padding:8px"></div>
+        </div>
+        <div style="font-size:11px;color:var(--orange);font-family:var(--mono);margin-top:4px">Pemakaian: <span id="p_rembo_pakai">Rp 0</span></div>
       </div>
       <div class="divider"></div>
       <div class="rrow" style="font-weight:700"><span class="rl">Total pemakaian Pos 2</span><span class="rv co" id="p_dig_tot">Rp 0</span></div>
@@ -3260,21 +3278,7 @@ function pinStaff(k){
   updDots('staff');
   if(pinBuf.staff.length === 6){
     if(pinBuf.staff === STAFF_PIN){
-      setTimeout(() => {
-        const nikVal = vs('si-nik') || '';
-        staffInfo = {nama, shift, area: vs('si-lokasi') || APP_AREA, nik: nikVal};
-        role = 'staff';
-        g('s-hdr-nama').textContent = nama;
-        g('s-hdr-sub').textContent  = '📍 ' + APP_AREA + ' • Shift ' + shift;
-        // NIK badge di header
-        const nikBadge = g('s-hdr-nik-badge');
-        if(nikBadge){
-          if(nikVal){ nikBadge.textContent = 'NIK ' + nikVal; nikBadge.style.display = 'inline-flex'; }
-          else { nikBadge.style.display = 'none'; }
-        }
-        initStaff();
-        showScreen('sc-staff');
-      }, 200);
+      setTimeout(() => { _masukStaff(); }, 200);
     } else {
       setTimeout(() => {
         g('pin-err-staff').textContent = 'PIN salah 🔒';
@@ -3288,6 +3292,116 @@ function delPinStaff(){
   pinBuf.staff = pinBuf.staff.slice(0, -1);
   updDots('staff');
   g('pin-err-staff').textContent = '';
+}
+
+// ===== WEBAUTHN SIDIK JARI =====
+const FP_KEY = 'sc_fp_cred'; // localStorage key untuk credential id
+
+function _masukStaff(){
+  // fungsi shared: setelah auth berhasil (PIN atau fingerprint), masuk ke app
+  const nama  = vs('si-nama');
+  const shift = vs('si-shift');
+  const nikVal = vs('si-nik') || '';
+  staffInfo = {nama, shift, area: vs('si-lokasi') || APP_AREA, nik: nikVal};
+  role = 'staff';
+  g('s-hdr-nama').textContent = nama;
+  g('s-hdr-sub').textContent  = '📍 ' + APP_AREA + ' • Shift ' + shift;
+  const nikBadge = g('s-hdr-nik-badge');
+  if(nikBadge){
+    if(nikVal){ nikBadge.textContent = 'NIK ' + nikVal; nikBadge.style.display = 'inline-flex'; }
+    else { nikBadge.style.display = 'none'; }
+  }
+  initStaff();
+  showScreen('sc-staff');
+}
+
+function _fpErr(msg){
+  const el = g('pin-err-staff');
+  if(el) el.textContent = msg;
+}
+
+function _cekFieldsStaff(){
+  if(!vs('si-nama'))   { _fpErr('⚠️ Isi nama dulu!');    return false; }
+  if(!vs('si-shift'))  { _fpErr('⚠️ Pilih shift dulu!'); return false; }
+  if(!vs('si-lokasi')) { _fpErr('⚠️ Isi lokasi dulu!');  return false; }
+  return true;
+}
+
+async function daftarSidikJari(){
+  if(!_cekFieldsStaff()) return;
+  if(!window.PublicKeyCredential){ _fpErr('Browser tidak support WebAuthn'); return; }
+  try {
+    _fpErr('⏳ Menunggu sidik jari...');
+    const challenge = crypto.getRandomValues(new Uint8Array(32));
+    const cred = await navigator.credentials.create({
+      publicKey: {
+        challenge,
+        rp: { name: 'Saudaraku', id: location.hostname || 'localhost' },
+        user: {
+          id: new TextEncoder().encode(vs('si-nama') + '_staff'),
+          name: vs('si-nama'),
+          displayName: vs('si-nama')
+        },
+        pubKeyCredParams: [
+          { type: 'public-key', alg: -7 },
+          { type: 'public-key', alg: -257 }
+        ],
+        authenticatorSelection: {
+          authenticatorAttachment: 'platform',
+          userVerification: 'required'
+        },
+        timeout: 60000
+      }
+    });
+    // Simpan credential id ke localStorage
+    const credId = btoa(String.fromCharCode(...new Uint8Array(cred.rawId)));
+    localStorage.setItem(FP_KEY, credId);
+    _fpErr('');
+    toast('✅ Sidik jari berhasil didaftarkan!');
+  } catch(e) {
+    if(e.name === 'NotAllowedError') _fpErr('Dibatalkan / waktu habis');
+    else _fpErr('Gagal daftar: ' + e.message);
+  }
+}
+
+async function loginSidikJari(){
+  if(!_cekFieldsStaff()) return;
+  if(!window.PublicKeyCredential){ _fpErr('Browser tidak support WebAuthn'); return; }
+  const credId = localStorage.getItem(FP_KEY);
+  if(!credId){ _fpErr('Belum ada sidik jari terdaftar. Tap "Daftarkan" dulu.'); return; }
+  try {
+    _fpErr('⏳ Scan sidik jari...');
+    const challenge = crypto.getRandomValues(new Uint8Array(32));
+    const rawId = Uint8Array.from(atob(credId), c => c.charCodeAt(0));
+    await navigator.credentials.get({
+      publicKey: {
+        challenge,
+        allowCredentials: [{ type: 'public-key', id: rawId }],
+        userVerification: 'required',
+        timeout: 60000
+      }
+    });
+    _fpErr('');
+    setTimeout(_masukStaff, 150);
+  } catch(e) {
+    if(e.name === 'NotAllowedError') _fpErr('Dibatalkan / waktu habis');
+    else _fpErr('Gagal login: ' + e.message);
+  }
+}
+
+// Cek dukungan WebAuthn saat halaman staff PIN dibuka
+function initFingerprintUI(){
+  if(!window.PublicKeyCredential){
+    const el = g('fp-not-supported');
+    if(el) el.style.display = 'block';
+    return;
+  }
+  PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(ok => {
+    const wrap = g('fp-btn-wrap');
+    const notSup = g('fp-not-supported');
+    if(ok && wrap) wrap.style.display = 'block';
+    else if(!ok && notSup) notSup.style.display = 'block';
+  });
 }
 
 // ===== PIN KANIT =====
@@ -3496,7 +3610,7 @@ function chQty(i, d){
 }
 
 // ===== CLOSING CALC =====
-const CL_APPS  = ['digital','digipos','rita','sidiva','simple','bcax'];
+const CL_APPS  = ['digital','digipos','rita','sidiva','simple','bcax','rembo'];
 const CL_BANKS = ['bca','bni','bri','dana'];
 const fmtS     = n => n >= 0 ? '⬆️ + ' + fmt(n) : '⬇️ − ' + fmt(Math.abs(n));
 
@@ -6454,6 +6568,7 @@ function exportPDF(type){
       ['🔷 Sidiva',   fv('p_sidiva_awal'),  fv('p_sidiva_close'),  rv('p_sidiva_pakai')],
       ['💡 Simple',   fv('p_simple_awal'),  fv('p_simple_close'),  rv('p_simple_pakai')],
       ['🔵 BCA Xpresi',fv('p_bcax_awal'),  fv('p_bcax_close'),    rv('p_bcax_pakai')],
+      ['🟠 Rembo',     fv('p_rembo_awal'), fv('p_rembo_close'),   rv('p_rembo_pakai')],
     ].filter(x=>x[1]||x[2]);
 
     body = `
@@ -6750,7 +6865,6 @@ function initSOP(){
         <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Buka gembok/rolling door, cek kondisi toko</span><span class="sp-time">07.30</span></li>
         <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Nyalakan lampu, kipas/AC, dan display</span><span class="sp-time">07.35</span></li>
         <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Bersihkan meja counter dan etalase</span><span class="sp-time">07.40</span></li>
-        <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Cek stok display aksesori — rapikan jika berantakan</span><span class="sp-time">07.45</span></li>
       </ul>
       <div class="sp-section">Persiapan BRILink</div>
       <ul class="sp-list">
@@ -6770,6 +6884,14 @@ function initSOP(){
         <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Kirim foto/pesan saldo awal BRILink ke grup WhatsApp pusat</span><span class="sp-time">08.10</span></li>
         <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Konfirmasi toko sudah buka dan siap operasi</span><span class="sp-time">08.12</span></li>
       </ul>
+      <div class="sp-section">Atur Display Perdana &amp; Voucher</div>
+      <ul class="sp-list">
+        <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Ambil stok perdana &amp; voucher dari tempat penyimpanan — hitung sesuai catatan kemarin</span><span class="sp-time">07.42</span></li>
+        <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Susun perdana di etalase: <b>Telkomsel atas</b>, Indosat tengah, XL/Axis bawah — urut dari kiri ke kanan per operator</span><span class="sp-time">07.44</span></li>
+        <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Voucher nominal kecil di depan/atas, nominal besar di belakang/bawah — biar yang sering dibeli gampang diambil</span><span class="sp-time">07.46</span></li>
+        <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Cek label harga — pastikan setiap jenis ada label, tidak kosong atau tertutup</span><span class="sp-time">07.48</span></li>
+        <li onclick="sopCheck(this,'buka')"><span class="sp-chk"></span><span>Foto kondisi etalase display — kirim ke grup WA pusat sebagai bukti kerapian buka toko</span><span class="sp-time">07.49</span></li>
+      </ul>
       <div class="sp-ctrl">
         <button class="sp-btn prim" onclick="sopReset('sop-buka','buka')">🔄 Reset</button>
         <button class="sp-btn" onclick="sopCheckAll('sop-buka','buka')">✅ Semua</button>
@@ -6778,6 +6900,108 @@ function initSOP(){
       <div class="sp-prog-wrap"><div class="sp-prog-fill" id="sop-bar-buka" style="background:#3ecf8e;width:0%"></div></div>
     </div>
   </div>
+
+  <!-- PLANOGRAM EDU CARD -->
+  <div class="sp-card" style="border-color:rgba(245,166,35,0.3);background:linear-gradient(135deg,#16161f,#1a1620)">
+    <div class="sp-card-title"><span class="sp-ico" style="background:rgba(245,166,35,0.18);font-size:15px">🗂️</span> Tutorial Planogram Etalase</div>
+
+    <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#f5a623;line-height:1.6">
+      <b>Planogram</b> = aturan tata letak produk di etalase supaya pelanggan mudah melihat, memilih, dan membeli. Outlet yang rapih = kesan profesional = kepercayaan pelanggan naik.
+    </div>
+
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:#f5a623;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px">📐 Prinsip Dasar</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+      <div style="background:#1c1c2c;border-radius:8px;padding:10px;font-size:12px;line-height:1.5">
+        <div style="font-size:16px;margin-bottom:4px">👁️</div>
+        <div style="font-weight:700;margin-bottom:3px">Eye Level = Buy Level</div>
+        <div style="color:#8888a8;font-size:11px">Produk best-seller taruh setinggi mata pembeli (~130–160 cm)</div>
+      </div>
+      <div style="background:#1c1c2c;border-radius:8px;padding:10px;font-size:12px;line-height:1.5">
+        <div style="font-size:16px;margin-bottom:4px">⬅️</div>
+        <div style="font-weight:700;margin-bottom:3px">Kiri ke Kanan</div>
+        <div style="color:#8888a8;font-size:11px">Mata orang baca dari kiri. Taruh promo/produk unggulan di sisi kiri etalase</div>
+      </div>
+      <div style="background:#1c1c2c;border-radius:8px;padding:10px;font-size:12px;line-height:1.5">
+        <div style="font-size:16px;margin-bottom:4px">🏷️</div>
+        <div style="font-weight:700;margin-bottom:3px">Label Harga Wajib</div>
+        <div style="color:#8888a8;font-size:11px">Tanpa label = pelanggan ragu-ragu dan malu nanya. Label = closing lebih mudah</div>
+      </div>
+      <div style="background:#1c1c2c;border-radius:8px;padding:10px;font-size:12px;line-height:1.5">
+        <div style="font-size:16px;margin-bottom:4px">📦</div>
+        <div style="font-weight:700;margin-bottom:3px">Stok Terisi Penuh</div>
+        <div style="color:#8888a8;font-size:11px">Etalase kosong = kesan toko sepi. Isi selalu, meski pakai dummy/display box</div>
+      </div>
+    </div>
+
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:#f5a623;letter-spacing:0.15em;text-transform:uppercase;margin:14px 0 10px">📱 Tata Letak Perdana di Etalase</div>
+    <div style="background:#12121e;border:1px solid #252535;border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="color:#8888a8;font-size:11px;font-family:'DM Mono',monospace">BARIS ATAS (Eye Level)</span>
+        <span style="background:rgba(224,48,80,0.15);color:#e03050;font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:20px">TELKOMSEL</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px">
+        <div style="background:rgba(224,48,80,0.1);border:1px solid rgba(224,48,80,0.3);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;font-weight:700;color:#e03050">Simpati<br><span style="font-size:9px;font-weight:400;color:#8888a8">reguler</span></div>
+        <div style="background:rgba(224,48,80,0.1);border:1px solid rgba(224,48,80,0.3);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;font-weight:700;color:#e03050">AS<br><span style="font-size:9px;font-weight:400;color:#8888a8">reguler</span></div>
+        <div style="background:rgba(224,48,80,0.1);border:1px solid rgba(224,48,80,0.3);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;font-weight:700;color:#e03050">Loop<br><span style="font-size:9px;font-weight:400;color:#8888a8">data</span></div>
+        <div style="background:rgba(245,166,35,0.12);border:1px dashed rgba(245,166,35,0.4);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;color:#f5a623">PROMO<br><span style="font-size:9px">&#9733; terlaris</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="color:#8888a8;font-size:11px;font-family:'DM Mono',monospace">BARIS TENGAH</span>
+        <span style="background:rgba(245,166,35,0.12);color:#f5a623;font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:20px">INDOSAT · XL</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px">
+        <div style="background:rgba(245,166,35,0.07);border:1px solid rgba(245,166,35,0.25);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;font-weight:700;color:#f5a623">IM3<br><span style="font-size:9px;font-weight:400;color:#8888a8">reguler</span></div>
+        <div style="background:rgba(245,166,35,0.07);border:1px solid rgba(245,166,35,0.25);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;font-weight:700;color:#f5a623">Tri<br><span style="font-size:9px;font-weight:400;color:#8888a8">reguler</span></div>
+        <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.25);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;font-weight:700;color:#60a5fa">XL<br><span style="font-size:9px;font-weight:400;color:#8888a8">reguler</span></div>
+        <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.25);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;font-weight:700;color:#60a5fa">Axis<br><span style="font-size:9px;font-weight:400;color:#8888a8">reguler</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="color:#8888a8;font-size:11px;font-family:'DM Mono',monospace">BARIS BAWAH</span>
+        <span style="background:rgba(62,207,142,0.1);color:#3ecf8e;font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:20px">SLOWMOVE · LAIN</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">
+        <div style="background:rgba(62,207,142,0.06);border:1px solid rgba(62,207,142,0.18);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;color:#3ecf8e">By.U<br><span style="font-size:9px;color:#8888a8">data</span></div>
+        <div style="background:rgba(62,207,142,0.06);border:1px solid rgba(62,207,142,0.18);border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;color:#3ecf8e">Sfren<br><span style="font-size:9px;color:#8888a8">data</span></div>
+        <div style="background:#1c1c2c;border:1px solid #252535;border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;color:#5a5a72">Slot<br><span style="font-size:9px">kosong</span></div>
+        <div style="background:#1c1c2c;border:1px solid #252535;border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;color:#5a5a72">Slot<br><span style="font-size:9px">kosong</span></div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:#5a5a72;text-align:center;font-family:'DM Mono',monospace">&larr; kiri (promo) &middot; &middot; &middot; &middot; &middot; &middot; kanan (pelengkap) &rarr;</div>
+    </div>
+
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:#f5a623;letter-spacing:0.15em;text-transform:uppercase;margin:14px 0 10px">🎫 Tata Letak Voucher di Etalase</div>
+    <div style="background:#12121e;border:1px solid #252535;border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div>
+          <div style="color:#8888a8;font-size:10px;font-family:'DM Mono',monospace;margin-bottom:6px">DEPAN / ATAS</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="background:rgba(224,48,80,0.1);border:1px solid rgba(224,48,80,0.25);border-radius:6px;padding:5px 8px;font-size:11px;font-weight:700;color:#e03050">Rp 5.000 – 25.000 ⭐</div>
+            <div style="background:rgba(224,48,80,0.07);border:1px solid rgba(224,48,80,0.2);border-radius:6px;padding:5px 8px;font-size:11px;color:#e03050">Rp 50.000</div>
+          </div>
+        </div>
+        <div>
+          <div style="color:#8888a8;font-size:10px;font-family:'DM Mono',monospace;margin-bottom:6px">BELAKANG / BAWAH</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="background:rgba(62,207,142,0.06);border:1px solid rgba(62,207,142,0.18);border-radius:6px;padding:5px 8px;font-size:11px;color:#3ecf8e">Rp 100.000</div>
+            <div style="background:rgba(62,207,142,0.06);border:1px solid rgba(62,207,142,0.18);border-radius:6px;padding:5px 8px;font-size:11px;color:#3ecf8e">Rp 200.000+</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px;background:rgba(245,166,35,0.07);border-radius:6px;padding:8px 10px;font-size:11px;color:#f5a623;line-height:1.6">
+        💡 <b>Tips:</b> Nominal kecil di depan karena paling sering dibeli. Pisahkan voucher Telkomsel, Indosat, XL per kolom supaya pelanggan tidak bingung.
+      </div>
+    </div>
+
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:#f5a623;letter-spacing:0.15em;text-transform:uppercase;margin:14px 0 10px">✅ Do &amp; ❌ Don't</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:4px">
+      <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5"><span style="color:#3ecf8e;flex-shrink:0;font-weight:700">✅</span><span>Susun per operator, per warna — pelanggan langsung tahu tanpa nanya</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5"><span style="color:#3ecf8e;flex-shrink:0;font-weight:700">✅</span><span>Ganti/perbaiki label harga yang pudar atau lepas setiap pagi</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5"><span style="color:#3ecf8e;flex-shrink:0;font-weight:700">✅</span><span>Produk dengan margin tinggi → taruh paling depan / eye level</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5"><span style="color:#e03050;flex-shrink:0;font-weight:700">❌</span><span>Jangan campur aduk operator dalam satu slot — bikin bingung pelanggan</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5"><span style="color:#e03050;flex-shrink:0;font-weight:700">❌</span><span>Jangan biarkan etalase terlihat kosong — isi pakai dummy atau karton display</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5"><span style="color:#e03050;flex-shrink:0;font-weight:700">❌</span><span>Jangan taruh produk slow-move di posisi paling menonjol — buang peluang penjualan</span></div>
+    </div>
+  </div>
+</div>
 
   <!-- TUTUP -->
   <div class="sp-panel" id="sop-tutup">
@@ -9034,6 +9258,7 @@ kirimClosing = async function() {
     gv('p_rita_awal'), gv('p_rita_close'),
     gv('p_sidiva_awal'), gv('p_sidiva_close'),
     gv('p_bcax_awal'), gv('p_bcax_close'),
+    gv('p_rembo_awal'), gv('p_rembo_close'),
     // Pengeluaran
     gv('p_makan'),                // Makan
     gv('p_lainlain'),             // Lain-lain
@@ -9059,7 +9284,7 @@ function exportCSV(type) {
       'Sfren Nom,Sfren N,Indosat Nom,Indosat N,Total Nom,Total N,' +
       'BCA Awal,BCA Akhir,BNI Awal,BNI Akhir,BRI Awal,BRI Akhir,Dana Awal,Dana Akhir,' +
       'Digital Awal,Digital Akhir,Digipos Awal,Digipos Akhir,Rita Awal,Rita Akhir,' +
-      'Sidiva Awal,Sidiva Akhir,BCA-X Awal,BCA-X Akhir,' +
+      'Sidiva Awal,Sidiva Akhir,BCA-X Awal,BCA-X Akhir,Rembo Awal,Rembo Akhir,' +
       'Makan,Lain-lain,Keterangan,Omset\n';
     csv = header;
     rows.forEach(r => r.rows.forEach(row => { csv += row.map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',') + '\n'; }));
