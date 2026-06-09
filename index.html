@@ -1978,19 +1978,13 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
     <div class="stit">7️⃣ Setoran & Rekonsiliasi Kas</div>
     <div class="card" id="setoran-card">
 
-      <!-- FIELD: CUSTOMER BAYAR VIA TRANSFER -->
-      <div style="background:var(--s3);border:1px solid rgba(48,96,192,0.3);border-radius:12px;padding:14px;margin-bottom:12px">
-        <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px">📲 Customer Bayar via Transfer</div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px;line-height:1.6">Jumlah total penjualan yang dibayar customer via transfer/QRIS.<br>Sudah termasuk di Cash Penjualan, tapi uangnya masuk rekening — bukan laci.</div>
-        <input type="text" inputmode="decimal" class="finp" id="p_cust_transfer" placeholder="Contoh: 200.000" oninput="fmtInput(this);cl_calc_setor()" style="font-size:14px;font-family:var(--mono)">
-      </div>
-
       <!-- A: CASH FISIK OTOMATIS -->
       <div style="background:linear-gradient(135deg,rgba(245,208,32,0.07),rgba(245,208,32,0.02));border:1px solid rgba(245,208,32,0.22);border-radius:12px;padding:14px;margin-bottom:12px">
         <div style="font-size:11px;font-weight:700;color:var(--yellow);margin-bottom:4px">💵 Total Cash Fisik di Tangan</div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px">Dihitung otomatis: Cash Pagi + Cash Penjualan + Fee BriLink − Bayar Transfer</div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px">Dihitung otomatis: Cash Pagi + Cash Penjualan</div>
         <div style="font-size:24px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="p_cash_fisik_auto">Rp 0</div>
         <input type="hidden" id="p_cash_fisik_manual" value="">
+        <input type="hidden" id="p_cust_transfer" value="0">
       </div>
 
       <!-- B: MODAL BRANKAS KEMBALI — INPUT MANUAL -->
@@ -2011,27 +2005,23 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       <div style="background:linear-gradient(135deg,rgba(245,208,32,0.1),rgba(245,208,32,0.03));border:1px solid rgba(245,208,32,0.3);border-radius:12px;padding:12px 14px;margin-bottom:8px">
         <div style="font-size:9px;font-weight:700;color:var(--yellow);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">💵 Total Cash Fisik di Tangan</div>
         <div style="font-size:26px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="setor_cash_fisik_alert">Rp 0</div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">Cash Pagi + Penjualan − Bayar Transfer</div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">Cash Pagi + Penjualan − Tarik Tunai</div>
       </div>
 
       <!-- C: BREAKDOWN SETORAN -->
       <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:12px">
         <div style="font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">📊 Rincian Setoran</div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
-          <span style="color:var(--muted2)">💵 Cash Pagi + Penjualan + Fee BriLink</span>
+          <span style="color:var(--muted2)">💵 Cash Pagi + Penjualan</span>
           <span style="font-family:var(--mono);font-weight:700;color:var(--green)" id="setor_cash_fisik">Rp 0</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
-          <span style="color:var(--muted2)">− Bayar via Transfer</span>
-          <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="setor_cust_transfer">Rp 0</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
-          <span style="color:var(--muted2)">− Modal Brankas Kembali</span>
-          <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="setor_modal">Rp 0</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
           <span style="color:var(--muted2)">− Tarik Tunai</span>
           <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="setor_tarik">Rp 0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span style="color:var(--muted2)">− Modal Brankas Kembali</span>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="setor_modal">Rp 0</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
           <span style="color:var(--muted2)">− Pengeluaran</span>
@@ -2044,6 +2034,7 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       </div>
       <!-- hidden ids -->
       <span id="setor_transfer" style="display:none">0</span>
+      <span id="setor_cust_transfer" style="display:none">0</span>
 
       <!-- D: TOMBOL PROSES & HITUNG -->
       <button onclick="cl_prosesHitung()"
@@ -2126,23 +2117,21 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
 
           <!-- Kas Masuk -->
           <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:8px">
-            <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:0.5px;margin-bottom:10px">📥 OMSET / KAS MASUK</div>
+            <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:0.5px;margin-bottom:10px">📥 KAS MASUK</div>
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">Cash Penjualan <span style="font-size:9px">(tunai + bayar tf + digital)</span></span>
+              <span style="color:var(--muted2)">Cash Pagi</span>
+              <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_pagi_val">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+              <span style="color:var(--muted2)">Cash Penjualan</span>
               <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_penjualan">—</span>
             </div>
-            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">Fee Komisi BRILink Transfer</span>
-              <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_transfer">—</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">− Bayar via Transfer (customer)</span>
-              <span style="font-family:var(--mono);font-weight:600;color:var(--red)" id="rp_cust_transfer">—</span>
-            </div>
             <div style="display:flex;justify-content:space-between;padding:8px 0 0;font-size:12px;font-weight:700">
-              <span>Cash Fisik Masuk ke Laci</span>
+              <span>Total Cash Fisik</span>
               <span style="font-family:var(--mono);color:var(--green)" id="rp_total_masuk">—</span>
             </div>
+            <span id="rp_cash_transfer" style="display:none">0</span>
+            <span id="rp_cust_transfer" style="display:none">0</span>
           </div>
 
           <!-- Kas Keluar -->
@@ -2232,25 +2221,22 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
           <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:14px">
             <div style="font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">📊 Rincian Setoran</div>
             <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">💵 Cash Pagi + Penjualan + Fee BriLink</span>
+              <span style="color:var(--muted2)">💵 Cash Fisik di Tangan</span>
               <span style="font-family:var(--mono);font-weight:700;color:var(--green)" id="popup_cash_fisik">Rp 0</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">− Bayar via Transfer</span>
-              <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="popup_cust_transfer">Rp 0</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">− Modal Brankas Kembali</span>
-              <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="popup_modal">Rp 0</span>
             </div>
             <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
               <span style="color:var(--muted2)">− Tarik Tunai</span>
               <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="popup_tarik">Rp 0</span>
             </div>
             <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
+              <span style="color:var(--muted2)">− Modal Brankas Kembali</span>
+              <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="popup_modal">Rp 0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
               <span style="color:var(--muted2)">− Pengeluaran</span>
               <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="popup_pengeluaran">Rp 0</span>
             </div>
+            <span id="popup_cust_transfer" style="display:none">0</span>
             <div style="display:flex;justify-content:space-between;padding:10px 0 0;font-size:15px;font-weight:800">
               <span>💸 Harus Disetor</span>
               <span style="font-family:var(--mono);color:var(--green)" id="konfirm_nominal_display">Rp 0</span>
@@ -3658,11 +3644,8 @@ function cl_calc(){
   if(pos1Alert) pos1Alert.style.display = pos1Pakai > 0 ? 'block' : 'none';
 
   // ── RINGKASAN KEUANGAN ──────────────────────────────────
-  // Omset = Cash Penjualan saja (pengeluaran TIDAK mengurangi omset — akuntansi dasar)
-  const cashMasukTransferPreview = parseRp(g('p_trx_transfer')?.value) || 0; // untuk setoran
   const sv = (id, val) => { const el = g(id); if(el) el.textContent = fmt(val); };
   sv('prev_cash_jual', cashPenjualan);
-  sv('prev_tf_masuk',  cashMasukTransferPreview);
   // Preview omset diupdate oleh cl_updatePreviewOmset() via cl_hitungTrx()
 
   cl_hitungTrx();
@@ -3753,43 +3736,35 @@ let _omsetTrx   = 0; // total nominal transaksi harian — sumber omset
 
 // Helper: update komponen otomatis (dipanggil dari cl_calc)
 function cl_calc_setor(){
-  const cashPenjualan  = parseRp(g('p_cash')?.value)       || 0;
-  const makan          = parseRp(g('p_makan')?.value)      || 0;
-  const lain           = parseRp(g('p_lainlain')?.value)   || 0;
-  const custTransfer      = parseRp(g('p_cust_transfer')?.value) || 0; // customer bayar via transfer
-  const cashMasukTransfer = parseRp(g('p_trx_transfer')?.value) || 0; // fee komisi BriLink
-  const cashPagi          = parseRp(g('p_cash_pagi')?.value) || 0;
-  const totalPengeluaran  = makan + lain;
-  const modalBrankas2     = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
-  const cashKeluarTarik   = parseRp(g('p_trx_tarik')?.value) || 0;
-  // Harus Setor = Cash Pagi + Cash Penjualan - Tarik Tunai - Bayar Transfer Customer - Modal Brankas - Pengeluaran
-  // (Fee BriLink sudah include di Cash Penjualan)
-  const harusSetor        = cashPagi + cashPenjualan - cashKeluarTarik - custTransfer - modalBrankas2 - totalPengeluaran;
-  // Cash Fisik di tangan = Cash Pagi + Cash Penjualan - Bayar Transfer Customer
-  const cashFisikTotal    = cashPagi + cashPenjualan - custTransfer;
+  const cashPenjualan    = parseRp(g('p_cash')?.value)                  || 0;
+  const cashPagi         = parseRp(g('p_cash_pagi')?.value)             || 0;
+  const makan            = parseRp(g('p_makan')?.value)                 || 0;
+  const lain             = parseRp(g('p_lainlain')?.value)              || 0;
+  const totalPengeluaran = makan + lain;
+  const modalBrankas2    = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
+  const cashKeluarTarik  = parseRp(g('p_trx_tarik')?.value)            || 0;
+
+  // Cash Fisik = Cash Pagi + Cash Penjualan
+  // Harus Setor = Cash Fisik − Tarik Tunai − Modal Brankas − Pengeluaran
+  const cashFisikTotal   = cashPagi + cashPenjualan;
+  const harusSetor       = cashFisikTotal - cashKeluarTarik - modalBrankas2 - totalPengeluaran;
 
   // Update display otomatis cash fisik
   const elAuto = g('p_cash_fisik_auto');
   if(elAuto) elAuto.textContent = fmt(cashFisikTotal);
 
-  // Update display komponen otomatis
-  s('setor_cash_fisik',       fmt(cashPagi + cashPenjualan));
+  // Update display komponen setoran
+  s('setor_cash_fisik',       fmt(cashFisikTotal));
   s('setor_cash_fisik_alert', fmt(cashFisikTotal));
-  s('setor_cust_transfer',    fmt(custTransfer));
   s('setor_modal',            fmt(modalBrankas2));
   s('setor_tarik',            fmt(cashKeluarTarik));
   s('setor_pengeluaran',      fmt(totalPengeluaran));
-  s('setor_transfer',         fmt(cashMasukTransfer));
-  s('setor_modal',       fmt(modalBrankas2));
-  s('setor_tarik',       fmt(cashKeluarTarik));
-  s('setor_pengeluaran', fmt(totalPengeluaran));
-  s('setor_transfer',    fmt(cashMasukTransfer));
 
   // Update preview harus setor
   const prevEl = g('setor_btn_nominal_preview');
   if(prevEl) prevEl.textContent = fmt(Math.max(0, harusSetor));
 
-  // Update tombol setor (jika panel setor sudah terbuka)
+  // Update tombol setor
   const btnNom  = g('setor_btn_nominal');
   const mainBtn = g('setor_nominal_btn');
   if(btnNom)  btnNom.textContent  = fmt(Math.max(0, harusSetor));
@@ -3797,7 +3772,7 @@ function cl_calc_setor(){
 
   // Hidden span refs untuk kirimClosing
   const fCJ = g('f_cash_jual');   if(fCJ)  fCJ.textContent = fmt(cashPenjualan);
-  const fCT = g('f_cash_tf');     if(fCT)  fCT.textContent = fmt(cashMasukTransfer);
+  const fCT = g('f_cash_tf');     if(fCT)  fCT.textContent = fmt(0);
   const fP  = g('f_pengeluaran'); if(fP)   fP.textContent  = fmt(totalPengeluaran);
   const fH  = g('f_hasil_setor'); if(fH)   fH.textContent  = fmt(harusSetor);
 }
@@ -3817,44 +3792,38 @@ function cl_hint_brankas(){
 
 // ── PROSES & HITUNG → buka popup detail ──
 function cl_prosesHitung(){
-  const cashPenjualan  = parseRp(g('p_cash')?.value)        || 0;
-  const makan          = parseRp(g('p_makan')?.value)       || 0;
-  const lain           = parseRp(g('p_lainlain')?.value)    || 0;
-  const modalBrankas   = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
-  const cashPagi       = parseRp(g('p_cash_pagi')?.value) || 0;
-  const cashFisik      = cashPagi + cashPenjualan - (parseRp(g('p_cust_transfer')?.value) || 0);
-  const hasCashFisik   = true;
-
-  const cashMasukTransfer = parseRp(g('p_trx_transfer')?.value) || 0; // fee komisi BriLink
-  const custTransfer      = parseRp(g('p_cust_transfer')?.value) || 0; // bayar via transfer customer
-  const cashTransfer      = cashMasukTransfer;
-  // Cash fisik masuk ke laci = Cash Penjualan - Bayar Transfer Customer (fee BriLink sudah include di cashPenjualan)
-  const totalMasuk        = cashPenjualan - custTransfer;
+  const cashPenjualan     = parseRp(g('p_cash')?.value)                  || 0;
+  const makan             = parseRp(g('p_makan')?.value)                 || 0;
+  const lain              = parseRp(g('p_lainlain')?.value)              || 0;
+  const modalBrankas      = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
+  const cashPagi          = parseRp(g('p_cash_pagi')?.value)             || 0;
+  const cashKeluarTarik3  = parseRp(g('p_trx_tarik')?.value)            || 0;
+  const custTransfer      = 0; // tidak dipakai — cash penjualan dari hitung fisik laci
   const totalKeluar       = makan + lain;
-  const cashKeluarTarik3  = parseRp(g('p_trx_tarik')?.value) || 0;
-  // Harus Setor = Cash Pagi + Cash Penjualan - Tarik Tunai - Bayar Transfer Customer - Modal Brankas - Pengeluaran
-  // (fee BriLink sudah include di cashPenjualan)
-  const harusSetor        = cashPagi + cashPenjualan - cashKeluarTarik3 - custTransfer - modalBrankas - totalKeluar;
-  // Cash fisik di tangan = Cash Pagi + Cash Penjualan - Bayar Transfer Customer
-  const cashFisikTotal3   = cashPagi + cashPenjualan - custTransfer;
-  const ekspektasi        = modalBrankas + harusSetor;
-  const selisihFisik      = hasCashFisik ? (cashFisik - ekspektasi) : null;
-  const sisaAkhir         = hasCashFisik
-    ? cashFisik - modalBrankas - harusSetor
-    : ekspektasi - modalBrankas - harusSetor;
+
+  // Cash Fisik = Cash Pagi + Cash Penjualan
+  // Harus Setor = Cash Fisik − Tarik Tunai − Modal Brankas − Pengeluaran
+  const cashFisikTotal3  = cashPagi + cashPenjualan;
+  const harusSetor       = cashFisikTotal3 - cashKeluarTarik3 - modalBrankas - totalKeluar;
+  const ekspektasi       = modalBrankas + harusSetor;
+  const cashFisik        = cashFisikTotal3;
+  const hasCashFisik     = true;
+  const selisihFisik     = cashFisik - ekspektasi;
+  const sisaAkhir        = cashFisik - modalBrankas - harusSetor;
 
   // ── Isi popup ──
   const ts = g('rp_timestamp');
   if(ts){ const now = new Date(); ts.textContent = now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'}) + ' · ' + now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
 
+  s('rp_cash_pagi_val',  fmt(cashPagi));
   s('rp_cash_penjualan', fmt(cashPenjualan));
-  s('rp_cash_transfer',  fmt(cashTransfer));
-  s('rp_cust_transfer',  fmt(custTransfer));
-  s('rp_total_masuk',    fmt(totalMasuk));
+  s('rp_cash_transfer',  '0');
+  s('rp_cust_transfer',  '0');
+  s('rp_total_masuk',    fmt(cashFisikTotal3));
   s('rp_makan',          fmt(makan));
   s('rp_lain',           fmt(lain));
   s('rp_total_keluar',   fmt(totalKeluar));
-  s('rp_fisik_manual',   hasCashFisik ? fmt(cashFisik) : '⚠ Belum diisi');
+  s('rp_fisik_manual',   fmt(cashFisikTotal3));
   s('rp_ekspektasi',     fmt(ekspektasi));
   s('rp_modal_kembali',  modalBrankas > 0 ? fmt(modalBrankas) : '⚠ Belum diisi');
   s('rp_harus_setor',    fmt(Math.max(0, harusSetor)));
@@ -4002,21 +3971,19 @@ function cl_pilihRek(id){
 function cl_bukaPanelSetor(){
   const _pagi   = parseRp(g('p_cash_pagi')?.value) || 0;
   const _jual   = parseRp(g('p_cash')?.value) || 0;
-  const _tf     = parseRp(g('p_trx_transfer')?.value) || 0;
   const _tarik  = parseRp(g('p_trx_tarik')?.value) || 0;
   const _modal  = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
   const _makan  = parseRp(g('p_makan')?.value) || 0;
   const _lain   = parseRp(g('p_lainlain')?.value) || 0;
-  const _custTf = parseRp(g('p_cust_transfer')?.value) || 0;
-  // Harus Setor = Cash Pagi + Cash Penjualan + Fee BriLink - Tarik Tunai - Bayar Transfer Customer - Modal Brankas - Pengeluaran
-  const _fisik     = _pagi + _jual + _tf;
-  const harusSetor = _fisik - _tarik - _custTf - _modal - _makan - _lain;
+  // Cash Fisik = Cash Pagi + Cash Penjualan
+  // Harus Setor = Cash Fisik − Tarik Tunai − Modal Brankas − Pengeluaran
+  const _fisik     = _pagi + _jual;
+  const harusSetor = _fisik - _tarik - _modal - _makan - _lain;
   const inp = g('p_setor_nominal');
   if(inp) inp.value = Math.max(0, harusSetor);
   s('konfirm_nominal_display', fmt(Math.max(0, harusSetor)));
-  const _cashFisikPop = _fisik; // Cash Pagi + Penjualan + Fee BriLink
-  s('popup_cash_fisik',     fmt(_cashFisikPop));
-  s('popup_cust_transfer',  fmt(_custTf));
+  s('popup_cash_fisik',     fmt(_fisik));
+  s('popup_cust_transfer',  fmt(0));
   s('popup_modal',       fmt(_modal));
   s('popup_tarik',       fmt(_tarik));
   s('popup_pengeluaran', fmt(_makan + _lain));
