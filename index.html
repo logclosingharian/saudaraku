@@ -2,8 +2,19 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Saudaraku</title>
+<!-- PWA -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Saudaraku">
+<meta name="application-name" content="Saudaraku">
+<meta name="theme-color" content="#0a0810">
+<meta name="description" content="Aplikasi manajemen toko Saudaraku">
+<link rel="manifest" href="manifest.json">
+<!-- iOS icon fallback (inline SVG as data URL) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230a0810'/%3E%3Crect x='40' y='40' width='432' height='432' rx='60' fill='%2316121f'/%3E%3Ctext x='256' y='320' font-size='240' text-anchor='middle' font-family='sans-serif'%3E🏪%3C/text%3E%3Ctext x='256' y='440' font-size='72' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23e03050'%3ESAUDARAKU%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=DM+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -220,6 +231,31 @@ width:110px;text-align:right;outline:none;}
 background:var(--s2);border:1px solid var(--green);border-radius:14px;
 padding:10px 20px;font-size:13px;color:var(--green);font-weight:600;
 z-index:9999;display:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+
+#wa-reminder-popup{
+  position:fixed;top:0;left:0;right:0;z-index:9995;
+  display:none;align-items:flex-start;justify-content:center;
+  padding:16px 16px 0;pointer-events:none;
+}
+#wa-reminder-popup.on{display:flex;}
+.wa-reminder-box{
+  background:linear-gradient(135deg,rgba(37,211,102,0.18),rgba(18,140,126,0.12));
+  border:1.5px solid rgba(37,211,102,0.55);
+  border-radius:18px;padding:16px 18px;
+  max-width:400px;width:100%;
+  box-shadow:0 8px 40px rgba(37,211,102,0.25),0 2px 12px rgba(0,0,0,0.5);
+  display:flex;align-items:center;gap:14px;
+  pointer-events:all;
+  animation:reminderSlide 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes reminderSlide{from{opacity:0;transform:translateY(-28px)}to{opacity:1;transform:none}}
+.wa-reminder-ico{font-size:34px;flex-shrink:0;animation:reminderBell 0.6s ease 0.3s both;}
+@keyframes reminderBell{0%,100%{transform:rotate(0)}25%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}75%{transform:rotate(-10deg)}}
+.wa-reminder-body{flex:1;min-width:0;}
+.wa-reminder-title{font-size:14px;font-weight:800;color:#25d366;margin-bottom:2px;}
+.wa-reminder-sub{font-size:11px;color:var(--muted2);line-height:1.5;}
+.wa-reminder-close{background:rgba(255,255,255,0.08);border:none;border-radius:50%;
+width:28px;height:28px;color:var(--muted2);cursor:pointer;font-size:14px;flex-shrink:0;}
 
 #mot-modal{position:fixed;inset:0;background:rgba(0,0,0,0.88);
 display:none;align-items:center;justify-content:center;padding:24px;z-index:9998;}
@@ -1475,6 +1511,18 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
 
 <div id="toast"></div>
 
+<!-- WA Reminder Popup -->
+<div id="wa-reminder-popup">
+  <div class="wa-reminder-box">
+    <div class="wa-reminder-ico">⏰</div>
+    <div class="wa-reminder-body">
+      <div class="wa-reminder-title" id="wa-reminder-title">Waktunya kirim WA!</div>
+      <div class="wa-reminder-sub" id="wa-reminder-sub"></div>
+    </div>
+    <button class="wa-reminder-close" onclick="jadwalTutupPopup()">✕</button>
+  </div>
+</div>
+
 <div id="mot-modal">
   <div class="mot-box">
     <div class="mot-emo" id="mot-emo"></div>
@@ -1987,17 +2035,23 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
         <input type="hidden" id="p_cust_transfer" value="0">
       </div>
 
-      <!-- B: MODAL BRANKAS KEMBALI — INPUT MANUAL -->
+      <!-- SETOR TUNAI KE BANK -->
+      <div style="background:var(--s3);border:1px solid rgba(239,68,68,0.25);border-radius:12px;padding:14px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px">🏧 Setor Tunai ke Bank <span style="font-size:9px;font-weight:400;color:var(--muted2)">(opsional)</span></div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px;line-height:1.6">Isi jika ada cash dari laci yang sudah disetor ke bank hari ini.<br>Kosongkan jika tidak ada.</div>
+        <input type="text" inputmode="decimal" class="finp" id="p_setor_bank" placeholder="0" oninput="fmtInput(this);cl_calc_setor()" style="font-size:14px;font-family:var(--mono)">
+      </div>
+
+      <!-- B: MODAL BRANKAS KEMBALI -->
       <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:12px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
           <div style="font-size:11px;font-weight:700;color:var(--muted2)">🏦 Modal Brankas Kembali</div>
           <span id="hint_cash_pagi_badge" style="font-size:9px;background:var(--bs);color:var(--blue);padding:2px 8px;border-radius:8px;font-family:var(--mono);display:none">= Cash Pagi</span>
         </div>
-        <input type="text" inputmode="decimal" class="finp" id="p_modal_brankas_kembali" oninput="fmtInput(this);cl_calc_setor()" placeholder="Contoh: 3.150.000" style="font-size:14px;font-family:var(--mono)" oninput="cl_hint_brankas()">
+        <input type="text" inputmode="decimal" class="finp" id="p_modal_brankas_kembali" oninput="fmtInput(this);cl_calc_setor();cl_hint_brankas()" placeholder="Contoh: 3.150.000" style="font-size:14px;font-family:var(--mono)">
         <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:8px;line-height:1.6">
-          Tentukan sendiri berapa modal yang kembali ke brankas besok.<br>
-          ⚠️ Sudah termasuk recehan <b>Rp 150.000</b> yang menyatu di brankas.<br>
-          Modal ini <b>tidak disetor</b>.
+          Uang yang tetap di brankas untuk modal besok.<br>
+          ⚠️ Sudah termasuk recehan <b>Rp 150.000</b>. Modal ini <b>tidak disetor</b>.
         </div>
       </div>
 
@@ -2005,7 +2059,7 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       <div style="background:linear-gradient(135deg,rgba(245,208,32,0.1),rgba(245,208,32,0.03));border:1px solid rgba(245,208,32,0.3);border-radius:12px;padding:12px 14px;margin-bottom:8px">
         <div style="font-size:9px;font-weight:700;color:var(--yellow);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">💵 Total Cash Fisik di Tangan</div>
         <div style="font-size:26px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="setor_cash_fisik_alert">Rp 0</div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">Cash Pagi + Penjualan − Tarik Tunai</div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">Cash Pagi + Cash Penjualan</div>
       </div>
 
       <!-- C: BREAKDOWN SETORAN -->
@@ -2015,8 +2069,12 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
           <span style="color:var(--muted2)">💵 Cash Pagi + Penjualan</span>
           <span style="font-family:var(--mono);font-weight:700;color:var(--green)" id="setor_cash_fisik">Rp 0</span>
         </div>
+        <div id="setor_ambil_bank_row" style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span style="color:var(--muted2)">+ Ambil dari Bank</span>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--green)" id="setor_ambil_bank">Rp 0</span>
+        </div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
-          <span style="color:var(--muted2)">− Tarik Tunai</span>
+          <span style="color:var(--muted2)">− Sudah Setor ke Bank</span>
           <span style="font-family:var(--mono);font-weight:700;color:var(--red)" id="setor_tarik">Rp 0</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
@@ -2525,7 +2583,7 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
       <div class="hr-menu-btn" onclick="hrTab('slipgaji')"><div class="hr-ico">💰</div><div class="hr-lbl">Slip Gaji</div></div>
       <div class="hr-menu-btn" onclick="hrTab('reimburse')"><div class="hr-ico">🧾</div><div class="hr-lbl">Reimburse</div></div>
       <div class="hr-menu-btn" onclick="hrTab('danadrt')"><div class="hr-ico">🛡️</div><div class="hr-lbl">Dana Darurat</div></div>
-      <div class="hr-menu-btn" onclick="hrTab('bonus')"><div class="hr-ico">🏆</div><div class="hr-lbl">Bonus</div></div>
+      <div class="hr-menu-btn" onclick="hrTab('pelanggan')"><div class="hr-ico">⭐</div><div class="hr-lbl">Pelanggan</div></div>
     </div>
 
     <!-- ─── ABSENSI ─── -->
@@ -2760,6 +2818,343 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
         </div>
         <div id="bonus-punishment"></div>
       </div>
+
+    </div>
+
+    <!-- ─── PELANGGAN PRIORITAS ─── -->
+    <div class="hr-panel" id="hr-pelanggan" style="display:none">
+      <div class="hr-panel-hdr" onclick="hrTab(null)">← Pelanggan Prioritas</div>
+
+      <!-- TEMPLATE BROADCAST -->
+      <div class="card">
+        <div class="ctit">📣 Template Broadcast</div>
+        <div style="font-size:10px;color:var(--muted2);margin-bottom:12px;line-height:1.6">
+          Ganti <b style="color:var(--yellow)">[Nama]</b>, <b style="color:var(--yellow)">[cabang]</b>, <b style="color:var(--yellow)">[jam]</b> sebelum kirim.
+          Tap <b style="color:var(--green)">Salin</b> → paste ke WA Business.
+        </div>
+
+        <!-- Tab switcher -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px">
+          <button id="tpl-tab-brilink" onclick="plgTabTemplate('brilink')"
+            style="padding:10px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--green);background:var(--gs);color:var(--green);transition:all 0.2s">
+            💳 BRILink
+          </button>
+          <button id="tpl-tab-servis" onclick="plgTabTemplate('servis')"
+            style="padding:10px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--s3);color:var(--muted2);transition:all 0.2s">
+            🔧 Servis HP
+          </button>
+        </div>
+
+        <!-- Funnel guide -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:14px;text-align:center">
+          <div style="background:rgba(62,207,142,0.07);border:1px solid rgba(62,207,142,0.2);border-radius:8px;padding:8px">
+            <div style="font-size:16px">🌱</div>
+            <div style="font-size:9px;font-weight:700;color:var(--green)">TOFU</div>
+            <div style="font-size:9px;color:var(--muted2)">Baru kenal</div>
+          </div>
+          <div style="background:rgba(48,96,192,0.07);border:1px solid rgba(48,96,192,0.2);border-radius:8px;padding:8px">
+            <div style="font-size:16px">🔥</div>
+            <div style="font-size:9px;font-weight:700;color:var(--blue)">MOFU</div>
+            <div style="font-size:9px;color:var(--muted2)">Sudah kenal</div>
+          </div>
+          <div style="background:rgba(224,48,80,0.07);border:1px solid rgba(224,48,80,0.2);border-radius:8px;padding:8px">
+            <div style="font-size:16px">⚡</div>
+            <div style="font-size:9px;font-weight:700;color:var(--accent)">BOFU</div>
+            <div style="font-size:9px;color:var(--muted2)">Siap action</div>
+          </div>
+        </div>
+
+        <!-- ══ BRILink Templates ══ -->
+        <div id="tpl-panel-brilink">
+
+          <!-- TOFU BRILink -->
+          <div style="background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div>
+                <span style="font-size:10px;font-weight:700;background:var(--gs);color:var(--green);padding:2px 8px;border-radius:6px">🌱 TOFU</span>
+                <span style="font-size:10px;color:var(--muted2);margin-left:6px">Tanam benih, jangan jualan</span>
+              </div>
+              <button onclick="plgSalinTemplate('brilink-tofu')" style="background:var(--gs);border:1px solid rgba(62,207,142,0.3);border-radius:8px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--green);cursor:pointer;flex-shrink:0">Salin</button>
+            </div>
+            <div id="tpl-brilink-tofu" style="font-size:12px;color:var(--muted2);font-family:var(--mono);line-height:1.9;white-space:pre-wrap">Kak [Nama] 👋
+
+Bukan mau nawarin apa-apa —
+cuma mau kenalan aja 😊
+
+Kami Saudara Cell [cabang],
+dan Kakak kami catat sebagai
+pelanggan prioritas kami ⭐
+
+Kalau kapanpun butuh tarik tunai
+atau transfer tapi lagi nggak mau ribet —
+kami di sini 🙏
+
+Salam,
+Saudara Cell [cabang]</div>
+          </div>
+
+          <!-- MOFU BRILink -->
+          <div style="background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div>
+                <span style="font-size:10px;font-weight:700;background:var(--bs);color:var(--blue);padding:2px 8px;border-radius:6px">🔥 MOFU</span>
+                <span style="font-size:10px;color:var(--muted2);margin-left:6px">Sentuh frustrasi ATM</span>
+              </div>
+              <button onclick="plgSalinTemplate('brilink-mofu')" style="background:var(--gs);border:1px solid rgba(62,207,142,0.3);border-radius:8px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--green);cursor:pointer;flex-shrink:0">Salin</button>
+            </div>
+            <div id="tpl-brilink-mofu" style="font-size:12px;color:var(--muted2);font-family:var(--mono);line-height:1.9;white-space:pre-wrap">Kak [Nama]
+
+Jujur mau nanya sesuatu —
+
+Pernah nggak lagi buru-buru butuh cash,
+tapi ATM-nya offline?
+Atau udah sampai ATM,
+eh kartu nggak terbaca? 😔
+
+Rasanya nyebelin banget di momen
+yang paling nggak tepat.
+
+Di Saudara Cell beda —
+kalau ada kendala, langsung ada orangnya.
+Nggak ngobrol sama mesin,
+nggak nunggu CS yang nggak angkat 🙏
+
+Dan kalau lagi nggak mau keluar rumah,
+bisa transfer dulu dari rumah —
+bukti dikirim ke sini,
+cash-nya tinggal diambil
+di cabang Saudara Cell mana aja.
+
+Bukan karena kami lebih canggih dari ATM —
+tapi karena kami ada sebagai manusia
+yang siap bantu, bukan mesin
+yang bisa tiba-tiba mati 😊
+
+Saudara Cell [cabang]
+Buka sampai [jam]</div>
+          </div>
+
+          <!-- BOFU BRILink -->
+          <div style="background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:4px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div>
+                <span style="font-size:10px;font-weight:700;background:var(--as);color:var(--accent);padding:2px 8px;border-radius:6px">⚡ BOFU</span>
+                <span style="font-size:10px;color:var(--muted2);margin-left:6px">Ciptakan momen action</span>
+              </div>
+              <button onclick="plgSalinTemplate('brilink-bofu')" style="background:var(--gs);border:1px solid rgba(62,207,142,0.3);border-radius:8px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--green);cursor:pointer;flex-shrink:0">Salin</button>
+            </div>
+            <div id="tpl-brilink-bofu" style="font-size:12px;color:var(--muted2);font-family:var(--mono);line-height:1.9;white-space:pre-wrap">Kak [Nama]
+
+Hari ini kami masih buka sampai [jam] —
+
+Kalau lagi butuh cash atau mau transfer,
+nggak perlu keluar dulu.
+
+Transfer ke rekening kami,
+kirim bukti ke WA ini,
+uangnya langsung bisa diambil
+di cabang mana aja 🙏
+
+Kami konfirmasi dulu sebelum Kakak berangkat —
+supaya nggak ada perjalanan yang sia-sia.
+
+Yang ATM nggak bisa lakuin itu
+untuk Kakak 😊
+
+Saudara Cell [cabang]</div>
+          </div>
+
+        </div>
+
+        <!-- ══ Servis HP Templates ══ -->
+        <div id="tpl-panel-servis" style="display:none">
+
+          <!-- TOFU Servis -->
+          <div style="background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div>
+                <span style="font-size:10px;font-weight:700;background:var(--gs);color:var(--green);padding:2px 8px;border-radius:6px">🌱 TOFU</span>
+                <span style="font-size:10px;color:var(--muted2);margin-left:6px">Bukan jualan, tapi peduli</span>
+              </div>
+              <button onclick="plgSalinTemplate('servis-tofu')" style="background:var(--gs);border:1px solid rgba(62,207,142,0.3);border-radius:8px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--green);cursor:pointer;flex-shrink:0">Salin</button>
+            </div>
+            <div id="tpl-servis-tofu" style="font-size:12px;color:var(--muted2);font-family:var(--mono);line-height:1.9;white-space:pre-wrap">Kak [Nama] 👋
+
+Bukan mau nawarin servis —
+cuma mau tanya, HP-nya baik-baik aja? 😊
+
+Soalnya kami perhatiin,
+banyak kerusakan HP yang sebenernya
+bisa dicegah jauh lebih murah
+kalau ditangani lebih awal.
+
+Kalau suatu saat ada yang aneh
+— baterai, layar, sinyal —
+jangan tunda terlalu lama ya Kak 🙏
+
+Kami di sini kalau butuh.
+
+Saudara Cell [cabang]</div>
+          </div>
+
+          <!-- MOFU Servis -->
+          <div style="background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div>
+                <span style="font-size:10px;font-weight:700;background:var(--bs);color:var(--blue);padding:2px 8px;border-radius:6px">🔥 MOFU</span>
+                <span style="font-size:10px;color:var(--muted2);margin-left:6px">Transfer rasa aman</span>
+              </div>
+              <button onclick="plgSalinTemplate('servis-mofu')" style="background:var(--gs);border:1px solid rgba(62,207,142,0.3);border-radius:8px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--green);cursor:pointer;flex-shrink:0">Salin</button>
+            </div>
+            <div id="tpl-servis-mofu" style="font-size:12px;color:var(--muted2);font-family:var(--mono);line-height:1.9;white-space:pre-wrap">Kak [Nama]
+
+Banyak orang nggak jadi servis HP
+bukan karena nggak butuh —
+tapi karena takut.
+
+Takut kemahalan.
+Takut dibilang ini-itu yang nggak perlu.
+Takut HP-nya malah tambah parah
+di tangan yang salah 😔
+
+Kami ngerti perasaan itu.
+
+Makanya di Saudara Cell,
+ongkos servisnya bayar seikhlasnya —
+bukan karena kami mau rugi,
+tapi karena kami nggak mau
+Kakak ngerasa terbebani
+di saat HP lagi bermasalah 🙏
+
+Cek dulu gratis.
+Kalau nggak jadi servis, nggak apa-apa.
+Nggak ada yang maksa.
+
+Saudara Cell [cabang]
+Buka sampai [jam]</div>
+          </div>
+
+          <!-- BOFU Servis -->
+          <div style="background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:4px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div>
+                <span style="font-size:10px;font-weight:700;background:var(--as);color:var(--accent);padding:2px 8px;border-radius:6px">⚡ BOFU</span>
+                <span style="font-size:10px;color:var(--muted2);margin-left:6px">Undangan, bukan tekanan</span>
+              </div>
+              <button onclick="plgSalinTemplate('servis-bofu')" style="background:var(--gs);border:1px solid rgba(62,207,142,0.3);border-radius:8px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--green);cursor:pointer;flex-shrink:0">Salin</button>
+            </div>
+            <div id="tpl-servis-bofu" style="font-size:12px;color:var(--muted2);font-family:var(--mono);line-height:1.9;white-space:pre-wrap">Kak [Nama]
+
+Hari ini ada slot servis yang masih kosong —
+
+Kami nggak mau maksa.
+Tapi kalau HP-nya lagi ada yang ganggu,
+ini mungkin waktu yang tepat
+sebelum makin parah 🙏
+
+Datang dulu, cek gratis —
+kalau jadi servis, ongkosnya
+bayar seikhlasnya, Kakak yang nentuin.
+
+Nggak ada angka yang kami pasang.
+Nggak ada harga yang bisa dibanding-bandingkan.
+
+Cuma ada kami yang siap bantu 😊
+
+Saudara Cell [cabang]
+Buka sampai [jam]</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Form tambah -->
+      <div class="card">
+        <div class="ctit">➕ Tambah Pelanggan</div>
+        <div class="field">
+          <label>Nama Pelanggan</label>
+          <input class="finp" id="plg-nama" placeholder="Contoh: Budi Santoso" maxlength="50">
+        </div>
+        <div class="field">
+          <label>No WhatsApp <span style="font-size:9px;color:var(--muted2)">(tanpa 0, mulai 62)</span></label>
+          <input class="finp" id="plg-wa" placeholder="Contoh: 6281234567890" inputmode="numeric" maxlength="15">
+        </div>
+        <div class="field">
+          <label>Cabang</label>
+          <input class="finp" id="plg-cabang" placeholder="Contoh: Pusat / Cabang 1 / Cipondoh" maxlength="40">
+        </div>
+        <div class="field">
+          <label>Keterangan <span style="font-size:9px;color:var(--muted2)">(opsional)</span></label>
+          <input class="finp" id="plg-ket" placeholder="Contoh: pelanggan servis rutin" maxlength="80">
+        </div>
+        <button class="bigbtn green" onclick="plgTambah()" style="margin-top:4px">⭐ Simpan Pelanggan</button>
+      </div>
+
+      <!-- Filter & search -->
+      <div class="card" style="padding:10px 14px">
+        <div style="display:flex;gap:8px;align-items:center">
+          <input class="finp" id="plg-cari" placeholder="🔍 Cari nama / no WA..." oninput="plgRender()" style="flex:1;font-size:12px;padding:8px 10px">
+          <input class="finp" id="plg-filter-cabang" placeholder="Filter cabang..." oninput="plgRender()" list="plg-cabang-list" style="width:auto;font-size:12px;padding:8px 10px">
+          <datalist id="plg-cabang-list"></datalist>
+        </div>
+      </div>
+
+      <!-- Statistik -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px">
+        <div style="background:var(--s3);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:20px;font-weight:800;color:var(--green)" id="plg-stat-total">0</div>
+          <div style="font-size:9px;color:var(--muted2)">Total</div>
+        </div>
+        <div style="background:var(--s3);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:20px;font-weight:800;color:var(--blue)" id="plg-stat-bulan">0</div>
+          <div style="font-size:9px;color:var(--muted2)">Bulan Ini</div>
+        </div>
+        <div style="background:var(--s3);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:20px;font-weight:800;color:var(--orange)" id="plg-stat-cabang">0</div>
+          <div style="font-size:9px;color:var(--muted2)">Cabang Aktif</div>
+        </div>
+      </div>
+
+      <!-- ══ JADWAL WA ══ -->
+      <div class="card" id="jadwal-wa-card" style="margin-bottom:10px">
+        <div class="ctit">⏰ Jadwal Kirim WA Hari Ini</div>
+        <div id="jadwal-slot-wrap" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:12px"></div>
+        <div id="jadwal-reminder-bar" style="display:flex;align-items:center;gap:8px;background:var(--s3);border-radius:10px;padding:10px 12px;margin-bottom:12px">
+          <div id="jadwal-reminder-dot" style="width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0"></div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700" id="jadwal-reminder-txt">Menghitung jadwal...</div>
+            <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)" id="jadwal-reminder-sub"></div>
+          </div>
+          <button onclick="jadwalReminderToggle()" id="jadwal-bell-btn"
+            style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:16px;cursor:pointer">🔔</button>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:11px;font-weight:700;color:var(--muted2);letter-spacing:0.5px">PELANGGAN BELUM DIHUBUNGI</div>
+          <select id="jadwal-filter-hari" onchange="jadwalRender()"
+            style="background:var(--s3);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:11px;padding:4px 8px;outline:none">
+            <option value="7">7 hari</option>
+            <option value="14" selected>14 hari</option>
+            <option value="30">30 hari</option>
+            <option value="999">Semua</option>
+          </select>
+        </div>
+        <div id="jadwal-belum-list"></div>
+        <div id="jadwal-blast-wrap" style="margin-top:10px;display:none">
+          <div style="font-size:10px;color:var(--muted2);margin-bottom:6px;line-height:1.5">
+            ⚡ Blast membuka WA satu per satu. Pastikan pop-up tidak diblokir browser.
+          </div>
+          <button onclick="jadwalBlastSemua()"
+            style="width:100%;background:linear-gradient(135deg,#25d366,#128c7e);border:none;border-radius:10px;padding:12px;color:#fff;font-weight:800;font-size:13px;cursor:pointer">
+            ⚡ Blast WA ke Semua yang Belum Dihubungi
+          </button>
+        </div>
+      </div>
+
+      <!-- Export -->
+      <button class="outbtn" onclick="plgExportPDF()" style="margin-bottom:4px;font-size:12px">📄 Export PDF</button>
+
+      <!-- List -->
+      <div id="plg-list"></div>
 
     </div>
 
@@ -3735,46 +4130,52 @@ let _sudahSetor = false;
 let _omsetTrx   = 0; // total nominal transaksi harian — sumber omset
 
 // Helper: update komponen otomatis (dipanggil dari cl_calc)
+// ══════════════════════════════════════════════════════════════════
+// SATU RUMUS TERPUSAT — semua fungsi pakai ini
+//
+// Cash Fisik  = Cash Pagi + Cash Penjualan + Ambil dari Bank
+// Harus Setor = Cash Fisik − Setor Tunai ke Bank − Modal Brankas − Pengeluaran
+//
+// Catatan:
+// • Cash Penjualan = hitung fisik uang di laci (sudah include fee BriLink transfer)
+// • Ambil dari Bank = cash yang diambil dari bank masuk ke laci hari ini
+// • Tarik Tunai BriLink TIDAK dikurangi (customer kasih cash ke laci, pusat yg transfer)
+// • Setor Tunai ke Bank = cash yang keluar dari laci ke bank (opsional)
+// ══════════════════════════════════════════════════════════════════
+function hitungKas(){
+  const cashPagi    = parseRp(g('p_cash_pagi')?.value)             || 0;
+  const cashJual    = parseRp(g('p_cash')?.value)                  || 0;
+  const ambilBank   = parseRp(g('p_tambah_kasmod')?.value)         || 0;
+  const setorBank   = parseRp(g('p_setor_bank')?.value)            || 0;
+  const modal       = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
+  const makan       = parseRp(g('p_makan')?.value)                 || 0;
+  const lain        = parseRp(g('p_lainlain')?.value)              || 0;
+  const pengeluaran = makan + lain;
+  const cashFisik   = cashPagi + cashJual + ambilBank;
+  const harusSetor  = cashFisik - setorBank - modal - pengeluaran;
+  return { cashPagi, cashJual, ambilBank, setorBank, modal, pengeluaran, makan, lain, cashFisik, harusSetor };
+}
+
 function cl_calc_setor(){
-  const cashPenjualan    = parseRp(g('p_cash')?.value)                  || 0;
-  const cashPagi         = parseRp(g('p_cash_pagi')?.value)             || 0;
-  const makan            = parseRp(g('p_makan')?.value)                 || 0;
-  const lain             = parseRp(g('p_lainlain')?.value)              || 0;
-  const totalPengeluaran = makan + lain;
-  const modalBrankas2    = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
-  const cashKeluarTarik  = parseRp(g('p_trx_tarik')?.value)            || 0;
-
-  // Cash Fisik = Cash Pagi + Cash Penjualan
-  // Harus Setor = Cash Fisik − Tarik Tunai − Modal Brankas − Pengeluaran
-  const cashFisikTotal   = cashPagi + cashPenjualan;
-  const harusSetor       = cashFisikTotal - cashKeluarTarik - modalBrankas2 - totalPengeluaran;
-
-  // Update display otomatis cash fisik
+  const k = hitungKas();
   const elAuto = g('p_cash_fisik_auto');
-  if(elAuto) elAuto.textContent = fmt(cashFisikTotal);
-
-  // Update display komponen setoran
-  s('setor_cash_fisik',       fmt(cashFisikTotal));
-  s('setor_cash_fisik_alert', fmt(cashFisikTotal));
-  s('setor_modal',            fmt(modalBrankas2));
-  s('setor_tarik',            fmt(cashKeluarTarik));
-  s('setor_pengeluaran',      fmt(totalPengeluaran));
-
-  // Update preview harus setor
-  const prevEl = g('setor_btn_nominal_preview');
-  if(prevEl) prevEl.textContent = fmt(Math.max(0, harusSetor));
-
-  // Update tombol setor
-  const btnNom  = g('setor_btn_nominal');
-  const mainBtn = g('setor_nominal_btn');
-  if(btnNom)  btnNom.textContent  = fmt(Math.max(0, harusSetor));
-  if(mainBtn) mainBtn.style.background = harusSetor > 0 ? 'var(--accent)' : 'var(--s3)';
-
-  // Hidden span refs untuk kirimClosing
-  const fCJ = g('f_cash_jual');   if(fCJ)  fCJ.textContent = fmt(cashPenjualan);
-  const fCT = g('f_cash_tf');     if(fCT)  fCT.textContent = fmt(0);
-  const fP  = g('f_pengeluaran'); if(fP)   fP.textContent  = fmt(totalPengeluaran);
-  const fH  = g('f_hasil_setor'); if(fH)   fH.textContent  = fmt(harusSetor);
+  if(elAuto) elAuto.textContent = fmt(k.cashFisik);
+  s('setor_cash_fisik',       fmt(k.cashPagi + k.cashJual));
+  s('setor_cash_fisik_alert', fmt(k.cashFisik));
+  s('setor_ambil_bank',       fmt(k.ambilBank));
+  const rowAmbil = g('setor_ambil_bank_row');
+  if(rowAmbil) rowAmbil.style.display = k.ambilBank > 0 ? 'flex' : 'none';
+  s('setor_tarik',            fmt(k.setorBank));
+  s('setor_modal',            fmt(k.modal));
+  s('setor_pengeluaran',      fmt(k.pengeluaran));
+  const hs = Math.max(0, k.harusSetor);
+  const prevEl = g('setor_btn_nominal_preview'); if(prevEl) prevEl.textContent = fmt(hs);
+  const btnNom = g('setor_btn_nominal');         if(btnNom) btnNom.textContent  = fmt(hs);
+  const mainBtn= g('setor_nominal_btn');         if(mainBtn) mainBtn.style.background = hs > 0 ? 'var(--accent)' : 'var(--s3)';
+  const fCJ = g('f_cash_jual');   if(fCJ) fCJ.textContent = fmt(k.cashJual);
+  const fCT = g('f_cash_tf');     if(fCT) fCT.textContent = fmt(0);
+  const fP  = g('f_pengeluaran'); if(fP)  fP.textContent  = fmt(k.pengeluaran);
+  const fH  = g('f_hasil_setor'); if(fH)  fH.textContent  = fmt(k.harusSetor);
 }
 
 // Hint badge modal brankas = cash pagi
@@ -3792,52 +4193,34 @@ function cl_hint_brankas(){
 
 // ── PROSES & HITUNG → buka popup detail ──
 function cl_prosesHitung(){
-  const cashPenjualan     = parseRp(g('p_cash')?.value)                  || 0;
-  const makan             = parseRp(g('p_makan')?.value)                 || 0;
-  const lain              = parseRp(g('p_lainlain')?.value)              || 0;
-  const modalBrankas      = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
-  const cashPagi          = parseRp(g('p_cash_pagi')?.value)             || 0;
-  const cashKeluarTarik3  = parseRp(g('p_trx_tarik')?.value)            || 0;
-  const custTransfer      = 0; // tidak dipakai — cash penjualan dari hitung fisik laci
-  const totalKeluar       = makan + lain;
-
-  // Cash Fisik = Cash Pagi + Cash Penjualan
-  // Harus Setor = Cash Fisik − Tarik Tunai − Modal Brankas − Pengeluaran
-  const cashFisikTotal3  = cashPagi + cashPenjualan;
-  const harusSetor       = cashFisikTotal3 - cashKeluarTarik3 - modalBrankas - totalKeluar;
-  const ekspektasi       = modalBrankas + harusSetor;
-  const cashFisik        = cashFisikTotal3;
-  const hasCashFisik     = true;
-  const selisihFisik     = cashFisik - ekspektasi;
-  const sisaAkhir        = cashFisik - modalBrankas - harusSetor;
+  const k          = hitungKas();
+  const harusSetor = k.harusSetor;
+  const cashFisik  = k.cashFisik;
+  const selisih    = 0; // cash fisik = cash pagi + penjualan, tidak ada input manual, selalu balance
+  const sisaAkhir  = cashFisik - k.modal - harusSetor - k.setorBank;
 
   // ── Isi popup ──
   const ts = g('rp_timestamp');
   if(ts){ const now = new Date(); ts.textContent = now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'}) + ' · ' + now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
 
-  s('rp_cash_pagi_val',  fmt(cashPagi));
-  s('rp_cash_penjualan', fmt(cashPenjualan));
+  s('rp_cash_pagi_val',  fmt(k.cashPagi));
+  s('rp_cash_penjualan', fmt(k.cashJual));
   s('rp_cash_transfer',  '0');
   s('rp_cust_transfer',  '0');
-  s('rp_total_masuk',    fmt(cashFisikTotal3));
-  s('rp_makan',          fmt(makan));
-  s('rp_lain',           fmt(lain));
-  s('rp_total_keluar',   fmt(totalKeluar));
-  s('rp_fisik_manual',   fmt(cashFisikTotal3));
-  s('rp_ekspektasi',     fmt(ekspektasi));
-  s('rp_modal_kembali',  modalBrankas > 0 ? fmt(modalBrankas) : '⚠ Belum diisi');
+  s('rp_total_masuk',    fmt(cashFisik));
+  s('rp_makan',          fmt(k.makan));
+  s('rp_lain',           fmt(k.lain));
+  s('rp_total_keluar',   fmt(k.pengeluaran));
+  s('rp_fisik_manual',   fmt(cashFisik));
+  s('rp_ekspektasi',     fmt(k.modal + Math.max(0, harusSetor)));
+  s('rp_modal_kembali',  k.modal > 0 ? fmt(k.modal) : '⚠ Belum diisi');
   s('rp_harus_setor',    fmt(Math.max(0, harusSetor)));
 
-  // Selisih fisik
+  // Status selisih — karena cash fisik dari hitung sistem, selalu balance
   const elSF = g('rp_selisih_fisik');
-  if(elSF){
-    if(selisihFisik === null){ elSF.textContent = '—'; elSF.style.color = 'var(--muted2)'; }
-    else if(Math.abs(selisihFisik) < 500){ elSF.textContent = '✅ Balance'; elSF.style.color = 'var(--green)'; }
-    else if(selisihFisik > 0){ elSF.textContent = '+' + fmt(selisihFisik) + ' (LEBIH)'; elSF.style.color = 'var(--orange)'; }
-    else{ elSF.textContent = fmt(selisihFisik) + ' (KURANG)'; elSF.style.color = 'var(--red)'; }
-  }
+  if(elSF){ elSF.textContent = '✅ Balance'; elSF.style.color = 'var(--green)'; }
   const elEk = g('rp_ekspektasi');
-  if(elEk) elEk.style.color = (selisihFisik !== null && Math.abs(selisihFisik) < 500) ? 'var(--green)' : 'var(--muted2)';
+  if(elEk) elEk.style.color = 'var(--green)';
 
   // Sisa akhir
   const elSA = g('rp_sisa_akhir');
@@ -3850,25 +4233,15 @@ function cl_prosesHitung(){
   const box    = g('rp_balance_box');
   const valEl  = g('rp_status_val');
   const subEl  = g('rp_status_sub');
-  const isOk   = hasCashFisik ? Math.abs(selisihFisik) < 500 : Math.abs(sisaAkhir) < 500;
-  const isLebih= hasCashFisik ? selisihFisik > 500 : sisaAkhir > 500;
   if(box && valEl && subEl){
-    if(!hasCashFisik){
-      box.style.background  = 'rgba(245,166,35,0.08)'; box.style.borderColor = 'rgba(245,166,35,0.3)';
-      valEl.textContent = '⚠ Data Kurang'; valEl.style.color = 'var(--orange)';
-      subEl.textContent = 'Isi Cash Fisik di Tangan untuk rekonsiliasi lengkap'; subEl.style.color = 'var(--orange)';
-    } else if(isOk){
+    if(harusSetor > 0){
       box.style.background  = 'rgba(62,207,142,0.08)'; box.style.borderColor = 'rgba(62,207,142,0.35)';
       valEl.textContent = '✅ BALANCE'; valEl.style.color = 'var(--green)';
-      subEl.textContent = `Fisik ${fmt(cashFisik)} sesuai sistem ${fmt(ekspektasi)}`; subEl.style.color = 'var(--green)';
-    } else if(isLebih){
-      box.style.background  = 'rgba(245,166,35,0.08)'; box.style.borderColor = 'rgba(245,166,35,0.3)';
-      valEl.textContent = '+ ' + fmt(selisihFisik); valEl.style.color = 'var(--orange)';
-      subEl.textContent = 'Kas LEBIH — ada uang yang belum tercatat atau kembalian?'; subEl.style.color = 'var(--orange)';
+      subEl.textContent = `Cash Fisik ${fmt(cashFisik)} = Setor ${fmt(Math.max(0,harusSetor))} + Modal ${fmt(k.modal)} + Pengeluaran ${fmt(k.pengeluaran)}`; subEl.style.color = 'var(--green)';
     } else {
-      box.style.background  = 'rgba(224,48,80,0.08)'; box.style.borderColor = 'rgba(224,48,80,0.3)';
-      valEl.textContent = fmt(selisihFisik); valEl.style.color = 'var(--red)';
-      subEl.textContent = 'Ada selisih — yuk cek ulang inputan dulu'; subEl.style.color = 'var(--red)';
+      box.style.background  = 'rgba(245,166,35,0.08)'; box.style.borderColor = 'rgba(245,166,35,0.3)';
+      valEl.textContent = '⚠ Tidak Ada Setoran'; valEl.style.color = 'var(--orange)';
+      subEl.textContent = 'Cash fisik habis untuk modal & pengeluaran'; subEl.style.color = 'var(--orange)';
     }
   }
 
@@ -3876,15 +4249,12 @@ function cl_prosesHitung(){
   const cat = g('rp_catatan');
   if(cat){
     const notes = [];
-    if(!hasCashFisik) notes.push('⚠️ Cash fisik di tangan belum diisi — rekonsiliasi belum bisa diverifikasi.');
-    if(modalBrankas === 0) notes.push('⚠️ Modal brankas kembali belum diisi.');
-    if(hasCashFisik && Math.abs(selisihFisik) >= 500 && selisihFisik < 0) notes.push('🚨 Kas kurang — pastikan semua pengeluaran sudah dicatat, dan tidak ada uang yang terpakai tanpa catatan.');
-    if(hasCashFisik && Math.abs(selisihFisik) >= 500 && selisihFisik > 0) notes.push('⚠️ Kas lebih — mungkin ada transaksi yang belum diinput, atau kembalian yang belum dihitung.');
-    if(harusSetor <= 0) notes.push('⚠️ Tidak ada yang perlu disetor hari ini (kas masuk ≤ pengeluaran).');
+    if(k.modal === 0) notes.push('⚠️ Modal brankas kembali belum diisi.');
+    if(harusSetor <= 0) notes.push('⚠️ Tidak ada yang perlu disetor hari ini.');
     if(notes.length === 0) notes.push('✅ Semua data lengkap. Lanjutkan ke konfirmasi setoran.');
-    cat.style.color     = notes.some(n=>n.startsWith('🚨')) ? 'var(--red)' : notes.some(n=>n.startsWith('⚠')) ? 'var(--orange)' : 'var(--green)';
-    cat.style.background= notes.some(n=>n.startsWith('🚨')) ? 'rgba(224,48,80,0.06)' : notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.06)' : 'rgba(62,207,142,0.06)';
-    cat.style.borderColor= notes.some(n=>n.startsWith('🚨')) ? 'rgba(224,48,80,0.25)' : notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.25)' : 'rgba(62,207,142,0.25)';
+    cat.style.color     = notes.some(n=>n.startsWith('⚠')) ? 'var(--orange)' : 'var(--green)';
+    cat.style.background= notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.06)' : 'rgba(62,207,142,0.06)';
+    cat.style.borderColor= notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.25)' : 'rgba(62,207,142,0.25)';
     cat.innerHTML = notes.join('<br>');
   }
 
@@ -3893,18 +4263,14 @@ function cl_prosesHitung(){
   const selMain = g('setor_selisih');
   const subMain = g('setor_balance_sub');
   if(bxMain && selMain && subMain){
-    if(isOk && hasCashFisik){
+    if(harusSetor > 0){
       bxMain.style.background='rgba(62,207,142,0.08)'; bxMain.style.borderColor='rgba(62,207,142,0.35)';
       selMain.textContent='✅ BALANCE'; selMain.style.color='var(--green)';
-      subMain.textContent=`Disetor ${fmt(Math.max(0,harusSetor))} · Brankas ${fmt(modalBrankas)}`;
-    } else if(!hasCashFisik || (!isOk && !isLebih)){
-      bxMain.style.background='rgba(224,48,80,0.06)'; bxMain.style.borderColor='rgba(224,48,80,0.25)';
-      selMain.textContent= hasCashFisik ? fmt(selisihFisik) : '—'; selMain.style.color='var(--red)';
-      subMain.textContent= hasCashFisik ? 'Kas KURANG — cek ulang!' : 'Isi cash fisik dulu';
+      subMain.textContent=`Disetor ${fmt(Math.max(0,harusSetor))} · Brankas ${fmt(k.modal)}`;
     } else {
       bxMain.style.background='rgba(245,166,35,0.06)'; bxMain.style.borderColor='rgba(245,166,35,0.25)';
-      selMain.textContent='+'+fmt(selisihFisik); selMain.style.color='var(--orange)';
-      subMain.textContent='Kas LEBIH — cek ulang!';
+      selMain.textContent='⚠ Tidak Ada Setoran'; selMain.style.color='var(--orange)';
+      subMain.textContent='Cash fisik habis untuk modal & pengeluaran';
     }
   }
 
@@ -3969,24 +4335,16 @@ function cl_pilihRek(id){
 }
 
 function cl_bukaPanelSetor(){
-  const _pagi   = parseRp(g('p_cash_pagi')?.value) || 0;
-  const _jual   = parseRp(g('p_cash')?.value) || 0;
-  const _tarik  = parseRp(g('p_trx_tarik')?.value) || 0;
-  const _modal  = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
-  const _makan  = parseRp(g('p_makan')?.value) || 0;
-  const _lain   = parseRp(g('p_lainlain')?.value) || 0;
-  // Cash Fisik = Cash Pagi + Cash Penjualan
-  // Harus Setor = Cash Fisik − Tarik Tunai − Modal Brankas − Pengeluaran
-  const _fisik     = _pagi + _jual;
-  const harusSetor = _fisik - _tarik - _modal - _makan - _lain;
+  const k = hitungKas();
+  const hs = Math.max(0, k.harusSetor);
   const inp = g('p_setor_nominal');
-  if(inp) inp.value = Math.max(0, harusSetor);
-  s('konfirm_nominal_display', fmt(Math.max(0, harusSetor)));
-  s('popup_cash_fisik',     fmt(_fisik));
-  s('popup_cust_transfer',  fmt(0));
-  s('popup_modal',       fmt(_modal));
-  s('popup_tarik',       fmt(_tarik));
-  s('popup_pengeluaran', fmt(_makan + _lain));
+  if(inp) inp.value = hs;
+  s('konfirm_nominal_display', fmt(hs));
+  s('popup_cash_fisik',    fmt(k.cashFisik));
+  s('popup_cust_transfer', fmt(0));
+  s('popup_tarik',         fmt(k.setorBank));
+  s('popup_modal',         fmt(k.modal));
+  s('popup_pengeluaran',   fmt(k.pengeluaran));
   const pop = g('setor_popup');
   if(pop){ pop.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
 }
@@ -5150,10 +5508,569 @@ let hrTarget   = hrGet('targets')  || [];
 // ── Data khusus tantangan non-otomatis (konten FYP, live GMV, penghargaan) ──
 // Disimpan di hr_special, di-input manual oleh Kanit
 let hrSpecial  = hrGet('special')  || {
-  kontenFYP    : [],   // [{bulan, status:'approved'|'pending', url}]
-  liveGMV      : [],   // [{bulan, gmv}] — 3 bulan berturut naik = reward
-  bestEmployee : [],   // [{periode:'2025-H1', nama, catatan}]
+  kontenFYP    : [],
+  liveGMV      : [],
+  bestEmployee : [],
 };
+
+// ══════════════════════════════════════════════════════════════════
+// PELANGGAN PRIORITAS
+// ══════════════════════════════════════════════════════════════════
+let plgData = hrGet('pelanggan') || [];
+
+function plgTabTemplate(tab){
+  const isBrilink = tab === 'brilink';
+  g('tpl-panel-brilink').style.display = isBrilink ? 'block' : 'none';
+  g('tpl-panel-servis').style.display  = isBrilink ? 'none'  : 'block';
+  const btnB = g('tpl-tab-brilink');
+  const btnS = g('tpl-tab-servis');
+  if(btnB){ btnB.style.background = isBrilink ? 'var(--gs)' : 'var(--s3)'; btnB.style.borderColor = isBrilink ? 'var(--green)' : 'var(--border)'; btnB.style.color = isBrilink ? 'var(--green)' : 'var(--muted2)'; }
+  if(btnS){ btnS.style.background = isBrilink ? 'var(--s3)' : 'var(--gs)'; btnS.style.borderColor = isBrilink ? 'var(--border)' : 'var(--green)'; btnS.style.color = isBrilink ? 'var(--muted2)' : 'var(--green)'; }
+}
+
+
+function copyTemplate(tipe){
+  const el = g('tpl-' + tipe);
+  if(!el) return;
+  const teks = el.textContent;
+  navigator.clipboard.writeText(teks).then(() => {
+    toast('✅ Template disalin! Paste ke WA sekarang 💬');
+  }).catch(() => {
+    // Fallback manual select
+    const ta = document.createElement('textarea');
+    ta.value = teks;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('✅ Template disalin! Paste ke WA sekarang 💬');
+  });
+}
+
+
+
+function plgTambah(){
+  const nama   = g('plg-nama')?.value.trim();
+  const wa     = g('plg-wa')?.value.trim().replace(/\D/g,'');
+  const cabang = g('plg-cabang')?.value;
+  const ket    = g('plg-ket')?.value.trim();
+  if(!nama){ alert('Nama pelanggan wajib diisi.'); return; }
+  if(!wa || wa.length < 9){ alert('No WhatsApp tidak valid.'); return; }
+  if(!cabang){ alert('Pilih cabang dulu.'); return; }
+  // Cek duplikat nomor WA
+  if(plgData.find(p => p.wa === wa)){
+    alert('Nomor WA ini sudah terdaftar.'); return;
+  }
+  plgData.unshift({
+    id     : Date.now(),
+    nama,
+    wa,
+    cabang,
+    ket    : ket || '',
+    tgl    : new Date().toISOString().slice(0,10)
+  });
+  plgSave();
+  // Reset form
+  ['plg-nama','plg-wa','plg-ket'].forEach(id => { const el = g(id); if(el) el.value = ''; });
+  g('plg-cabang').value = '';
+  plgRender();
+  toast('⭐ Pelanggan berhasil ditambahkan!');
+}
+
+function plgHapus(id){
+  if(!confirm('Hapus pelanggan ini?')) return;
+  plgData = plgData.filter(p => p.id !== id);
+  plgSave();
+  plgRender();
+}
+
+function plgRender(){
+  const cari   = (g('plg-cari')?.value || '').toLowerCase();
+  const cabFil = (g('plg-filter-cabang')?.value || '').toLowerCase();
+  const list   = g('plg-list');
+  if(!list) return;
+
+  // Update datalist cabang dari data yang ada
+  const dlCabang = g('plg-cabang-list');
+  if(dlCabang){
+    const unikCabang = [...new Set(plgData.map(p => p.cabang))];
+    dlCabang.innerHTML = unikCabang.map(c => `<option value="${c}">`).join('');
+  }
+
+  let filtered = plgData.filter(p => {
+    const matchCari   = !cari   || p.nama.toLowerCase().includes(cari) || p.wa.includes(cari);
+    const matchCabang = !cabFil || p.cabang.toLowerCase().includes(cabFil);
+    return matchCari && matchCabang;
+  });
+
+  // Statistik
+  const bulanIni = new Date().toISOString().slice(0,7);
+  const cabangAktif = [...new Set(plgData.map(p => p.cabang))].length;
+  s('plg-stat-total',  plgData.length);
+  s('plg-stat-bulan',  plgData.filter(p => p.tgl?.startsWith(bulanIni)).length);
+  s('plg-stat-cabang', cabangAktif);
+
+  if(!filtered.length){
+    list.innerHTML = `<div style="text-align:center;padding:24px;color:var(--muted);font-size:12px">
+      ${cari || cabFil ? '🔍 Tidak ada hasil yang cocok' : '⭐ Belum ada pelanggan terdaftar'}
+    </div>`;
+    return;
+  }
+
+  // Grup per cabang
+  const byCabang = {};
+  filtered.forEach(p => {
+    if(!byCabang[p.cabang]) byCabang[p.cabang] = [];
+    byCabang[p.cabang].push(p);
+  });
+
+  list.innerHTML = Object.entries(byCabang).map(([cab, arr]) => `
+    <div style="margin-bottom:4px">
+      <div style="font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;padding:6px 0">
+        📍 ${cab} <span style="color:var(--muted);font-weight:400">(${arr.length})</span>
+      </div>
+      ${arr.map(p => `
+        <div style="background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:6px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">
+            ${p.nama.charAt(0).toUpperCase()}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.nama}</div>
+            <div style="font-size:11px;color:var(--muted2);font-family:var(--mono)">${p.wa}</div>
+            ${p.ket ? `<div style="font-size:10px;color:var(--muted);margin-top:2px">${p.ket}</div>` : ''}
+            <div style="font-size:9px;color:var(--muted);margin-top:2px">📅 ${p.tgl}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+            <a href="https://wa.me/${p.wa}" target="_blank"
+               style="background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;color:#25d366;text-decoration:none;text-align:center;white-space:nowrap">
+              💬 WA
+            </a>
+            <button onclick="plgHapus(${p.id})"
+              style="background:var(--rs);border:1px solid rgba(224,48,80,0.25);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;color:var(--red);cursor:pointer;white-space:nowrap">
+              🗑
+            </button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════
+// JADWAL KIRIM WA
+// ══════════════════════════════════════════════════════════════════
+
+const JADWAL_SLOTS = [
+  { label: 'Pagi',  jam: '08:30', icon: '🌅', mulai: 8,  menit: 0,  selesai: 9,  menitSelesai: 30,  color: 'var(--orange)', tip: 'Orang baru buka HP, mood fresh' },
+  { label: 'Siang', jam: '12:30', icon: '☀️', mulai: 12, menit: 0,  selesai: 13, menitSelesai: 30,  color: 'var(--yellow)', tip: 'Jam istirahat, banyak scroll HP' },
+  { label: 'Sore',  jam: '16:30', icon: '🌇', mulai: 16, menit: 0,  selesai: 17, menitSelesai: 30,  color: 'var(--accent2)', tip: 'Menjelang pulang, santai & responsif' },
+];
+
+const HARI_NAMA = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const HARI_TERBAIK = [2,3,4]; // Selasa, Rabu, Kamis (0=Minggu)
+
+let jadwalReminderAktif = JSON.parse(localStorage.getItem('jadwal_reminder') || 'true');
+let jadwalReminderTimer = null;
+
+function jadwalNow(){ return new Date(); }
+
+function jadwalSlotStatus(slot){
+  const now = jadwalNow();
+  const h = now.getHours(), m = now.getMinutes();
+  const totalMnt = h * 60 + m;
+  const mulai    = slot.mulai * 60 + slot.menit;
+  const selesai  = slot.selesai * 60 + slot.menitSelesai;
+  if(totalMnt >= mulai && totalMnt < selesai) return 'aktif';
+  if(totalMnt < mulai) return 'akan';
+  return 'lewat';
+}
+
+function jadwalMenitMenuju(slot){
+  const now = jadwalNow();
+  const h = now.getHours(), m = now.getMinutes();
+  const totalMnt = h * 60 + m;
+  const mulai    = slot.mulai * 60 + slot.menit;
+  const diff = mulai - totalMnt;
+  if(diff <= 0) return null;
+  if(diff < 60) return diff + ' mnt lagi';
+  return Math.floor(diff/60) + 'j ' + (diff%60) + 'mnt lagi';
+}
+
+function jadwalInitSlots(){
+  const wrap = g('jadwal-slot-wrap');
+  if(!wrap) return;
+  const now  = jadwalNow();
+  const hari = now.getDay();
+  const isBaikHari = HARI_TERBAIK.includes(hari);
+  wrap.innerHTML = JADWAL_SLOTS.map(slot => {
+    const status = jadwalSlotStatus(slot);
+    const menuju = jadwalMenitMenuju(slot);
+    const isAktif = status === 'aktif';
+    const isLewat = status === 'lewat';
+    const border  = isAktif ? '2px solid var(--green)' : isLewat ? '1px solid var(--border)' : '1px solid var(--border2)';
+    const bg      = isAktif ? 'var(--gs)' : 'var(--s3)';
+    const opacity = isLewat ? '0.45' : '1';
+    const badge   = isAktif ? `<div style="font-size:9px;background:var(--gs);color:var(--green);border-radius:4px;padding:1px 6px;font-weight:700;margin-top:4px">🟢 SEKARANG</div>`
+                  : menuju   ? `<div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:4px">${menuju}</div>`
+                  : `<div style="font-size:9px;color:var(--muted);margin-top:4px">Sudah lewat</div>`;
+    return `<div style="background:${bg};border:${border};border-radius:12px;padding:12px 8px;text-align:center;opacity:${opacity};transition:all 0.2s">
+      <div style="font-size:22px">${slot.icon}</div>
+      <div style="font-size:11px;font-weight:800;margin:3px 0 1px;color:${isAktif?'var(--green)':isLewat?'var(--muted)':'var(--text)'}">${slot.label}</div>
+      <div style="font-size:13px;font-weight:700;font-family:var(--mono);color:${slot.color}">${slot.jam}</div>
+      ${badge}
+    </div>`;
+  }).join('');
+
+  // Hari info
+  const hariWarna = isBaikHari ? 'var(--green)' : 'var(--orange)';
+  const hariNote  = isBaikHari ? '✅ Hari terbaik untuk follow-up' : '⚠️ Hari kurang optimal — tetap bisa kirim';
+  const infoEl = g('jadwal-reminder-sub');
+  if(infoEl) infoEl.textContent = HARI_NAMA[hari] + ' · ' + hariNote;
+}
+
+function jadwalUpdateReminderBar(){
+  const dot = g('jadwal-reminder-dot');
+  const txt = g('jadwal-reminder-txt');
+  const sub = g('jadwal-reminder-sub');
+  if(!dot || !txt) return;
+
+  const now = jadwalNow();
+  const h = now.getHours(), m = now.getMinutes();
+  const total = h * 60 + m;
+
+  // Cari slot aktif atau berikutnya
+  let slotAktif = JADWAL_SLOTS.find(s => jadwalSlotStatus(s) === 'aktif');
+  let slotBerikut = JADWAL_SLOTS.find(s => jadwalSlotStatus(s) === 'akan');
+
+  if(slotAktif){
+    dot.style.background = 'var(--green)';
+    dot.style.animation = 'lbPulse 1s infinite';
+    txt.style.color = 'var(--green)';
+    txt.textContent = '🟢 Sekarang waktu terbaik kirim WA! (' + slotAktif.label + ' ' + slotAktif.jam + ')';
+    if(sub) sub.textContent = slotAktif.tip;
+    if(jadwalReminderAktif) jadwalNotifBrowser(slotAktif);
+  } else if(slotBerikut){
+    const menuju = jadwalMenitMenuju(slotBerikut);
+    dot.style.background = 'var(--yellow)';
+    dot.style.animation = '';
+    txt.style.color = 'var(--text)';
+    txt.textContent = '⏳ Jadwal berikutnya: ' + slotBerikut.label + ' ' + slotBerikut.jam + ' (' + menuju + ')';
+    if(sub) sub.textContent = slotBerikut.tip;
+  } else {
+    dot.style.background = 'var(--muted)';
+    dot.style.animation = '';
+    txt.style.color = 'var(--muted2)';
+    txt.textContent = '✅ Semua slot hari ini sudah lewat';
+    if(sub) sub.textContent = 'Jadwal kirim WA besok mulai pukul 08:30';
+  }
+
+  // Update tombol reminder
+  const bellBtn = g('jadwal-bell-btn');
+  if(bellBtn) bellBtn.textContent = jadwalReminderAktif ? '🔔' : '🔕';
+}
+
+let _jadwalNotifSent = {};
+let _jadwalPopupTimer = null;
+
+function jadwalNotifBrowser(slot){
+  const key = slot.label + new Date().toDateString();
+  if(_jadwalNotifSent[key]) return;
+  _jadwalNotifSent[key] = true;
+
+  // Popup di layar
+  jadwalTampilPopup(
+    '⏰ Waktunya kirim WA! — ' + slot.label + ' ' + slot.jam,
+    slot.tip + '\nBuka menu Pelanggan → Jadwal Kirim WA'
+  );
+
+  // Browser notification (kalau izin sudah diberikan)
+  if('Notification' in window && Notification.permission === 'granted'){
+    new Notification('⏰ Waktunya kirim WA!', {
+      body: 'Jam ' + slot.jam + ' — ' + slot.tip,
+      icon: '📱'
+    });
+  }
+}
+
+function jadwalTampilPopup(judul, sub){
+  const popup = g('wa-reminder-popup');
+  const titleEl = g('wa-reminder-title');
+  const subEl   = g('wa-reminder-sub');
+  if(!popup) return;
+
+  if(titleEl) titleEl.textContent = judul;
+  if(subEl)   subEl.textContent   = sub;
+
+  // Reset animasi dengan re-mount trick
+  popup.classList.remove('on');
+  void popup.offsetWidth;
+  popup.classList.add('on');
+
+  // Auto-tutup setelah 8 detik
+  if(_jadwalPopupTimer) clearTimeout(_jadwalPopupTimer);
+  _jadwalPopupTimer = setTimeout(jadwalTutupPopup, 8000);
+}
+
+function jadwalTutupPopup(){
+  const popup = g('wa-reminder-popup');
+  if(popup) popup.classList.remove('on');
+  if(_jadwalPopupTimer){ clearTimeout(_jadwalPopupTimer); _jadwalPopupTimer = null; }
+}
+
+function jadwalReminderToggle(){
+  jadwalReminderAktif = !jadwalReminderAktif;
+  localStorage.setItem('jadwal_reminder', JSON.stringify(jadwalReminderAktif));
+  if(jadwalReminderAktif && 'Notification' in window && Notification.permission === 'default'){
+    Notification.requestPermission();
+  }
+  jadwalUpdateReminderBar();
+  toast(jadwalReminderAktif ? '🔔 Reminder WA diaktifkan' : '🔕 Reminder WA dimatikan');
+}
+
+function jadwalRender(){
+  const list = g('jadwal-belum-list');
+  const blastWrap = g('jadwal-blast-wrap');
+  if(!list) return;
+
+  const limitHari = parseInt(g('jadwal-filter-hari')?.value || '14');
+  const now = new Date();
+  const batas = new Date(now.getTime() - limitHari * 24 * 60 * 60 * 1000);
+
+  // Pelanggan yang belum dihubungi dalam rentang hari yang dipilih
+  // "Terakhir dihubungi" disimpan di plgData[].lastContact (YYYY-MM-DD) atau tidak ada
+  const belum = plgData.filter(p => {
+    if(!p.lastContact) return true; // belum pernah dihubungi
+    return new Date(p.lastContact) < batas;
+  });
+
+  if(!belum.length){
+    list.innerHTML = `<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px">
+      🎉 Semua pelanggan sudah dihubungi dalam ${limitHari} hari terakhir!
+    </div>`;
+    if(blastWrap) blastWrap.style.display = 'none';
+    return;
+  }
+
+  if(blastWrap) blastWrap.style.display = 'block';
+
+  list.innerHTML = belum.map(p => {
+    const lastTxt = p.lastContact
+      ? 'Terakhir: ' + new Date(p.lastContact).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})
+      : 'Belum pernah dihubungi';
+    const hariSejak = p.lastContact
+      ? Math.floor((now - new Date(p.lastContact)) / 86400000) + ' hari lalu'
+      : '—';
+    return `<div style="background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:11px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px">
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--blue));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;color:#fff">
+        ${p.nama.charAt(0).toUpperCase()}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.nama}</div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">${p.wa} · ${p.cabang}</div>
+        <div style="font-size:10px;color:var(--orange);margin-top:2px">📅 ${lastTxt} <span style="color:var(--muted)">(${hariSejak})</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">
+        <a href="https://wa.me/${p.wa}" target="_blank" onclick="jadwalTandaiHubungi(${p.id})"
+           style="background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;color:#25d366;text-decoration:none;text-align:center">
+          💬 WA
+        </a>
+        <button onclick="jadwalTandaiHubungi(${p.id})"
+          style="background:var(--bs);border:1px solid rgba(48,96,192,0.3);border-radius:8px;padding:5px 8px;font-size:10px;font-weight:700;color:var(--blue);cursor:pointer">
+          ✓ Sudah
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function jadwalTandaiHubungi(id){
+  const idx = plgData.findIndex(p => p.id === id);
+  if(idx < 0) return;
+  plgData[idx].lastContact = new Date().toISOString().slice(0,10);
+  plgSave();
+  jadwalRender();
+  toast('✅ Ditandai sudah dihubungi hari ini!');
+}
+
+function jadwalBlastSemua(){
+  const limitHari = parseInt(g('jadwal-filter-hari')?.value || '14');
+  const now = new Date();
+  const batas = new Date(now.getTime() - limitHari * 24 * 60 * 60 * 1000);
+  const belum = plgData.filter(p => !p.lastContact || new Date(p.lastContact) < batas);
+  if(!belum.length){ toast('Tidak ada pelanggan yang perlu dihubungi!'); return; }
+
+  // Buat modal blast
+  let modal = g('blast-modal');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'blast-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9990;display:flex;align-items:flex-end;justify-content:center;padding:0';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = `
+    <div style="background:var(--s2);border:1px solid var(--border2);border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:85vh;display:flex;flex-direction:column;padding:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div style="font-size:16px;font-weight:800">⚡ Blast WA</div>
+        <button onclick="g('blast-modal').remove()" style="background:var(--s3);border:none;border-radius:50%;width:32px;height:32px;color:var(--muted2);cursor:pointer;font-size:16px">✕</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted2);font-family:var(--mono);margin-bottom:14px">${belum.length} pelanggan belum dihubungi · Tap WA lalu ✓ Sudah</div>
+
+      <div style="overflow-y:auto;flex:1;padding-right:2px" id="blast-list">
+        ${belum.map((p,i) => `
+          <div id="blast-row-${p.id}" style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <div style="width:28px;text-align:center;font-size:13px;font-weight:800;color:var(--muted2);font-family:var(--mono)">${i+1}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.nama}</div>
+              <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">${p.wa} · ${p.cabang}</div>
+            </div>
+            <a href="https://wa.me/${p.wa}" target="_blank"
+              style="background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:#25d366;text-decoration:none;white-space:nowrap;flex-shrink:0">
+              💬 WA
+            </a>
+            <button onclick="jadwalBlastTandai(${p.id})"
+              style="background:var(--bs);border:1px solid rgba(48,96,192,0.3);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--blue);cursor:pointer;white-space:nowrap;flex-shrink:0">
+              ✓
+            </button>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button onclick="jadwalBlastTandaiSemua()" style="flex:1;background:var(--gs);border:1px solid rgba(62,207,142,0.3);border-radius:10px;padding:12px;font-size:13px;font-weight:800;color:var(--green);cursor:pointer">
+          ✓ Tandai Semua Sudah
+        </button>
+        <button onclick="g('blast-modal').remove()" style="background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13px;font-weight:700;color:var(--muted2);cursor:pointer">
+          Tutup
+        </button>
+      </div>
+    </div>`;
+
+  modal.style.display = 'flex';
+  // Simpan referensi belum ke modal untuk dipakai jadwalBlastTandaiSemua
+  modal._belum = belum;
+}
+
+function jadwalBlastTandai(id){
+  const row = g('blast-row-' + id);
+  if(row){
+    row.style.opacity = '0.35';
+    row.style.pointerEvents = 'none';
+    const badge = document.createElement('div');
+    badge.style.cssText = 'font-size:11px;color:var(--green);font-weight:700;flex-shrink:0';
+    badge.textContent = '✓';
+    row.appendChild(badge);
+  }
+  const idx = plgData.findIndex(p => p.id === id);
+  if(idx >= 0) plgData[idx].lastContact = new Date().toISOString().slice(0,10);
+  plgSave();
+  jadwalRender();
+}
+
+function jadwalBlastTandaiSemua(){
+  const modal = g('blast-modal');
+  const belum = modal?._belum || [];
+  belum.forEach(p => {
+    const idx = plgData.findIndex(x => x.id === p.id);
+    if(idx >= 0) plgData[idx].lastContact = new Date().toISOString().slice(0,10);
+  });
+  plgSave();
+  jadwalRender();
+  if(modal) modal.remove();
+  toast('✅ Semua ' + belum.length + ' pelanggan ditandai sudah dihubungi!');
+}
+
+function jadwalInit(){
+  jadwalInitSlots();
+  jadwalUpdateReminderBar();
+  jadwalRender();
+  // Refresh tiap menit
+  if(jadwalReminderTimer) clearInterval(jadwalReminderTimer);
+  jadwalReminderTimer = setInterval(() => {
+    jadwalInitSlots();
+    jadwalUpdateReminderBar();
+  }, 60000);
+  // Minta izin notifikasi
+  if('Notification' in window && Notification.permission === 'default' && jadwalReminderAktif){
+    Notification.requestPermission();
+  }
+}
+
+function plgExportPDF(){
+  const cabFil = (g('plg-filter-cabang')?.value || '').toLowerCase();
+  const filtered = cabFil ? plgData.filter(p => p.cabang.toLowerCase().includes(cabFil)) : plgData;
+  if(!filtered.length){ alert('Tidak ada data untuk diexport.'); return; }
+
+  // Grup per cabang
+  const byCabang = {};
+  filtered.forEach(p => {
+    if(!byCabang[p.cabang]) byCabang[p.cabang] = [];
+    byCabang[p.cabang].push(p);
+  });
+
+  const tgl = new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  const cabLabel = cabFil || 'Semua Cabang';
+
+  const body = Object.entries(byCabang).map(([cab, arr]) => `
+    <h3 style="font-size:13px;font-weight:700;color:#444;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid #eee">
+      📍 ${cab} (${arr.length} pelanggan)
+    </h3>
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead>
+        <tr style="background:#f5f5f5">
+          <th style="padding:6px 8px;text-align:left;border:1px solid #ddd">#</th>
+          <th style="padding:6px 8px;text-align:left;border:1px solid #ddd">Nama</th>
+          <th style="padding:6px 8px;text-align:left;border:1px solid #ddd">No WhatsApp</th>
+          <th style="padding:6px 8px;text-align:left;border:1px solid #ddd">Keterangan</th>
+          <th style="padding:6px 8px;text-align:left;border:1px solid #ddd">Tgl Daftar</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${arr.map((p,i) => `
+          <tr style="background:${i%2===0?'#fff':'#fafafa'}">
+            <td style="padding:6px 8px;border:1px solid #ddd;color:#888">${i+1}</td>
+            <td style="padding:6px 8px;border:1px solid #ddd;font-weight:600">${p.nama}</td>
+            <td style="padding:6px 8px;border:1px solid #ddd;font-family:monospace">${p.wa}</td>
+            <td style="padding:6px 8px;border:1px solid #ddd;color:#666">${p.ket||'—'}</td>
+            <td style="padding:6px 8px;border:1px solid #ddd;color:#888">${p.tgl}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `).join('');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
+  <title>Database Pelanggan Prioritas — ${cabLabel}</title>
+  <style>body{font-family:system-ui,sans-serif;padding:24px;color:#111;max-width:700px;margin:0 auto}
+  @media print{.no-print{display:none}}</style></head><body>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
+    <div style="font-size:32px">⭐</div>
+    <div>
+      <div style="font-size:18px;font-weight:800">Database Pelanggan Prioritas</div>
+      <div style="font-size:11px;color:#888">Saudara Cell · ${cabLabel} · Dicetak ${tgl}</div>
+    </div>
+  </div>
+  <div style="background:#f9f9f9;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#555">
+    Total: <b>${filtered.length} pelanggan</b> dari <b>${Object.keys(byCabang).length} cabang</b>
+  </div>
+  ${body}
+  <div class="no-print" style="text-align:center;margin-top:20px">
+    <button onclick="window.print()" style="padding:12px 32px;background:#111;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">🖨️ Print / Save PDF</button>
+  </div>
+  </body></html>`;
+
+  const blob = new Blob([html], {type:'text/html'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.target = '_blank'; a.rel = 'noopener';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 15000);
+}
+
+
 
 let absenTipe   = 'masuk';
 let absenStream = null;
@@ -5181,6 +6098,7 @@ function hrTabInit(tab){
   if(tab==='reimburse'){ renderReimburse(); g('reimb-tgl').valueAsDate=new Date(); }
   if(tab==='danadrt')  renderDanaDarurat();
   if(tab==='bonus')    renderBonus();
+  if(tab==='pelanggan'){ plgRender(); jadwalInit(); }
 }
 
 // ══════════════════════
@@ -9669,5 +10587,66 @@ function cl_clearTerbilang(el){
   </div>
 </div>
 
+<script>
+// ── PWA Service Worker ──
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      console.log('SW registered');
+    }).catch(err => console.log('SW error:', err));
+  });
+}
+
+// ── Install prompt (Android Chrome) ──
+let _deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _deferredPrompt = e;
+  // Tampilkan banner install kalau belum pernah install
+  if(!localStorage.getItem('pwa_installed')){
+    setTimeout(tampilBannerInstall, 2000);
+  }
+});
+window.addEventListener('appinstalled', () => {
+  localStorage.setItem('pwa_installed','1');
+  tutupBannerInstall();
+  toast('🎉 Saudaraku berhasil diinstal!');
+});
+
+function tampilBannerInstall(){
+  if(g('install-banner')) return;
+  const banner = document.createElement('div');
+  banner.id = 'install-banner';
+  banner.style.cssText = `
+    position:fixed;bottom:0;left:0;right:0;z-index:9998;
+    background:linear-gradient(135deg,#16121f,#1d1828);
+    border-top:1.5px solid rgba(224,48,80,0.4);
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    display:flex;align-items:center;gap:12px;
+    box-shadow:0 -8px 32px rgba(0,0,0,0.6);
+    animation:slideUp2 0.3s ease;
+  `;
+  banner.innerHTML = `
+    <div style="width:46px;height:46px;background:#0a0810;border:1px solid rgba(224,48,80,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🏪</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:800;color:#e8e4f0">Install Saudaraku</div>
+      <div style="font-size:11px;color:#8880a8;margin-top:2px">Tambah ke layar utama HP kamu</div>
+    </div>
+    <button onclick="tutupBannerInstall()" style="background:none;border:none;color:#5a5272;font-size:20px;cursor:pointer;padding:4px">✕</button>
+    <button onclick="installPWA()" style="background:#e03050;border:none;border-radius:10px;padding:10px 16px;color:#fff;font-weight:800;font-size:12px;cursor:pointer;flex-shrink:0">Install</button>
+  `;
+  document.body.appendChild(banner);
+}
+function tutupBannerInstall(){
+  const b = g('install-banner'); if(b) b.remove();
+}
+async function installPWA(){
+  if(!_deferredPrompt){ alert('Buka di Chrome Android, lalu tap menu ⋮ → "Add to Home Screen"'); return; }
+  _deferredPrompt.prompt();
+  const { outcome } = await _deferredPrompt.userChoice;
+  _deferredPrompt = null;
+  tutupBannerInstall();
+}
+</script>
 </body>
 </html>
