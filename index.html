@@ -3077,7 +3077,7 @@ Buka sampai [jam]</div>
         </div>
         <div class="field">
           <label>No WhatsApp <span style="font-size:9px;color:var(--muted2)">(tanpa 0, mulai 62)</span></label>
-          <input class="finp" id="plg-wa" placeholder="Contoh: 6281234567890" inputmode="numeric" maxlength="15">
+          <input class="finp" id="plg-wa" placeholder="Contoh: 6281234567890" inputmode="numeric" maxlength="16">
         </div>
         <div class="field">
           <label>Cabang</label>
@@ -3113,6 +3113,15 @@ Buka sampai [jam]</div>
           <div style="font-size:20px;font-weight:800;color:var(--orange)" id="plg-stat-cabang">0</div>
           <div style="font-size:9px;color:var(--muted2)">Cabang Aktif</div>
         </div>
+      </div>
+
+      <!-- ══ SYNC STATUS ══ -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div id="plg-sync-status" style="font-size:11px;color:var(--muted2);font-family:var(--mono);transition:opacity 0.5s;opacity:0"></div>
+        <button onclick="plgLoadFromSheets()"
+          style="background:var(--s3);border:1px solid var(--border2);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--muted2);cursor:pointer;display:flex;align-items:center;gap:5px">
+          🔄 Sync
+        </button>
       </div>
 
       <!-- ══ JADWAL WA ══ -->
@@ -5516,7 +5525,90 @@ let hrSpecial  = hrGet('special')  || {
 // ══════════════════════════════════════════════════════════════════
 // PELANGGAN PRIORITAS
 // ══════════════════════════════════════════════════════════════════
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwBW3IQ75lAEsBikNapBF0UVm0UU2AcW5Vvr5AWuZAc7hKEJ3AwjKcPPqHT1MV-6wNw/exec';
+
 let plgData = hrGet('pelanggan') || [];
+let _plgSyncing = false;
+
+// Simpan ke localStorage + sync ke Google Sheets
+function plgSave(){
+  hrSet('pelanggan', plgData);
+  plgSyncToSheets();
+}
+
+// Upload semua data ke Google Sheets (no-cors karena Apps Script tidak kirim CORS header)
+function plgSyncToSheets(){
+  if(_plgSyncing) return;
+  _plgSyncing = true;
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action: 'save', pelanggan: plgData }),
+  }).then(() => {
+      _plgSyncing = false;
+      plgShowSyncStatus('✅ Tersimpan ke cloud');
+    })
+    .catch(() => {
+      _plgSyncing = false;
+      plgShowSyncStatus('⚠️ Gagal sync — tersimpan lokal');
+    });
+}
+
+// Ambil data dari Google Sheets via JSONP (bypass CORS untuk GAS GET)
+function plgLoadFromSheets(){
+  plgShowSyncStatus('🔄 Memuat data dari cloud...');
+  const cbName = '_plgCb_' + Date.now();
+  const script = document.createElement('script');
+  let done = false;
+
+  const timeout = setTimeout(() => {
+    if(done) return;
+    done = true;
+    delete window[cbName];
+    if(script.parentNode) script.remove();
+    plgShowSyncStatus('⚠️ Timeout — cek koneksi atau deploy ulang Apps Script');
+    toast('⚠️ Gagal load: timeout.');
+  }, 12000);
+
+  window[cbName] = function(res){
+    if(done) return;
+    done = true;
+    clearTimeout(timeout);
+    delete window[cbName];
+    if(script.parentNode) script.remove();
+    if(res && res.pelanggan && res.pelanggan.length){
+      plgData = res.pelanggan.map(p => ({...p, id: Number(p.id)}));
+      hrSet('pelanggan', plgData);
+      plgRender();
+      if(typeof jadwalRender === 'function') jadwalRender();
+      plgShowSyncStatus('✅ Dimuat dari cloud: ' + plgData.length + ' pelanggan');
+      toast('✅ ' + plgData.length + ' pelanggan berhasil dimuat dari cloud');
+    } else {
+      plgShowSyncStatus('ℹ️ Cloud kosong — belum ada data tersimpan');
+      toast('ℹ️ Belum ada data pelanggan di Google Sheets');
+    }
+  };
+
+  script.src = SHEETS_URL + '?callback=' + cbName + '&t=' + Date.now();
+  script.onerror = function(){
+    if(done) return;
+    done = true;
+    clearTimeout(timeout);
+    delete window[cbName];
+    plgShowSyncStatus('⚠️ Gagal — cek Apps Script sudah deploy & akses "Anyone"');
+    toast('⚠️ Gagal load dari cloud.');
+  };
+  document.head.appendChild(script);
+}
+
+function plgShowSyncStatus(msg){
+  const el = g('plg-sync-status');
+  if(!el) return;
+  el.textContent = msg;
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0'; }, 3000);
+}
 
 function plgTabTemplate(tab){
   const isBrilink = tab === 'brilink';
@@ -6098,7 +6190,7 @@ function hrTabInit(tab){
   if(tab==='reimburse'){ renderReimburse(); g('reimb-tgl').valueAsDate=new Date(); }
   if(tab==='danadrt')  renderDanaDarurat();
   if(tab==='bonus')    renderBonus();
-  if(tab==='pelanggan'){ plgRender(); jadwalInit(); }
+  if(tab==='pelanggan'){ plgRender(); jadwalInit(); plgLoadFromSheets(); }
 }
 
 // ══════════════════════
@@ -10588,14 +10680,14 @@ function cl_clearTerbilang(el){
 </div>
 
 <script>
-// ── PWA Service Worker ──
+
+// ── PWA: unregister semua SW agar tidak error di iOS ──
 if('serviceWorker' in navigator){
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').then(reg => {
-      console.log('SW registered');
-    }).catch(err => console.log('SW error:', err));
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(reg => reg.unregister());
   });
 }
+
 
 // ── Install prompt (Android Chrome) ──
 let _deferredPrompt = null;
@@ -10648,5 +10740,7 @@ async function installPWA(){
   tutupBannerInstall();
 }
 </script>
+</body>
+</html>
 </body>
 </html>
