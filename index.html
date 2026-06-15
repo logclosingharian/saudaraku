@@ -1509,7 +1509,213 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
 </head>
 <body>
 
+
+<!-- ══ SAUDARABOT 3D ══ -->
+<style>
+/* ── Saudarabot 3D Variables ── */
+:root{
+  --sb-yellow:#FFD600;--sb-red:#FF1744;--sb-white:#FFFFFF;
+  --sb-yellow-dark:#F9A825;--sb-red-dark:#B71C1C;
+  --sb-shadow:rgba(0,0,0,0.35);
+}
+
+/* ── Splash ── */
+#robo-splash{position:fixed;inset:0;z-index:99999;background:linear-gradient(160deg,#0a0810 0%,#1a0a1a 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .5s ease}
+#robo-splash.hide{opacity:0;pointer-events:none}
+.robo-splash-txt{font-family:var(--sans);font-size:16px;font-weight:800;color:#FFD600;letter-spacing:1px;text-shadow:0 0 20px rgba(255,214,0,.5);animation:sbPulse 1s ease-in-out infinite alternate}
+.robo-splash-sub{font-size:12px;color:rgba(255,255,255,.5);font-family:var(--sans);margin-top:-10px}
+.robo-bar-wrap{width:180px;height:5px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.robo-bar{height:100%;background:linear-gradient(90deg,#FF1744,#FFD600);border-radius:99px;animation:roboLoad 2s ease-in-out forwards}
+
+/* ── Floating ── */
+#robo-float{position:fixed;bottom:86px;right:12px;z-index:9000;cursor:pointer;user-select:none;display:flex;flex-direction:column;align-items:center;gap:3px;-webkit-tap-highlight-color:transparent}
+.robo-label{font-size:9px;font-family:var(--sans);color:#FFD600;font-weight:800;letter-spacing:1px;text-shadow:0 0 8px rgba(255,214,0,.6)}
+
+/* ── Bubble ── */
+#robo-bubble{position:fixed;bottom:162px;right:12px;z-index:9001;max-width:195px;background:#1a1025;border:1.5px solid #FFD600;border-radius:14px 14px 4px 14px;padding:10px 13px;font-size:12px;font-family:var(--sans);color:#fff;line-height:1.5;box-shadow:0 4px 24px rgba(255,214,0,.2);opacity:0;transform:translateY(10px) scale(.92);transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+#robo-bubble.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+#robo-bubble::after{content:'';position:absolute;bottom:-8px;right:16px;width:13px;height:13px;background:#1a1025;border-right:1.5px solid #FFD600;border-bottom:1.5px solid #FFD600;transform:rotate(45deg)}
+#robo-bubble .sb-close{position:absolute;top:5px;right:7px;background:none;border:none;color:rgba(255,255,255,.4);font-size:12px;cursor:pointer;padding:0;line-height:1}
+
+/* ══ SAUDARABOT 3D CSS ══ */
+.sbot{display:flex;flex-direction:column;align-items:center;position:relative;filter:drop-shadow(0 8px 24px rgba(255,214,0,.3))}
+.sbot.sbot-lg{width:100px}
+.sbot.sbot-sm{width:54px}
+
+/* Antena */
+.sb-ant{display:flex;flex-direction:column;align-items:center;margin-bottom:-2px}
+.sb-ant-stem{width:4px;height:16px;background:linear-gradient(180deg,#fff 0%,#FFD600 100%);border-radius:2px;box-shadow:0 0 6px rgba(255,214,0,.6)}
+.sb-ant-ball{width:11px;height:11px;background:radial-gradient(circle at 35% 30%,#fff 0%,#FF1744 50%,#B71C1C 100%);border-radius:50%;margin-top:-2px;box-shadow:0 0 12px #FF1744,0 0 4px rgba(0,0,0,.4);animation:sbGlow 1s ease-in-out infinite alternate}
+.sbot-sm .sb-ant-stem{width:3px;height:10px}
+.sbot-sm .sb-ant-ball{width:7px;height:7px;margin-top:-1px}
+
+/* Kepala */
+.sb-head{background:linear-gradient(145deg,#FFFFFF 0%,#FFD600 60%,#F9A825 100%);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;position:relative;box-shadow:inset 0 3px 8px rgba(255,255,255,.8),inset 0 -3px 8px rgba(0,0,0,.2),0 6px 20px rgba(255,214,0,.4),0 2px 0 #F9A825;overflow:hidden}
+.sbot-lg .sb-head{width:70px;height:54px;border-radius:14px}
+.sbot-sm .sb-head{width:40px;height:30px;border-radius:9px;gap:4px}
+.sb-head::before{content:'';position:absolute;top:4px;left:8px;width:60%;height:30%;background:rgba(255,255,255,.5);border-radius:99px;transform:rotate(-8deg)} /* Highlight 3D */
+
+/* Mata */
+.sb-eyes{display:flex;gap:8px;z-index:1}
+.sb-eye{background:linear-gradient(145deg,#FF1744,#B71C1C);border-radius:4px;box-shadow:0 0 10px #FF1744,inset 0 1px 2px rgba(255,255,255,.3);animation:sbBlink 4s ease-in-out infinite}
+.sbot-lg .sb-eye{width:14px;height:10px;border-radius:4px}
+.sbot-sm .sb-eye{width:8px;height:6px;border-radius:3px}
+
+/* Mulut */
+.sb-mouth{background:linear-gradient(90deg,#FF1744,#FF6D00);border-radius:99px;z-index:1}
+.sbot-lg .sb-mouth{width:26px;height:5px}
+.sbot-sm .sb-mouth{width:14px;height:3px}
+
+/* Badan */
+.sb-body{background:linear-gradient(145deg,#FF1744 0%,#D50000 60%,#B71C1C 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;margin-top:3px;box-shadow:inset 0 3px 6px rgba(255,255,255,.25),inset 0 -3px 6px rgba(0,0,0,.3),0 6px 18px rgba(255,23,68,.5),0 2px 0 #7F0000;overflow:hidden}
+.sbot-lg .sb-body{width:76px;height:56px;border-radius:12px}
+.sbot-sm .sb-body{width:44px;height:32px;border-radius:8px;margin-top:2px}
+.sb-body::before{content:'';position:absolute;top:5px;left:8px;width:55%;height:28%;background:rgba(255,255,255,.2);border-radius:99px;transform:rotate(-6deg)}
+
+/* Chest gem */
+.sb-gem{background:radial-gradient(circle at 35% 30%,#fff 0%,#FFD600 40%,#FF8F00 100%);border-radius:50%;box-shadow:0 0 16px #FFD600,0 0 6px rgba(255,214,0,.8),inset 0 1px 3px rgba(255,255,255,.9);animation:sbGem 1.4s ease-in-out infinite alternate;z-index:1}
+.sbot-lg .sb-gem{width:18px;height:18px}
+.sbot-sm .sb-gem{width:10px;height:10px}
+
+/* Panel badan */
+.sb-panel{position:absolute;bottom:6px;display:flex;gap:4px}
+.sb-dot{width:5px;height:5px;border-radius:50%;animation:sbDot 1.5s ease-in-out infinite alternate}
+.sb-dot:nth-child(1){background:#FFD600;animation-delay:0s}
+.sb-dot:nth-child(2){background:#fff;animation-delay:.3s}
+.sb-dot:nth-child(3){background:#FF1744;animation-delay:.6s}
+.sbot-sm .sb-panel{display:none}
+
+/* Tangan */
+.sb-arms{display:flex;justify-content:space-between;width:100%;position:absolute;top:50%;transform:translateY(-50%)}
+.sb-arm{background:linear-gradient(145deg,#FF5252,#D50000);border-radius:6px;box-shadow:0 3px 8px rgba(0,0,0,.3),inset 0 1px 2px rgba(255,255,255,.2)}
+.sbot-lg .sb-arm{width:13px;height:28px;border-radius:6px}
+.sbot-sm .sb-arm{width:7px;height:16px;border-radius:4px}
+.sb-arm-l{margin-left:-3px;transform:rotate(5deg)}
+.sb-arm-r{margin-right:-3px;transform:rotate(-5deg)}
+
+/* Kaki */
+.sb-legs{display:flex;gap:10px;margin-top:3px}
+.sb-leg{background:linear-gradient(180deg,#D50000,#B71C1C);border-radius:6px;box-shadow:0 4px 10px rgba(0,0,0,.3),inset 0 1px 2px rgba(255,255,255,.15)}
+.sbot-lg .sb-leg{width:20px;height:16px;border-radius:6px}
+.sbot-sm .sb-leg{width:11px;height:9px;border-radius:4px}
+
+/* ── Animasi ── */
+@keyframes sbGlow{from{box-shadow:0 0 6px #FF1744}to{box-shadow:0 0 18px #FF1744,0 0 6px #fff}}
+@keyframes sbBlink{0%,85%,100%{transform:scaleY(1)}90%{transform:scaleY(0.1)}}
+@keyframes sbGem{from{box-shadow:0 0 8px #FFD600;transform:scale(1)}to{box-shadow:0 0 22px #FFD600,0 0 8px rgba(255,255,255,.5);transform:scale(1.12)}}
+@keyframes sbDot{from{opacity:.3;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes sbFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9px) rotate(2deg)}}
+@keyframes sbBounce{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-18px) rotate(4deg)}}
+@keyframes sbPulse{from{opacity:.6;text-shadow:0 0 10px rgba(255,214,0,.3)}to{opacity:1;text-shadow:0 0 30px rgba(255,214,0,.8)}}
+@keyframes sbPop{0%{transform:scale(.4)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes roboLoad{0%{width:0}70%{width:85%}100%{width:100%}}
+.sbot.sbot-lg{animation:sbBounce 1s ease-in-out infinite}
+#robo-float .sbot{animation:sbFloat 2.8s ease-in-out infinite;filter:drop-shadow(0 6px 18px rgba(255,214,0,.45))}
+.sb-pop{animation:sbPop .4s cubic-bezier(.34,1.56,.64,1)!important}
+</style>
+
+<!-- Splash Screen -->
+<div id="robo-splash">
+  <div class="sbot sbot-lg">
+    <div class="sb-ant"><div class="sb-ant-ball"></div><div class="sb-ant-stem"></div></div>
+    <div class="sb-head">
+      <div class="sb-eyes"><div class="sb-eye"></div><div class="sb-eye"></div></div>
+      <div class="sb-mouth"></div>
+    </div>
+    <div class="sb-body" style="position:relative">
+      <div class="sb-gem"></div>
+      <div class="sb-panel"><div class="sb-dot"></div><div class="sb-dot"></div><div class="sb-dot"></div></div>
+      <div class="sb-arms" style="position:absolute;width:calc(100% + 26px);left:-13px">
+        <div class="sb-arm sb-arm-l"></div>
+        <div class="sb-arm sb-arm-r"></div>
+      </div>
+    </div>
+    <div class="sb-legs"><div class="sb-leg"></div><div class="sb-leg"></div></div>
+  </div>
+  <div class="robo-splash-txt" id="robo-splash-txt">⚡ SAUDARABOT AKTIF!</div>
+  <div class="robo-splash-sub">Sistem menyala, bos~</div>
+  <div class="robo-bar-wrap"><div class="robo-bar"></div></div>
+</div>
+
+<!-- Floating Mascot -->
+<div id="robo-float" onclick="roboToggleBubble()" title="Klik Saudarabot!">
+  <div class="sbot sbot-sm">
+    <div class="sb-ant"><div class="sb-ant-ball"></div><div class="sb-ant-stem"></div></div>
+    <div class="sb-head">
+      <div class="sb-eyes"><div class="sb-eye"></div><div class="sb-eye"></div></div>
+      <div class="sb-mouth"></div>
+    </div>
+    <div class="sb-body" style="position:relative">
+      <div class="sb-gem"></div>
+      <div class="sb-arms" style="position:absolute;width:calc(100% + 14px);left:-7px">
+        <div class="sb-arm sb-arm-l"></div>
+        <div class="sb-arm sb-arm-r"></div>
+      </div>
+    </div>
+    <div class="sb-legs"><div class="sb-leg"></div><div class="sb-leg"></div></div>
+  </div>
+  <div class="robo-label">SAUDARABOT</div>
+</div>
+
+<!-- Bubble Chat -->
+<div id="robo-bubble">
+  <button class="sb-close" onclick="roboHideBubble(event)">✕</button>
+  <span id="robo-bubble-txt">halo bos! 👋</span>
+</div>
+
+<script>
+const _roboMsgs = [
+  '⚡ SAUDARABOT AKTIF!','🔥 Gas cuan hari ini bos!','💛 No skip no ngeles ya!',
+  '🤖 System online, siap tempur!','🚀 Ygy gaskeun bestie!','💪 Push hard stay humble!'
+];
+const _roboBubbles = [
+  'udah minum air belum bos? 💧','target hari ini udah kejar? 🎯',
+  'jangan lupa istirahat ya! 😴','semangat, kamu yang terbaik! ⭐',
+  'closing makin banyak makin cuan! 💰','gas terus, jangan kendor! 🔥',
+  'BRILink siap? nasabah udah nunggu 😎','ayo push omzet ygy! 📈',
+  'team solid = toko solid, fr fr 🤝','real talk: kamu udah kerja keras! 🙌',
+  'glow up bisnis bareng Saudarabot! 🤖✨','bestie, jangan lupa senyum ya! 😊'
+];
+
+window.addEventListener('DOMContentLoaded', () => {
+  const txt = document.getElementById('robo-splash-txt');
+  if(txt) txt.textContent = _roboMsgs[Math.floor(Math.random()*_roboMsgs.length)];
+  setTimeout(() => {
+    const s = document.getElementById('robo-splash');
+    if(s){ s.classList.add('hide'); setTimeout(()=>{ if(s.parentNode) s.remove(); },600); }
+  }, 2400);
+  setTimeout(roboToggleBubble, 12000);
+  setInterval(roboToggleBubble, 90000);
+});
+
+function roboToggleBubble(){
+  const b = document.getElementById('robo-bubble');
+  if(!b) return;
+  if(b.classList.contains('show')){ roboHideBubble(); return; }
+  document.getElementById('robo-bubble-txt').textContent = _roboBubbles[Math.floor(Math.random()*_roboBubbles.length)];
+  b.classList.add('show');
+  const f = document.getElementById('robo-float');
+  if(f){ f.classList.add('sb-pop'); setTimeout(()=>f.classList.remove('sb-pop'),400); }
+  setTimeout(roboHideBubble, 6000);
+}
+function roboHideBubble(e){
+  if(e) e.stopPropagation();
+  document.getElementById('robo-bubble')?.classList.remove('show');
+}
+</script>
+
 <div id="toast"></div>
+
+<!-- Custom Confirm Modal (pengganti window.confirm yang sering diblok di WebView/PWA) -->
+<div id="cc-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:99990;align-items:center;justify-content:center;padding:24px">
+  <div style="background:var(--s2);border:1px solid var(--border2);border-radius:18px;padding:22px;max-width:340px;width:100%;text-align:center">
+    <div id="cc-modal-title" style="font-size:14px;font-weight:800;margin-bottom:10px;white-space:pre-line;line-height:1.5"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px">
+      <button id="cc-modal-cancel" style="padding:12px;border-radius:10px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans)">Batal</button>
+      <button id="cc-modal-ok" style="padding:12px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--sans)">Hapus</button>
+    </div>
+  </div>
+</div>
 
 <!-- WA Reminder Popup -->
 <div id="wa-reminder-popup">
@@ -2589,13 +2795,24 @@ font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);}
     <!-- ─── ABSENSI ─── -->
     <div class="hr-panel" id="hr-absensi" style="display:none">
       <div class="hr-panel-hdr" onclick="hrTab(null)">← Absensi</div>
+
+      <!-- Poin Reward & Punishment -->
+      <div style="background:linear-gradient(135deg,rgba(62,207,142,0.1),rgba(108,99,255,0.06));border:1px solid rgba(62,207,142,0.25);border-radius:14px;padding:14px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:10px;color:var(--green);font-family:var(--mono);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px">⭐ Poin Kedisiplinan</div>
+          <div style="font-size:11px;color:var(--muted2)" id="absen-poin-sub">—</div>
+        </div>
+        <div style="font-size:30px;font-weight:800;font-family:var(--mono)" id="absen-poin-val">0</div>
+      </div>
+
       <div class="card">
         <div class="ctit">📍 Catat Kehadiran</div>
         <div style="background:var(--s3);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center">
           <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--text)" id="absen-clock">--:--:--</div>
           <div style="font-size:11px;color:var(--muted2);font-family:var(--mono);margin-top:2px" id="absen-date">—</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)">Jam masuk: 07:30 – 08:30</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="absen-jadwal-label">Masuk maks 08:45 · Keluar min 09:30</div>
         </div>
+
 
         <!-- Alert jam -->
         <div id="absen-jam-alert" style="display:none;border-radius:9px;padding:9px 12px;font-size:12px;font-weight:600;margin-bottom:10px;line-height:1.5"></div>
@@ -3654,6 +3871,32 @@ function toast(msg, dur=2500){
   t.style.display = 'block';
   clearTimeout(t._t);
   t._t = setTimeout(() => t.style.display = 'none', dur);
+}
+
+// Pengganti window.confirm — beberapa WebView/PWA (terutama versi "Add to Home Screen"
+// di Android) memblokir/menonaktifkan window.confirm tanpa error, sehingga fungsi
+// yang memanggilnya seolah "tidak merespons". Modal custom ini selalu berfungsi.
+function confirmCustom(message, okLabel){
+  return new Promise(resolve => {
+    const modal  = g('cc-modal');
+    const titleEl= g('cc-modal-title');
+    const okBtn  = g('cc-modal-ok');
+    const cnBtn  = g('cc-modal-cancel');
+    if(!modal || !titleEl || !okBtn || !cnBtn){ resolve(window.confirm ? confirm(message) : true); return; }
+    titleEl.textContent = message;
+    okBtn.textContent = okLabel || 'Hapus';
+    modal.style.display = 'flex';
+    const cleanup = (result) => {
+      modal.style.display = 'none';
+      okBtn.removeEventListener('click', onOk);
+      cnBtn.removeEventListener('click', onCancel);
+      resolve(result);
+    };
+    const onOk     = () => cleanup(true);
+    const onCancel = () => cleanup(false);
+    okBtn.addEventListener('click', onOk);
+    cnBtn.addEventListener('click', onCancel);
+  });
 }
 
 // ===== PIN STAFF =====
@@ -5514,6 +5757,20 @@ let hrGajiCfg  = hrGet('gaji_cfg') || {
 };
 let hrTarget   = hrGet('targets')  || [];
 
+// ── Poin Reward & Punishment Absensi ──
+// Akumulatif per karyawan, mulai dari 0, -1 setiap kali telat masuk / pulang cepat.
+// Bisa minus. Disimpan terpisah agar mudah direkap Kanit & ditampilkan ke staff.
+let hrPoinAbsensi = hrGet('poin_absensi') || {};
+
+function getPoinAbsensi(nama){
+  return hrPoinAbsensi[nama] || 0;
+}
+function adjustPoinAbsensi(nama, delta){
+  hrPoinAbsensi[nama] = (hrPoinAbsensi[nama] || 0) + delta;
+  hrSet('poin_absensi', hrPoinAbsensi);
+  return hrPoinAbsensi[nama];
+}
+
 // ── Data khusus tantangan non-otomatis (konten FYP, live GMV, penghargaan) ──
 // Disimpan di hr_special, di-input manual oleh Kanit
 let hrSpecial  = hrGet('special')  || {
@@ -5525,7 +5782,7 @@ let hrSpecial  = hrGet('special')  || {
 // ══════════════════════════════════════════════════════════════════
 // PELANGGAN PRIORITAS
 // ══════════════════════════════════════════════════════════════════
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwBW3IQ75lAEsBikNapBF0UVm0UU2AcW5Vvr5AWuZAc7hKEJ3AwjKcPPqHT1MV-6wNw/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwT95sG0U066ElGESw50czL5e2TkOBDqJ2csw4BHKxEPfU50BUWWLrP7sf8d6FFrqkcHA/exec';
 
 let plgData = hrGet('pelanggan') || [];
 let _plgSyncing = false;
@@ -5555,7 +5812,7 @@ function plgSyncToSheets(){
     });
 }
 
-// Ambil data dari Google Sheets via JSONP (bypass CORS untuk GAS GET)
+// Ambil data dari Google Sheets via JSONP (bypass CORS untuk GET)
 function plgLoadFromSheets(){
   plgShowSyncStatus('🔄 Memuat data dari cloud...');
   const cbName = '_plgCb_' + Date.now();
@@ -5567,8 +5824,8 @@ function plgLoadFromSheets(){
     done = true;
     delete window[cbName];
     if(script.parentNode) script.remove();
-    plgShowSyncStatus('⚠️ Timeout — cek koneksi atau deploy ulang Apps Script');
-    toast('⚠️ Gagal load: timeout.');
+    plgShowSyncStatus('⚠️ Timeout — Apps Script lambat/belum di-deploy ulang');
+    toast('⚠️ Gagal load: timeout. Pastikan Apps Script sudah di-redeploy dengan kode JSONP terbaru.');
   }, 12000);
 
   window[cbName] = function(res){
@@ -5596,8 +5853,8 @@ function plgLoadFromSheets(){
     done = true;
     clearTimeout(timeout);
     delete window[cbName];
-    plgShowSyncStatus('⚠️ Gagal — cek Apps Script sudah deploy & akses "Anyone"');
-    toast('⚠️ Gagal load dari cloud.');
+    plgShowSyncStatus('⚠️ Gagal — cek: Apps Script sudah deploy ulang?');
+    toast('⚠️ Gagal load. Pastikan Apps Script di-deploy ulang & akses "Anyone".');
   };
   document.head.appendChild(script);
 }
@@ -6196,66 +6453,112 @@ function hrTabInit(tab){
 // ══════════════════════
 //  ABSENSI
 // ══════════════════════
-const ABSEN_BUKA_MULAI = '07:30';
-const ABSEN_BUKA_AKHIR = '08:30';
+// Jadwal absen — beda untuk hari kerja (Senin–Jumat) & weekend (Sabtu–Minggu)
+const ABSEN_BUKA_MULAI       = '07:30'; // jam mulai bisa absen masuk (semua hari)
+const ABSEN_BATAS_MASUK      = '08:45'; // batas akhir absen masuk — weekday
+const ABSEN_BATAS_KELUAR     = '09:30'; // batas minimal absen keluar — weekday
+const ABSEN_BATAS_MASUK_WE   = '08:55'; // batas akhir absen masuk — weekend (Sabtu/Minggu)
+const ABSEN_BATAS_KELUAR_WE  = '09:45'; // batas minimal absen keluar — weekend
+// Alias lama (tetap dipertahankan agar bagian lain yg masih memakai ABSEN_BUKA_AKHIR tidak rusak)
+const ABSEN_BUKA_AKHIR        = ABSEN_BATAS_MASUK;
 
-function jamAbsenStatus(jam){
-  // Kembalikan: 'tepat' | 'telat' | 'belum'
+function isHariWeekend(tanggal){
+  // tanggal format 'YYYY-MM-DD'. Sabtu=6, Minggu=0
+  const d = tanggal ? new Date(tanggal + 'T00:00') : new Date();
+  const day = d.getDay();
+  return day === 0 || day === 6;
+}
+function batasMasukAbsen(tanggal){
+  return isHariWeekend(tanggal) ? ABSEN_BATAS_MASUK_WE : ABSEN_BATAS_MASUK;
+}
+function batasKeluarAbsen(tanggal){
+  return isHariWeekend(tanggal) ? ABSEN_BATAS_KELUAR_WE : ABSEN_BATAS_KELUAR;
+}
+
+function jamAbsenStatus(jam, tanggal){
+  // Status untuk ABSEN MASUK saja. Kembalikan: 'tepat' | 'telat' | 'belum'
   if(!jam) return 'belum';
-  if(jam >= ABSEN_BUKA_MULAI && jam <= ABSEN_BUKA_AKHIR) return 'tepat';
-  if(jam > ABSEN_BUKA_AKHIR) return 'telat';
-  return 'belum'; // sebelum 07:30
+  const batas = batasMasukAbsen(tanggal);
+  if(jam >= ABSEN_BUKA_MULAI && jam <= batas) return 'tepat';
+  if(jam > batas) return 'telat';
+  return 'belum'; // sebelum jam mulai absen
+}
+
+// Cek apakah absen MASUK pada jam tertentu dianggap TELAT (lewat batas masuk hari itu)
+function absenMasukTelat(jam, tanggal){
+  if(!jam) return false;
+  return jam > batasMasukAbsen(tanggal);
+}
+// Cek apakah absen KELUAR pada jam tertentu dianggap PULANG CEPAT (sebelum batas keluar hari itu)
+function absenKeluarCepat(jam, tanggal){
+  if(!jam) return false;
+  return jam < batasKeluarAbsen(tanggal);
 }
 
 function initAbsensi(){
   if(absenClockInterval) clearInterval(absenClockInterval);
 
   function tickClock(){
-    const now  = new Date();
-    const jam  = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    const jamHM= now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); // HH:MM
-    const tgl  = now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    const now    = new Date();
+    const jam    = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const jamHM  = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); // HH:MM
+    const tglDisp= now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    const tglISO = now.toISOString().split('T')[0];
+    const weekend= isHariWeekend(tglISO);
+    const bMasuk = batasMasukAbsen(tglISO);
+    const bKeluar= batasKeluarAbsen(tglISO);
 
     s('absen-clock', jam);
-    s('absen-date',  tgl);
+    s('absen-date',  tglDisp + (weekend ? ' · 🟡 Weekend' : ''));
 
-    // Warna jam + alert status
+    // Update label jadwal sesuai hari
+    const lblEl = g('absen-jadwal-label');
+    if(lblEl) lblEl.textContent = `Masuk maks ${bMasuk} · Keluar min ${bKeluar}${weekend?' (jadwal weekend)':''}`;
+
+    const sudahMasuk  = getAbsenHariIni().some(x=>x.tipe==='masuk');
+    const sudahKeluar = getAbsenHariIni().some(x=>x.tipe==='keluar');
+
+    // Warna jam + alert status — tergantung tipe absen yang sedang dipilih
     const clockEl = g('absen-clock');
-    const status  = jamAbsenStatus(jamHM);
-    const sudahMasuk = getAbsenHariIni().some(x=>x.tipe==='masuk');
+    const banner  = g('absen-jam-alert');
 
-    // Hanya terapkan alert jam jika belum absen masuk
-    if(!sudahMasuk && clockEl){
-      if(status === 'telat'){
-        clockEl.style.color = 'var(--red)';
-      } else if(status === 'tepat'){
-        clockEl.style.color = 'var(--green)';
-      } else {
-        clockEl.style.color = 'var(--text)';
+    if(!sudahMasuk){
+      // Belum absen masuk
+      const status = jamAbsenStatus(jamHM, tglISO);
+      if(clockEl) clockEl.style.color = status==='telat' ? 'var(--red)' : status==='tepat' ? 'var(--green)' : 'var(--text)';
+      if(banner){
+        if(status === 'telat'){
+          banner.style.display = 'block';
+          banner.innerHTML = `⚠️ Kamu <b>terlambat</b> — jam masuk sudah lewat dari ${bMasuk}${weekend?' (jadwal weekend)':''}. Segera catat absensi! Poin -1 akan tercatat.`;
+          banner.style.background = 'var(--rs)'; banner.style.color = 'var(--red)'; banner.style.border = '1px solid rgba(245,99,66,0.35)';
+        } else if(status === 'tepat'){
+          banner.style.display = 'block';
+          banner.innerHTML = `✅ Waktu absen masuk: ${ABSEN_BUKA_MULAI} – ${bMasuk}${weekend?' (jadwal weekend)':''}. Segera catat kehadiran!`;
+          banner.style.background = 'var(--gs)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.35)';
+        } else {
+          banner.style.display = 'none';
+        }
       }
-    } else if(clockEl){
-      clockEl.style.color = 'var(--text)';
+    } else if(!sudahKeluar){
+      // Sudah masuk, belum absen keluar
+      if(clockEl) clockEl.style.color = jamHM < bKeluar ? 'var(--orange)' : 'var(--green)';
+      if(banner){
+        if(jamHM < bKeluar){
+          banner.style.display = 'block';
+          banner.innerHTML = `🕐 Jam keluar minimal: <b>${bKeluar}</b>${weekend?' (jadwal weekend)':''}. Pulang sebelum jam ini akan tercatat <b>pulang cepat</b> (poin -1).`;
+          banner.style.background = 'var(--os)'; banner.style.color = 'var(--orange)'; banner.style.border = '1px solid rgba(245,166,35,0.35)';
+        } else {
+          banner.style.display = 'block';
+          banner.innerHTML = `✅ Sudah lewat jam keluar minimal (${bKeluar}). Boleh absen keluar — kerja penuh hari ini! 🎉`;
+          banner.style.background = 'var(--gs)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.35)';
+        }
+      }
+    } else {
+      if(clockEl) clockEl.style.color = 'var(--text)';
+      if(banner) banner.style.display = 'none';
     }
 
-    // Alert banner jam
-    const banner = g('absen-jam-alert');
-    if(banner){
-      if(!sudahMasuk && status === 'telat'){
-        banner.style.display = 'block';
-        banner.innerHTML = `⚠️ Kamu <b>terlambat</b> — jam masuk sudah lewat dari ${ABSEN_BUKA_AKHIR}. Segera catat absensi!`;
-        banner.style.background = 'var(--rs)';
-        banner.style.color      = 'var(--red)';
-        banner.style.border     = '1px solid rgba(245,99,66,0.35)';
-      } else if(!sudahMasuk && status === 'tepat'){
-        banner.style.display = 'block';
-        banner.innerHTML = `✅ Waktu absen masuk: ${ABSEN_BUKA_MULAI} – ${ABSEN_BUKA_AKHIR}. Segera catat kehadiran!`;
-        banner.style.background = 'var(--gs)';
-        banner.style.color      = 'var(--green)';
-        banner.style.border     = '1px solid rgba(62,207,142,0.35)';
-      } else {
-        banner.style.display = 'none';
-      }
-    }
+    renderPoinAbsensi();
   }
 
   tickClock();
@@ -6265,6 +6568,22 @@ function initAbsensi(){
   const lastMasuk  = todayData.some(x=>x.tipe==='masuk');
   pilihTipeAbsen(lastMasuk ? 'keluar' : 'masuk');
 }
+
+// Tampilkan poin reward/punishment absensi staff secara real-time
+function renderPoinAbsensi(){
+  const el = g('absen-poin-val'); if(!el) return;
+  const nama = staffInfo?.nama || '';
+  const poin = getPoinAbsensi(nama);
+  el.textContent = (poin > 0 ? '+' : '') + poin;
+  el.style.color = poin > 0 ? 'var(--green)' : poin < 0 ? 'var(--red)' : 'var(--muted2)';
+  const sub = g('absen-poin-sub');
+  if(sub){
+    if(poin > 0)      sub.textContent = '👍 Mantap, terus pertahankan!';
+    else if(poin < 0) sub.textContent = '⚠️ Yuk perbaiki — tepat waktu = poin naik lagi';
+    else              sub.textContent = 'Belum ada catatan telat/pulang cepat';
+  }
+}
+
 
 function getAbsenHariIni(){
   const today = new Date().toISOString().split('T')[0];
@@ -6280,23 +6599,36 @@ function renderAbsenHariIni(){
     return;
   }
   wrap.innerHTML = data.map(x=>{
-    const isTelat  = x.tipe==='masuk' && jamAbsenStatus(x.jam)==='telat';
+    const isTelat = x.tipe==='masuk'  && (x.telat === true || absenMasukTelat(x.jam, x.tanggal));
+    const isCepat = x.tipe==='keluar' && (x.cepat === true || absenKeluarCepat(x.jam, x.tanggal));
+    const bMasuk  = batasMasukAbsen(x.tanggal);
+    const bKeluar = batasKeluarAbsen(x.tanggal);
+
     const warnaMasuk = isTelat ? 'var(--red)' : 'var(--green)';
     const labelMasuk = isTelat ? '→ MASUK — TERLAMBAT' : '→ MASUK';
-    const warnaKeluar= 'var(--orange)';
-    const warna      = x.tipe==='masuk' ? warnaMasuk : warnaKeluar;
-    const label      = x.tipe==='masuk' ? labelMasuk  : '← KELUAR';
+    const warnaKeluar= isCepat ? 'var(--red)' : 'var(--orange)';
+    const labelKeluar= isCepat ? '← KELUAR — PULANG CEPAT' : '← KELUAR';
+
+    const warna   = x.tipe==='masuk' ? warnaMasuk : warnaKeluar;
+    const label   = x.tipe==='masuk' ? labelMasuk : labelKeluar;
+    const bermasalah = isTelat || isCepat;
+
+    let subInfo = '';
+    if(isTelat) subInfo = `<div style="font-size:10px;color:var(--red);margin-top:2px">⚠️ Batas masuk: ${bMasuk} · poin -1</div>`;
+    if(isCepat) subInfo = `<div style="font-size:10px;color:var(--red);margin-top:2px">⚠️ Jam keluar minimal: ${bKeluar} · poin -1</div>`;
+
     return `
-    <div class="absen-entry" style="border:1px solid ${isTelat?'rgba(245,99,66,0.3)':'var(--border)'}">
+    <div class="absen-entry" style="border:1px solid ${bermasalah?'rgba(245,99,66,0.3)':'var(--border)'}">
       <div style="width:38px;height:38px;border-radius:10px;overflow:hidden;flex-shrink:0;background:var(--s2)">
         ${x.foto ? `<img src="${x.foto}" style="width:100%;height:100%;object-fit:cover">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:18px">${x.tipe==='masuk'?'→':'←'}</div>`}
       </div>
       <div style="flex:1">
         <div style="font-weight:700;font-size:13px;color:${warna}">${label}</div>
         <div style="font-family:var(--mono);font-size:12px;color:var(--muted2)">${x.jam}${x.ket?' · '+x.ket:''}</div>
-        ${isTelat?`<div style="font-size:10px;color:var(--red);margin-top:2px">⚠️ Batas masuk: ${ABSEN_BUKA_AKHIR}</div>`:''}
+        ${subInfo}
       </div>
       ${isTelat?`<div style="background:var(--rs);border-radius:6px;padding:3px 7px;font-size:10px;font-weight:700;color:var(--red);flex-shrink:0">TELAT</div>`:''}
+      ${isCepat?`<div style="background:var(--rs);border-radius:6px;padding:3px 7px;font-size:10px;font-weight:700;color:var(--red);flex-shrink:0">CEPAT</div>`:''}
     </div>`;
   }).join('');
 }
@@ -6408,21 +6740,32 @@ function simpanAbsensi(){
   const jam      = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
   const ket      = vs('absen-ket');
   const statusEl = g('absen-status');
-  const isTelat  = absenTipe==='masuk' && jamAbsenStatus(jam)==='telat';
+  const isTelat  = absenTipe==='masuk'  && absenMasukTelat(jam, tanggal);
+  const isCepat  = absenTipe==='keluar' && absenKeluarCepat(jam, tanggal);
+  const bMasuk   = batasMasukAbsen(tanggal);
+  const bKeluar  = batasKeluarAbsen(tanggal);
 
-  const entry = { id:Date.now(), nama, tanggal, jam, tipe:absenTipe, ket, foto:absenFotoB64||null, lokasi:staffInfo?.area||APP_AREA, telat:isTelat };
+  const entry = { id:Date.now(), nama, tanggal, jam, tipe:absenTipe, ket, foto:absenFotoB64||null, lokasi:staffInfo?.area||APP_AREA, telat:isTelat, cepat:isCepat };
   hrAbsensi.push(entry);
   hrSet('absensi', hrAbsensi);
   syncAbsensiSheets(entry); // auto-sync ke Sheets
 
+  // ── Poin reward & punishment ──
+  let poinSekarang = getPoinAbsensi(nama);
+  if(isTelat || isCepat) poinSekarang = adjustPoinAbsensi(nama, -1);
+
   if(isTelat){
     statusEl.style.color = 'var(--red)';
-    statusEl.textContent = `⚠️ Absensi masuk tercatat — ${jam} (TERLAMBAT, batas ${ABSEN_BUKA_AKHIR})`;
-    toast(`⚠️ Dicatat, tapi kamu terlambat ${nama.split(' ')[0]}! Batas masuk ${ABSEN_BUKA_AKHIR} 🔴`);
+    statusEl.textContent = `⚠️ Absensi masuk tercatat — ${jam} (TERLAMBAT, batas ${bMasuk}) · Poin ${poinSekarang}`;
+    toast(`⚠️ Dicatat, tapi kamu terlambat ${nama.split(' ')[0]}! Batas masuk ${bMasuk} · Poin -1 (sekarang ${poinSekarang}) 🔴`);
+  } else if(isCepat){
+    statusEl.style.color = 'var(--red)';
+    statusEl.textContent = `⚠️ Absensi keluar tercatat — ${jam} (PULANG CEPAT, min ${bKeluar}) · Poin ${poinSekarang}`;
+    toast(`⚠️ Dicatat, tapi kamu pulang cepat ${nama.split(' ')[0]}! Min keluar ${bKeluar} · Poin -1 (sekarang ${poinSekarang}) 🔴`);
   } else {
     statusEl.style.color = 'var(--green)';
     statusEl.textContent = `✅ Absensi ${absenTipe==='masuk'?'masuk':'keluar'} tercatat — ${jam}`;
-    toast(`✅ ${absenTipe==='masuk'?'Selamat bekerja':'Selamat istirahat'}, ${nama.split(' ')[0]}! 👋`);
+    toast(`✅ ${absenTipe==='masuk'?'Selamat bekerja':'Tepat waktu, selamat istirahat'}, ${nama.split(' ')[0]}! 👋`);
   }
 
   g('absen-ket').value = '';
@@ -6430,7 +6773,9 @@ function simpanAbsensi(){
   const prev = g('absen-preview');
   if(prev){ prev.src=''; prev.style.display='none'; }
   renderAbsenHariIni();
+  renderPoinAbsensi();
 }
+
 
 // ══════════════════════
 //  LOG ABSENSI
@@ -6525,17 +6870,19 @@ function renderSlipGaji(){
   akumulasiDanaBulanIni(nama, bulan);
   const data  = hrAbsensi.filter(x=>x.nama===nama && x.tanggal.startsWith(bulan));
   const hariHadir = new Set(data.filter(x=>x.tipe==='masuk').map(x=>x.tanggal)).size;
-  // Hitung telat (masuk setelah jam 08:30)
-  const telat = data.filter(x=>x.tipe==='masuk'&&x.jam>'08:30').length;
+  // Catatan kedisiplinan bulan ini (reward & punishment framing — bukan potongan gaji)
+  const telat = data.filter(x=>x.tipe==='masuk'  && (x.telat===true || absenMasukTelat(x.jam, x.tanggal))).length;
+  const cepat = data.filter(x=>x.tipe==='keluar' && (x.cepat===true || absenKeluarCepat(x.jam, x.tanggal))).length;
+  const poinBulanIni = -(telat + cepat);
+  const poinTotal    = getPoinAbsensi(nama);
   const cfg   = hrGajiCfg;
   const pokok = cfg.gaji_pokok;
   const tunjangTransport = cfg.transport * hariHadir;
   const tunjangMakan     = cfg.makan     * hariHadir;
-  const bonusHadir       = hariHadir >= 26 ? cfg.bonus_hadir : 0;
-  const potonganTelat    = telat * cfg.potongan_telat;
+  const bonusHadir       = (hariHadir >= 26 && telat===0 && cepat===0) ? cfg.bonus_hadir : 0;
   // Bonus dari reimburse yg approved
   const reimburseApproved = hrReimburse.filter(x=>x.nama===nama&&x.tanggal?.startsWith(bulan)&&x.status==='approved').reduce((s,x)=>s+x.nominal,0);
-  const total = pokok + tunjangTransport + tunjangMakan + bonusHadir - potonganTelat + reimburseApproved;
+  const total = pokok + tunjangTransport + tunjangMakan + bonusHadir + reimburseApproved;
 
   wrap.innerHTML=`
     <div style="background:linear-gradient(135deg,rgba(62,207,142,0.08),var(--s2));border:1px solid rgba(62,207,142,0.2);border-radius:12px;padding:14px;margin-bottom:10px">
@@ -6548,23 +6895,26 @@ function renderSlipGaji(){
         <div class="slip-row"><span class="slip-lbl">Gaji Pokok</span><span class="slip-val cg">${fmt(pokok)}</span></div>
         <div class="slip-row"><span class="slip-lbl">Transport (${hariHadir} hari)</span><span class="slip-val cg">${fmt(tunjangTransport)}</span></div>
         <div class="slip-row"><span class="slip-lbl">Makan (${hariHadir} hari)</span><span class="slip-val cg">${fmt(tunjangMakan)}</span></div>
-        ${bonusHadir?`<div class="slip-row"><span class="slip-lbl">Bonus Hadir Penuh</span><span class="slip-val cg">${fmt(bonusHadir)}</span></div>`:''}
+        ${bonusHadir?`<div class="slip-row"><span class="slip-lbl">Bonus Hadir Penuh & Disiplin 🏆</span><span class="slip-val cg">${fmt(bonusHadir)}</span></div>`:''}
         ${reimburseApproved?`<div class="slip-row"><span class="slip-lbl">Reimburse Disetujui</span><span class="slip-val cg">${fmt(reimburseApproved)}</span></div>`:''}
       </div>
-      ${potonganTelat?`
-      <div style="background:var(--s3);padding:10px 14px"><div style="font-size:10px;font-weight:700;color:var(--red);letter-spacing:1px">POTONGAN</div></div>
-      <div style="padding:8px 14px">
-        <div class="slip-row"><span class="slip-lbl">Telat ${telat}x (@ ${fmt(cfg.potongan_telat)})</span><span class="slip-val cr">−${fmt(potonganTelat)}</span></div>
-      </div>`:''}
+      <div style="background:var(--s3);padding:10px 14px"><div style="font-size:10px;font-weight:700;color:var(--accent2);letter-spacing:1px">⭐ CATATAN KEDISIPLINAN</div></div>
+      <div style="padding:10px 14px">
+        <div class="slip-row"><span class="slip-lbl">Telat masuk</span><span class="slip-val" style="color:${telat>0?'var(--red)':'var(--green)'}">${telat}x</span></div>
+        <div class="slip-row"><span class="slip-lbl">Pulang cepat</span><span class="slip-val" style="color:${cepat>0?'var(--red)':'var(--green)'}">${cepat}x</span></div>
+        <div class="slip-row"><span class="slip-lbl">Poin bulan ini</span><span class="slip-val" style="color:${poinBulanIni<0?'var(--red)':'var(--green)'}">${poinBulanIni>0?'+':''}${poinBulanIni}</span></div>
+        <div class="slip-row"><span class="slip-lbl">Poin akumulasi</span><span class="slip-val" style="color:${poinTotal<0?'var(--red)':poinTotal>0?'var(--green)':'var(--muted2)'}">${poinTotal>0?'+':''}${poinTotal}</span></div>
+      </div>
       <div style="background:linear-gradient(135deg,rgba(62,207,142,0.1),var(--s3));padding:12px 14px">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <div style="font-size:14px;font-weight:800">TOTAL GAJI</div>
           <div style="font-family:var(--mono);font-size:20px;font-weight:800;color:var(--green)">${fmt(total)}</div>
         </div>
-        <div style="font-size:10px;color:var(--muted2);margin-top:4px;font-family:var(--mono)">${hariHadir} hari hadir · ${telat} kali telat</div>
+        <div style="font-size:10px;color:var(--muted2);margin-top:4px;font-family:var(--mono)">${hariHadir} hari hadir · poin kedisiplinan ${poinTotal>0?'+':''}${poinTotal}</div>
       </div>
     </div>`;
 }
+
 
 // ══════════════════════
 //  REIMBURSE
@@ -6812,7 +7162,7 @@ function renderBonus(){
   // ── Data dasar bulan ini ──
   const absenBulan  = hrAbsensi.filter(x=>x.nama===nama&&x.tanggal.startsWith(bulan)&&x.tipe==='masuk');
   const hariHadir   = new Set(absenBulan.map(x=>x.tanggal)).size;
-  const adaTelat    = absenBulan.some(x=>x.telat===true||x.jam>ABSEN_BUKA_AKHIR);
+  const adaTelat    = absenBulan.some(x=>x.telat===true || absenMasukTelat(x.jam, x.tanggal));
   const hariKerja   = 26; // asumsi hari kerja sebulan
 
   // ── 5 Tantangan ──
@@ -7116,9 +7466,10 @@ function renderKanitDana(){
         const saldo = getDanaSaldoNama(nama);
         const pct   = Math.min(100, Math.round(saldo/DANA_TARGET*100));
         const col   = pct>=100?'var(--green)':pct>=50?'var(--accent2)':'var(--orange)';
+        const namaEsc = String(nama).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         return `<div style="background:var(--s3);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;margin-bottom:8px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <div style="font-size:13px;font-weight:700">${nama}</div>
+            <div style="font-size:13px;font-weight:700">${namaEsc}</div>
             <div style="font-family:var(--mono);font-size:14px;font-weight:800;color:${col}">${fmt(saldo)}</div>
           </div>
           <div style="background:rgba(255,255,255,0.06);border-radius:99px;height:5px;overflow:hidden;margin-bottom:4px">
@@ -7126,10 +7477,23 @@ function renderKanitDana(){
           </div>
           <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted2)">
             <span>${pct}% dari target ${fmt(DANA_TARGET)}</span>
-            <button onclick="isiNamaKanit('${nama}')" style="background:none;border:none;color:var(--accent2);font-size:10px;cursor:pointer;font-weight:600;font-family:var(--sans)">✏️ Top Up</button>
+            <div style="display:flex;gap:8px">
+              <button class="dana-topup-btn" data-nama="${namaEsc}" style="background:none;border:none;color:var(--accent2);font-size:10px;cursor:pointer;font-weight:600;font-family:var(--sans)">✏️ Top Up</button>
+              <button class="dana-hapus-btn" data-nama="${namaEsc}" style="background:none;border:none;color:var(--red);font-size:10px;cursor:pointer;font-weight:600;font-family:var(--sans)">🗑️ Hapus</button>
+            </div>
           </div>
         </div>`;
       }).join('');
+    }
+    // Event delegation — pasang sekali, survive re-render
+    if(!listEl._danaHandler){
+      listEl._danaHandler = function(e){
+        const topupBtn = e.target.closest('.dana-topup-btn');
+        if(topupBtn){ isiNamaKanit(topupBtn.dataset.nama); return; }
+        const hapusBtn = e.target.closest('.dana-hapus-btn');
+        if(hapusBtn){ hapusDataDana(hapusBtn.dataset.nama); return; }
+      };
+      listEl.addEventListener('click', listEl._danaHandler);
     }
   }
 
@@ -7177,9 +7541,47 @@ function renderKanitDana(){
 function isiNamaKanit(nama){
   const el = g('k-dana-nama');
   if(el){ el.value = nama; el.focus(); }
-  // scroll ke form
   const form = g('k-dana-nama');
   if(form) form.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+async function hapusDataDana(nama){
+  const ok = await confirmCustom(`Hapus karyawan "${nama}" dari semua data?\n\nIni akan hapus saldo dana, absensi, dan daftar login.`);
+  if(!ok) return;
+
+  // 1. Hapus data dana darurat (pakai key langsung karena hrSet tambah prefix hr_)
+  localStorage.removeItem('hr_dana_cfg_' + nama);
+
+  // 2. Hapus dari hrAbsensi — mutasi langsung agar variable global ikut update
+  const idxAbs = hrAbsensi.map((x,i)=>x.nama===nama?i:-1).filter(i=>i>=0).reverse();
+  idxAbs.forEach(i => hrAbsensi.splice(i, 1));
+  hrSet('absensi', hrAbsensi);
+
+  // 3. Hapus dari whitelist login
+  let wl = JSON.parse(localStorage.getItem('whitelist') || '[]');
+  wl = wl.filter(n => n !== nama);
+  localStorage.setItem('whitelist', JSON.stringify(wl));
+  if(typeof WHITELIST !== 'undefined'){
+    const wi = WHITELIST.indexOf(nama);
+    if(wi >= 0) WHITELIST.splice(wi, 1);
+  }
+
+  // 4. Hapus dari pengajuan dana
+  const idxDana = hrDana.map((x,i)=>x.nama===nama?i:-1).filter(i=>i>=0).reverse();
+  idxDana.forEach(i => hrDana.splice(i, 1));
+  hrSet('dana', hrDana);
+
+  // 5. Hapus semua key lain yang mungkin nyimpan nama ini
+  const keysToRemove = [];
+  for(let i = 0; i < localStorage.length; i++){
+    const k = localStorage.key(i);
+    if(k && (k === 'hr_dana_cfg_'+nama || k === 'dana_cfg_'+nama)) keysToRemove.push(k);
+  }
+  keysToRemove.forEach(k => localStorage.removeItem(k));
+
+  renderKanitDana();
+  if(typeof renderKanitDanaPending === 'function') renderKanitDanaPending();
+  toast('✅ Karyawan "' + nama + '" berhasil dihapus');
 }
 
 function renderKanitDanaPending(){
@@ -7410,73 +7812,98 @@ function pakaiHasilHitung(){
   toast('✅ Form diisi otomatis — cek lalu Simpan Permanen');
 }
 
-// ── Export rekap dana darurat (upgrade dari CSV biasa) ───────────────────────
+// ── Export rekap dana darurat — Excel (.xlsx) pakai SheetJS ─────────────────
 function exportDanaKanitRekap(){
   const semua = getAllKaryawanNama();
   if(!semua.length){ toast('⚠️ Belum ada data dana'); return; }
 
-  const tglCetak = new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'});
-  const bln = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+  // Muat SheetJS kalau belum ada
+  function _doExport(){
+    const XLSX   = window.XLSX;
+    const tglCetak = new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'});
+    const wb     = XLSX.utils.book_new();
 
-  // ── Sheet 1: Ringkasan per Karyawan ──
-  const hRing = ['No','Nama Karyawan','Saldo Saat Ini','Target','% Tercapai','Kekurangan','Jml Potongan','Jml Top Up','Status'];
-  const rowsRing = semua.map((nama, i)=>{
-    const saldo  = getDanaSaldoNama(nama);
-    const logs   = getDanaLogNama(nama);
-    const pct    = Math.min(100, Math.round(saldo/DANA_TARGET*100));
-    const jmlPot = logs.filter(l=>l.jenis==='potongan').length;
-    const jmlTop = logs.filter(l=>l.jenis==='topup').length;
-    const status = saldo >= DANA_TARGET ? 'LUNAS' : saldo > 0 ? 'BERJALAN' : 'BELUM MULAI';
-    return [i+1, nama, saldo, DANA_TARGET, pct+'%', Math.max(0,DANA_TARGET-saldo), jmlPot, jmlTop, status];
-  });
-  const totalSaldo = semua.reduce((s,n)=>s+getDanaSaldoNama(n),0);
-  rowsRing.push(['','TOTAL', totalSaldo, DANA_TARGET*semua.length, '', Math.max(0,DANA_TARGET*semua.length-totalSaldo),'','','']);
-
-  // ── Sheet 2: Detail Transaksi ──
-  const hDetail = ['No','Tanggal','Nama Karyawan','Jenis','Nominal','Keterangan','Saldo Setelah','Oleh'];
-  const rowsDetail = [];
-  let no = 1;
-  semua.forEach(nama=>{
-    const logs = getDanaLogNama(nama);
-    let running = 0;
-    [...logs].sort((a,b)=>(a.tgl||'').localeCompare(b.tgl||'')).forEach(l=>{
-      running += (l.nominal||0);
-      rowsDetail.push([no++, l.tgl||'', nama, l.jenis||'', l.nominal||0, l.ket||'', Math.max(0,running), l.oleh||'sistem']);
+    // ── Sheet 1: Ringkasan ──
+    const hRing  = ['No','Nama Karyawan','Saldo Saat Ini (Rp)','Target (Rp)','% Tercapai','Kekurangan (Rp)','Jml Potongan','Jml Top Up','Status'];
+    const dataRing = [hRing];
+    let totalSaldo = 0;
+    semua.forEach((nama, i)=>{
+      const saldo  = getDanaSaldoNama(nama);
+      const logs   = getDanaLogNama(nama);
+      totalSaldo  += saldo;
+      const pct    = Math.min(100, Math.round(saldo/DANA_TARGET*100));
+      const jmlPot = logs.filter(l=>l.jenis==='potongan').length;
+      const jmlTop = logs.filter(l=>l.jenis==='topup'||l.jenis==='topup_kanit').length;
+      const status = saldo >= DANA_TARGET ? 'LUNAS ✅' : saldo > 0 ? 'BERJALAN 🟡' : 'BELUM MULAI 🔴';
+      dataRing.push([i+1, nama, saldo, DANA_TARGET, pct+'%', Math.max(0,DANA_TARGET-saldo), jmlPot, jmlTop, status]);
     });
-  });
-  // Juga tambahkan pengajuan staff
-  hrDana.filter(x=>x.status==='approved').forEach(x=>{
-    rowsDetail.push([no++, x.tgl_ajukan, x.nama, 'pencairan_staff', -x.nominal, x.alasan, '', 'staff']);
-  });
-  rowsDetail.sort((a,b)=>(b[1]||'').localeCompare(a[1]||''));
+    dataRing.push(['','TOTAL', totalSaldo, DANA_TARGET*semua.length, '', Math.max(0,DANA_TARGET*semua.length-totalSaldo),'','','']);
+    // Baris info di atas
+    const ws1Data = [
+      [`REKAP DANA DARURAT KARYAWAN — ${APP_AREA}`],
+      [`Dicetak: ${tglCetak}  |  Total Karyawan: ${semua.length}  |  Total Terkumpul: Rp ${totalSaldo.toLocaleString('id-ID')}`],
+      [],
+      ...dataRing
+    ];
+    const ws1 = XLSX.utils.aoa_to_sheet(ws1Data);
+    // Lebar kolom
+    ws1['!cols'] = [{wch:4},{wch:22},{wch:18},{wch:14},{wch:12},{wch:16},{wch:14},{wch:12},{wch:16}];
+    // Merge judul
+    ws1['!merges'] = [{s:{r:0,c:0},e:{r:0,c:8}},{s:{r:1,c:0},e:{r:1,c:8}}];
+    XLSX.utils.book_append_sheet(wb, ws1, 'Ringkasan');
 
-  // ── Gabung jadi satu CSV dengan separator section ──
-  const buatCSV2 = (header, rows) => {
-    const esc = v => {
-      const s = String(v==null?'':v);
-      return s.includes(',') || s.includes('"') || s.includes('\n') ? '"'+s.replace(/"/g,'""')+'"' : s;
-    };
-    return [header, ...rows].map(r=>r.map(esc).join(',')).join('\n');
-  };
+    // ── Sheet 2: Detail Transaksi ──
+    const hDetail = ['No','Tanggal','Nama Karyawan','Jenis','Nominal (Rp)','Keterangan','Saldo Sesudah (Rp)','Oleh'];
+    const dataDetail = [hDetail];
+    let no = 1;
+    const allLogs = [];
+    semua.forEach(nama=>{
+      const logs = getDanaLogNama(nama);
+      let running = 0;
+      [...logs].sort((a,b)=>(a.tgl||'').localeCompare(b.tgl||'')).forEach(l=>{
+        running += (l.nominal||0);
+        allLogs.push([no++, l.tgl||'', nama, l.jenis||'', l.nominal||0, l.ket||'', Math.max(0,running), l.oleh||'sistem']);
+      });
+    });
+    // Pengajuan staff yang approved
+    if(typeof hrDana !== 'undefined'){
+      hrDana.filter(x=>x.status==='approved').forEach(x=>{
+        allLogs.push([no++, x.tgl_ajukan||'', x.nama||'', 'pencairan_staff', -(x.nominal||0), x.alasan||'', '', 'staff']);
+      });
+    }
+    allLogs.sort((a,b)=>(b[1]||'').localeCompare(a[1]||''));
+    allLogs.forEach(r=>dataDetail.push(r));
 
-  const output = [
-    `REKAP DANA DARURAT KARYAWAN - ${APP_AREA}`,
-    `Dicetak: ${tglCetak}`,
-    `Total Karyawan: ${semua.length}  |  Total Dana Terkumpul: ${totalSaldo.toLocaleString('id-ID')}`,
-    '',
-    '=== RINGKASAN PER KARYAWAN ===',
-    buatCSV2(hRing, rowsRing),
-    '',
-    '=== DETAIL TRANSAKSI ===',
-    buatCSV2(hDetail, rowsDetail),
-  ].join('\n');
+    const ws2 = XLSX.utils.aoa_to_sheet(dataDetail);
+    ws2['!cols'] = [{wch:4},{wch:12},{wch:22},{wch:18},{wch:16},{wch:28},{wch:18},{wch:12}];
+    XLSX.utils.book_append_sheet(wb, ws2, 'Detail Transaksi');
 
-  const blob = new Blob(['\uFEFF'+output], {type:'text/csv;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `rekap_dana_darurat_${APP_AREA}_${today()}.csv`;
-  a.click();
-  toast('✅ Rekap dana darurat diunduh!');
+    // ── Sheet 3: Per Karyawan (saldo + grafik mini teks) ──
+    const ws3Data = [['Nama Karyawan','Saldo (Rp)','Target (Rp)','% Tercapai','Progress']];
+    semua.forEach(nama=>{
+      const saldo = getDanaSaldoNama(nama);
+      const pct   = Math.min(100, Math.round(saldo/DANA_TARGET*100));
+      const bar   = '█'.repeat(Math.round(pct/10)) + '░'.repeat(10-Math.round(pct/10));
+      ws3Data.push([nama, saldo, DANA_TARGET, pct+'%', bar+' '+pct+'%']);
+    });
+    const ws3 = XLSX.utils.aoa_to_sheet(ws3Data);
+    ws3['!cols'] = [{wch:22},{wch:16},{wch:14},{wch:12},{wch:28}];
+    XLSX.utils.book_append_sheet(wb, ws3, 'Progress Bar');
+
+    XLSX.writeFile(wb, `rekap_dana_darurat_${APP_AREA}_${today()}.xlsx`);
+    toast('✅ Excel dana darurat berhasil diunduh! (3 sheet)');
+  }
+
+  if(window.XLSX){
+    _doExport();
+  } else {
+    toast('⏳ Loading SheetJS...');
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = _doExport;
+    s.onerror = ()=>toast('⚠️ Gagal load SheetJS, cek koneksi internet');
+    document.head.appendChild(s);
+  }
 }
 
 // Init HR saat masuk tab HR
@@ -10740,7 +11167,5 @@ async function installPWA(){
   tutupBannerInstall();
 }
 </script>
-</body>
-</html>
 </body>
 </html>
