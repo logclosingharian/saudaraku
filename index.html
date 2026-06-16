@@ -2796,6 +2796,17 @@ function roboHideBubble(e){
     <div class="hr-panel" id="hr-absensi" style="display:none">
       <div class="hr-panel-hdr" onclick="hrTab(null)">← Absensi</div>
 
+      <!-- ── Neuroscience Freedom Frame Card ── -->
+      <div id="absen-freedom-card" style="background:linear-gradient(135deg,rgba(62,207,142,0.07),rgba(108,99,255,0.05));border:1px solid rgba(62,207,142,0.2);border-left:3px solid var(--green);border-radius:14px;padding:14px 16px;margin-bottom:12px;">
+        <div style="font-size:11px;font-weight:800;color:var(--green);letter-spacing:0.8px;margin-bottom:6px">🌿 KEBIJAKAN ISTIRAHAT BEBAS</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.75">
+          Manajemen memberimu <b style="color:var(--green)">kebebasan penuh</b> mengatur waktu istirahat — makan, ngopi, scroll HP, nongkrong, semua boleh <b>tanpa batas & tanpa izin</b>, asal pekerjaan tetap berjalan lancar.
+        </div>
+        <div style="font-size:11px;color:var(--muted2);margin-top:8px;line-height:1.6">
+          Kami percaya kamu — tidak ada kontrol micro. Waktu kerja formal selesai dan kamu <b style="color:var(--text)">bebas total</b> mulai jam <span id="absen-freedom-jam" style="font-family:var(--mono);color:var(--green);font-weight:700">21:30</span> ✨
+        </div>
+      </div>
+
       <!-- Poin Reward & Punishment -->
       <div style="background:linear-gradient(135deg,rgba(62,207,142,0.1),rgba(108,99,255,0.06));border:1px solid rgba(62,207,142,0.25);border-radius:14px;padding:14px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
         <div>
@@ -2810,7 +2821,7 @@ function roboHideBubble(e){
         <div style="background:var(--s3);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center">
           <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--text)" id="absen-clock">--:--:--</div>
           <div style="font-size:11px;color:var(--muted2);font-family:var(--mono);margin-top:2px" id="absen-date">—</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="absen-jadwal-label">Masuk maks 08:45 · Keluar min 09:30</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="absen-jadwal-label">Masuk maks 08:45 · Waktu bebas mulai 21:30</div>
         </div>
 
 
@@ -2853,6 +2864,12 @@ function roboHideBubble(e){
               style="padding:12px;background:var(--green);border:none;border-radius:9px;color:#000;font-weight:800;font-size:13px;cursor:pointer;font-family:var(--sans)">→ MASUK</button>
             <button id="absen-btn-keluar" onclick="pilihTipeAbsen('keluar')"
               style="padding:12px;background:var(--s3);border:1px solid var(--border2);border-radius:9px;color:var(--muted2);font-weight:700;font-size:13px;cursor:pointer;font-family:var(--sans)">← KELUAR</button>
+          </div>
+          <!-- Countdown saat waktu bebas belum dimulai -->
+          <div id="absen-keluar-countdown" style="display:none;margin-top:10px;background:linear-gradient(135deg,rgba(62,207,142,0.08),rgba(108,99,255,0.05));border:1px solid rgba(62,207,142,0.25);border-radius:10px;padding:10px 14px;text-align:center;">
+            <div style="font-size:10px;color:var(--green);font-weight:700;letter-spacing:0.8px;margin-bottom:4px">☕ WAKTU BEBAS ISTIRAHATMU DIMULAI DALAM</div>
+            <div id="absen-countdown-timer" style="font-size:22px;font-weight:800;font-family:var(--mono);color:var(--text);letter-spacing:2px">--:--:--</div>
+            <div style="font-size:10px;color:var(--muted2);margin-top:4px">Santai dulu — absen pulang terbuka otomatis tepat waktunya 🌙</div>
           </div>
         </div>
         <div class="field"><label>Catatan (opsional)</label>
@@ -6456,9 +6473,9 @@ function hrTabInit(tab){
 // Jadwal absen — beda untuk hari kerja (Senin–Jumat) & weekend (Sabtu–Minggu)
 const ABSEN_BUKA_MULAI       = '07:30'; // jam mulai bisa absen masuk (semua hari)
 const ABSEN_BATAS_MASUK      = '08:45'; // batas akhir absen masuk — weekday
-const ABSEN_BATAS_KELUAR     = '09:30'; // batas minimal absen keluar — weekday
+const ABSEN_BATAS_KELUAR     = '21:30'; // jam bebas pulang — weekday (waktu istirahat dimulai)
 const ABSEN_BATAS_MASUK_WE   = '08:55'; // batas akhir absen masuk — weekend (Sabtu/Minggu)
-const ABSEN_BATAS_KELUAR_WE  = '09:45'; // batas minimal absen keluar — weekend
+const ABSEN_BATAS_KELUAR_WE  = '21:40'; // jam bebas pulang — weekend (waktu istirahat dimulai)
 // Alias lama (tetap dipertahankan agar bagian lain yg masih memakai ABSEN_BUKA_AKHIR tidak rusak)
 const ABSEN_BUKA_AKHIR        = ABSEN_BATAS_MASUK;
 
@@ -6513,49 +6530,140 @@ function initAbsensi(){
 
     // Update label jadwal sesuai hari
     const lblEl = g('absen-jadwal-label');
-    if(lblEl) lblEl.textContent = `Masuk maks ${bMasuk} · Keluar min ${bKeluar}${weekend?' (jadwal weekend)':''}`;
+    if(lblEl) lblEl.textContent = `Masuk maks ${bMasuk} · Waktu bebas mulai ${bKeluar}${weekend?' (weekend)':''}`;
+
+    // Update freedom card jam
+    const fJam = g('absen-freedom-jam');
+    if(fJam) fJam.textContent = bKeluar;
 
     const sudahMasuk  = getAbsenHariIni().some(x=>x.tipe==='masuk');
     const sudahKeluar = getAbsenHariIni().some(x=>x.tipe==='keluar');
 
-    // Warna jam + alert status — tergantung tipe absen yang sedang dipilih
-    const clockEl = g('absen-clock');
-    const banner  = g('absen-jam-alert');
+    // ── Referensi elemen ──
+    const clockEl  = g('absen-clock');
+    const banner   = g('absen-jam-alert');
+    const btnMasuk = g('absen-btn-masuk');
+    const btnKeluar= g('absen-btn-keluar');
+    const cdWrap   = g('absen-keluar-countdown');
+    const cdTimer  = g('absen-countdown-timer');
+
+    // ── Hitung countdown keluar dalam detik ──
+    function hitungSisaDetik(){
+      const [hK, mK] = bKeluar.split(':').map(Number);
+      const target   = new Date(now); target.setHours(hK, mK, 0, 0);
+      return Math.max(0, Math.floor((target - now) / 1000));
+    }
+    function formatCountdown(det){
+      const h = Math.floor(det / 3600);
+      const m = Math.floor((det % 3600) / 60);
+      const s = det % 60;
+      return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
 
     if(!sudahMasuk){
-      // Belum absen masuk
+      // ── Belum absen masuk ──
       const status = jamAbsenStatus(jamHM, tglISO);
-      if(clockEl) clockEl.style.color = status==='telat' ? 'var(--red)' : status==='tepat' ? 'var(--green)' : 'var(--text)';
+      const lewatBatas = jamHM > bMasuk;
+      const terlalupagi = jamHM < ABSEN_BUKA_MULAI;
+
+      if(clockEl) clockEl.style.color = lewatBatas ? 'var(--red)' : status==='tepat' ? 'var(--green)' : 'var(--text)';
+
+      // Lock masuk button kalau sudah lewat batas atau terlalu pagi
+      if(btnMasuk){
+        if(lewatBatas){
+          btnMasuk.disabled    = true;
+          btnMasuk.style.background = 'var(--red)';
+          btnMasuk.style.color      = '#fff';
+          btnMasuk.style.opacity    = '0.65';
+          btnMasuk.style.cursor     = 'not-allowed';
+          btnMasuk.textContent      = '🔴 MASUK DITUTUP';
+        } else if(terlalupagi){
+          btnMasuk.disabled    = true;
+          btnMasuk.style.background = 'var(--s3)';
+          btnMasuk.style.color      = 'var(--muted)';
+          btnMasuk.style.opacity    = '0.5';
+          btnMasuk.style.cursor     = 'not-allowed';
+          btnMasuk.textContent      = `⏳ Buka ${ABSEN_BUKA_MULAI}`;
+        } else {
+          btnMasuk.disabled    = false;
+          btnMasuk.style.background = 'var(--green)';
+          btnMasuk.style.color      = '#000';
+          btnMasuk.style.opacity    = '1';
+          btnMasuk.style.cursor     = 'pointer';
+          btnMasuk.textContent      = '→ MASUK';
+        }
+      }
+
+      // Keluar belum relevan — sembunyikan countdown
+      if(cdWrap) cdWrap.style.display = 'none';
+
       if(banner){
-        if(status === 'telat'){
-          banner.style.display = 'block';
-          banner.innerHTML = `⚠️ Kamu <b>terlambat</b> — jam masuk sudah lewat dari ${bMasuk}${weekend?' (jadwal weekend)':''}. Segera catat absensi! Poin -1 akan tercatat.`;
-          banner.style.background = 'var(--rs)'; banner.style.color = 'var(--red)'; banner.style.border = '1px solid rgba(245,99,66,0.35)';
+        if(lewatBatas){
+          banner.style.display  = 'block';
+          banner.innerHTML      = `🔴 Waktu absen masuk sudah <b>ditutup</b> sejak ${bMasuk}${weekend?' (jadwal weekend)':''}. Hubungi manajemen jika ada kendala.`;
+          banner.style.background = 'var(--rs)'; banner.style.color = 'var(--red)'; banner.style.border = '1px solid rgba(224,48,80,0.35)';
         } else if(status === 'tepat'){
-          banner.style.display = 'block';
-          banner.innerHTML = `✅ Waktu absen masuk: ${ABSEN_BUKA_MULAI} – ${bMasuk}${weekend?' (jadwal weekend)':''}. Segera catat kehadiran!`;
+          banner.style.display  = 'block';
+          banner.innerHTML      = `✅ Selamat datang! Absen masuk buka ${ABSEN_BUKA_MULAI} – ${bMasuk}${weekend?' (jadwal weekend)':''}. Tap → MASUK untuk mulai.`;
           banner.style.background = 'var(--gs)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.35)';
         } else {
           banner.style.display = 'none';
         }
       }
+
     } else if(!sudahKeluar){
-      // Sudah masuk, belum absen keluar
-      if(clockEl) clockEl.style.color = jamHM < bKeluar ? 'var(--orange)' : 'var(--green)';
-      if(banner){
-        if(jamHM < bKeluar){
-          banner.style.display = 'block';
-          banner.innerHTML = `🕐 Jam keluar minimal: <b>${bKeluar}</b>${weekend?' (jadwal weekend)':''}. Pulang sebelum jam ini akan tercatat <b>pulang cepat</b> (poin -1).`;
-          banner.style.background = 'var(--os)'; banner.style.color = 'var(--orange)'; banner.style.border = '1px solid rgba(245,166,35,0.35)';
+      // ── Sudah masuk, belum absen keluar ──
+      const belumBebas = jamHM < bKeluar;
+
+      if(clockEl) clockEl.style.color = belumBebas ? 'var(--orange)' : 'var(--green)';
+
+      // Lock / unlock tombol keluar
+      if(btnKeluar){
+        if(belumBebas){
+          btnKeluar.disabled         = true;
+          btnKeluar.style.background = 'var(--s3)';
+          btnKeluar.style.color      = 'var(--muted)';
+          btnKeluar.style.opacity    = '0.45';
+          btnKeluar.style.cursor     = 'not-allowed';
+          btnKeluar.style.border     = '1px solid var(--border)';
+          btnKeluar.textContent      = '🔒 BELUM TERBUKA';
         } else {
-          banner.style.display = 'block';
-          banner.innerHTML = `✅ Sudah lewat jam keluar minimal (${bKeluar}). Boleh absen keluar — kerja penuh hari ini! 🎉`;
+          btnKeluar.disabled         = false;
+          btnKeluar.style.background = 'var(--orange)';
+          btnKeluar.style.color      = '#000';
+          btnKeluar.style.opacity    = '1';
+          btnKeluar.style.cursor     = 'pointer';
+          btnKeluar.style.border     = 'none';
+          btnKeluar.textContent      = '← KELUAR';
+        }
+      }
+
+      // Tampilkan / update countdown
+      if(belumBebas){
+        const sisa = hitungSisaDetik();
+        if(cdWrap)  cdWrap.style.display  = 'block';
+        if(cdTimer) cdTimer.textContent   = formatCountdown(sisa);
+      } else {
+        if(cdWrap) cdWrap.style.display = 'none';
+      }
+
+      if(banner){
+        if(belumBebas){
+          banner.style.display  = 'block';
+          banner.innerHTML      = `🌿 Kamu bebas istirahat kapan saja hari ini — absen pulang terbuka otomatis jam <b>${bKeluar}</b>${weekend?' (jadwal weekend)':''}. Nikmati dulu! ☕`;
+          banner.style.background = 'rgba(62,207,142,0.06)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.25)';
+        } else {
+          banner.style.display  = 'block';
+          banner.innerHTML      = `🎉 Waktu bebas sudah dimulai! Silakan absen pulang — sampai jumpa besok, istirahat yang baik 🌙`;
           banner.style.background = 'var(--gs)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.35)';
         }
       }
+
     } else {
+      // ── Sudah masuk & keluar ──
       if(clockEl) clockEl.style.color = 'var(--text)';
-      if(banner) banner.style.display = 'none';
+      if(banner)  banner.style.display = 'none';
+      if(cdWrap)  cdWrap.style.display = 'none';
     }
 
     renderPoinAbsensi();
@@ -6578,9 +6686,9 @@ function renderPoinAbsensi(){
   el.style.color = poin > 0 ? 'var(--green)' : poin < 0 ? 'var(--red)' : 'var(--muted2)';
   const sub = g('absen-poin-sub');
   if(sub){
-    if(poin > 0)      sub.textContent = '👍 Mantap, terus pertahankan!';
-    else if(poin < 0) sub.textContent = '⚠️ Yuk perbaiki — tepat waktu = poin naik lagi';
-    else              sub.textContent = 'Belum ada catatan telat/pulang cepat';
+    if(poin > 0)      sub.textContent = '🌟 Konsisten hadir tepat — kamu luar biasa!';
+    else if(poin < 0) sub.textContent = '💡 Sedikit catatan — yuk jaga ritme & nikmati waktu bebasmu';
+    else              sub.textContent = 'Belum ada catatan keterlambatan';
   }
 }
 
@@ -6606,8 +6714,8 @@ function renderAbsenHariIni(){
 
     const warnaMasuk = isTelat ? 'var(--red)' : 'var(--green)';
     const labelMasuk = isTelat ? '→ MASUK — TERLAMBAT' : '→ MASUK';
-    const warnaKeluar= isCepat ? 'var(--red)' : 'var(--orange)';
-    const labelKeluar= isCepat ? '← KELUAR — PULANG CEPAT' : '← KELUAR';
+    const warnaKeluar= isCepat ? 'var(--red)' : 'var(--green)';
+    const labelKeluar= isCepat ? '← PULANG — SEBELUM WAKTUNYA' : '← PULANG — WAKTU BEBAS 🌙';
 
     const warna   = x.tipe==='masuk' ? warnaMasuk : warnaKeluar;
     const label   = x.tipe==='masuk' ? labelMasuk : labelKeluar;
@@ -6615,7 +6723,7 @@ function renderAbsenHariIni(){
 
     let subInfo = '';
     if(isTelat) subInfo = `<div style="font-size:10px;color:var(--red);margin-top:2px">⚠️ Batas masuk: ${bMasuk} · poin -1</div>`;
-    if(isCepat) subInfo = `<div style="font-size:10px;color:var(--red);margin-top:2px">⚠️ Jam keluar minimal: ${bKeluar} · poin -1</div>`;
+    if(isCepat) subInfo = `<div style="font-size:10px;color:var(--red);margin-top:2px">⚠️ Waktu bebas mulai: ${bKeluar} · poin -1</div>`;
 
     return `
     <div class="absen-entry" style="border:1px solid ${bermasalah?'rgba(245,99,66,0.3)':'var(--border)'}">
@@ -6740,10 +6848,35 @@ function simpanAbsensi(){
   const jam      = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
   const ket      = vs('absen-ket');
   const statusEl = g('absen-status');
-  const isTelat  = absenTipe==='masuk'  && absenMasukTelat(jam, tanggal);
-  const isCepat  = absenTipe==='keluar' && absenKeluarCepat(jam, tanggal);
   const bMasuk   = batasMasukAbsen(tanggal);
   const bKeluar  = batasKeluarAbsen(tanggal);
+
+  // ── Guard: cek apakah action saat ini diperbolehkan ──
+  if(absenTipe === 'masuk'){
+    const jamHM = jam;
+    if(jamHM < ABSEN_BUKA_MULAI){
+      toast(`⏳ Absen masuk belum dibuka — buka jam ${ABSEN_BUKA_MULAI}`);
+      return;
+    }
+    if(jamHM > bMasuk){
+      toast(`🔴 Waktu absen masuk sudah ditutup sejak ${bMasuk}`);
+      return;
+    }
+  }
+  if(absenTipe === 'keluar'){
+    const jamHM = jam;
+    if(jamHM < bKeluar){
+      const [hK, mK] = bKeluar.split(':').map(Number);
+      const target   = new Date(now); target.setHours(hK, mK, 0, 0);
+      const sisa     = Math.max(0, Math.floor((target - now) / 1000));
+      const h = Math.floor(sisa/3600), m = Math.floor((sisa%3600)/60), s = sisa%60;
+      toast(`🔒 Absen pulang terbuka dalam ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`);
+      return;
+    }
+  }
+
+  const isTelat  = absenTipe==='masuk'  && absenMasukTelat(jam, tanggal);
+  const isCepat  = absenTipe==='keluar' && absenKeluarCepat(jam, tanggal);
 
   const entry = { id:Date.now(), nama, tanggal, jam, tipe:absenTipe, ket, foto:absenFotoB64||null, lokasi:staffInfo?.area||APP_AREA, telat:isTelat, cepat:isCepat };
   hrAbsensi.push(entry);
@@ -6757,15 +6890,15 @@ function simpanAbsensi(){
   if(isTelat){
     statusEl.style.color = 'var(--red)';
     statusEl.textContent = `⚠️ Absensi masuk tercatat — ${jam} (TERLAMBAT, batas ${bMasuk}) · Poin ${poinSekarang}`;
-    toast(`⚠️ Dicatat, tapi kamu terlambat ${nama.split(' ')[0]}! Batas masuk ${bMasuk} · Poin -1 (sekarang ${poinSekarang}) 🔴`);
+    toast(`⚠️ Tercatat terlambat, ${nama.split(' ')[0]}! Batas masuk ${bMasuk} · Poin -1 (sekarang ${poinSekarang}) 🔴`);
   } else if(isCepat){
     statusEl.style.color = 'var(--red)';
-    statusEl.textContent = `⚠️ Absensi keluar tercatat — ${jam} (PULANG CEPAT, min ${bKeluar}) · Poin ${poinSekarang}`;
-    toast(`⚠️ Dicatat, tapi kamu pulang cepat ${nama.split(' ')[0]}! Min keluar ${bKeluar} · Poin -1 (sekarang ${poinSekarang}) 🔴`);
+    statusEl.textContent = `⚠️ Absensi keluar tercatat — ${jam} (sebelum waktunya, min ${bKeluar}) · Poin ${poinSekarang}`;
+    toast(`⚠️ Belum waktunya, ${nama.split(' ')[0]}! Waktu bebas mulai ${bKeluar} · Poin -1 🔴`);
   } else {
     statusEl.style.color = 'var(--green)';
-    statusEl.textContent = `✅ Absensi ${absenTipe==='masuk'?'masuk':'keluar'} tercatat — ${jam}`;
-    toast(`✅ ${absenTipe==='masuk'?'Selamat bekerja':'Tepat waktu, selamat istirahat'}, ${nama.split(' ')[0]}! 👋`);
+    statusEl.textContent = `✅ Absensi ${absenTipe==='masuk'?'masuk':'pulang'} tercatat — ${jam}`;
+    toast(`✅ ${absenTipe==='masuk'?'Semangat hari ini':'Waktu bebas dimulai — istirahat penuh'}, ${nama.split(' ')[0]}! 🌙`);
   }
 
   g('absen-ket').value = '';
@@ -6901,7 +7034,7 @@ function renderSlipGaji(){
       <div style="background:var(--s3);padding:10px 14px"><div style="font-size:10px;font-weight:700;color:var(--accent2);letter-spacing:1px">⭐ CATATAN KEDISIPLINAN</div></div>
       <div style="padding:10px 14px">
         <div class="slip-row"><span class="slip-lbl">Telat masuk</span><span class="slip-val" style="color:${telat>0?'var(--red)':'var(--green)'}">${telat}x</span></div>
-        <div class="slip-row"><span class="slip-lbl">Pulang cepat</span><span class="slip-val" style="color:${cepat>0?'var(--red)':'var(--green)'}">${cepat}x</span></div>
+        <div class="slip-row"><span class="slip-lbl">Keluar sebelum waktunya</span><span class="slip-val" style="color:${cepat>0?'var(--red)':'var(--green)'}">${cepat}x</span></div>
         <div class="slip-row"><span class="slip-lbl">Poin bulan ini</span><span class="slip-val" style="color:${poinBulanIni<0?'var(--red)':'var(--green)'}">${poinBulanIni>0?'+':''}${poinBulanIni}</span></div>
         <div class="slip-row"><span class="slip-lbl">Poin akumulasi</span><span class="slip-val" style="color:${poinTotal<0?'var(--red)':poinTotal>0?'var(--green)':'var(--muted2)'}">${poinTotal>0?'+':''}${poinTotal}</span></div>
       </div>
