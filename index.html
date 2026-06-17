@@ -145,6 +145,15 @@ padding:14px 8px;cursor:pointer;text-align:center;transition:all 0.15s;font-fami
 .qbtn.sel{border-color:var(--green);background:rgba(62,207,142,0.08);}
 .qbtn.sel .qlbl{color:var(--green);}
 
+/* Career Dev Program — Service HP */
+@keyframes svcPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,166,35,0.30);}50%{box-shadow:0 0 0 7px rgba(245,166,35,0);}}
+.svc-career-glow{animation:svcPulse 2.4s ease-in-out infinite;}
+.svc-anchor{text-align:center;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:6px 2px;transition:all 0.2s;}
+.svc-anchor .sa-lbl{font-size:8.5px;color:var(--muted2);font-weight:600;white-space:nowrap;}
+.svc-anchor .sa-val{font-size:11px;font-weight:800;color:var(--muted);margin-top:2px;}
+.svc-anchor.top1{background:rgba(245,166,35,0.16);border:1.5px solid var(--yellow);transform:scale(1.08);}
+.svc-anchor.top1 .sa-lbl,.svc-anchor.top1 .sa-val{color:var(--yellow);}
+
 .scan-bar{display:flex;gap:8px;margin-bottom:10px;}
 .scan-inp{flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:10px;
 padding:11px 14px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;}
@@ -2079,10 +2088,46 @@ function roboHideBubble(e){
       <!-- SERVICE HP -->
       <div class="divider"></div>
       <div style="font-size:11px;font-weight:700;color:var(--blue);margin:8px 0;letter-spacing:0.5px">🔧 SERVICE HP</div>
+
+      <!-- ★ Program Pengembangan Karir — Service HP ★ -->
+      <div id="svc-career-card" class="svc-career-glow" style="background:linear-gradient(135deg,rgba(245,166,35,0.14),rgba(224,48,80,0.05));border:1px solid rgba(245,166,35,0.4);border-radius:14px;padding:13px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+          <span style="font-size:17px">🏆</span>
+          <div style="font-size:12px;font-weight:800;color:var(--yellow);letter-spacing:0.3px">SERVICE HP = BONUS TOP 1</div>
+        </div>
+        <div id="svc-career-mantra" style="font-size:10.5px;color:var(--muted2);line-height:1.6;margin-bottom:10px"></div>
+
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:10px">
+          <div class="svc-anchor"><div class="sa-lbl">Transfer</div><div class="sa-val">0%</div></div>
+          <div class="svc-anchor"><div class="sa-lbl">Tartun</div><div class="sa-val">0%</div></div>
+          <div class="svc-anchor"><div class="sa-lbl">Voucher</div><div class="sa-val">0%</div></div>
+          <div class="svc-anchor"><div class="sa-lbl">ACC HP</div><div class="sa-val">0%</div></div>
+          <div class="svc-anchor top1"><div class="sa-lbl">Service HP</div><div class="sa-val">10%</div></div>
+        </div>
+
+        <div style="background:var(--s2);border-radius:10px;padding:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <span id="svc-career-level-badge" style="font-size:12px;font-weight:800">🌱 Trainee</span>
+            <span id="svc-career-poin" style="font-size:11px;font-family:var(--mono);color:var(--yellow);font-weight:700">Rp 0</span>
+          </div>
+          <div class="target-progress"><div class="target-bar" id="svc-career-bar" style="width:0%;background:var(--yellow)"></div></div>
+          <div id="svc-career-next" style="font-size:9.5px;color:var(--muted2);margin-top:5px;font-family:var(--mono)"></div>
+        </div>
+      </div>
+
       <button onclick="tambahServiceRow()" style="width:100%;padding:9px;background:var(--s3);border:1px dashed var(--blue);border-radius:8px;color:var(--blue);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-bottom:8px">+ Tambah Item Service HP</button>
       <div id="p_service_rows"></div>
       <div class="divider"></div>
       <div class="rrow" style="font-weight:700"><span class="rl">Total biaya jasa service</span><span class="rv" style="color:var(--blue)" id="p_service_total">Rp 0</span></div>
+
+      <!-- Live bonus 10% laba — muncul begitu ada item service diisi -->
+      <div id="svc-bonus-live-box" style="display:none;background:rgba(62,207,142,0.08);border:1px solid rgba(62,207,142,0.35);border-radius:10px;padding:10px 12px;margin-top:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:10.5px;color:var(--green);font-weight:700">💰 Bonus kamu dari Service HP (10% laba)</span>
+          <span id="svc-bonus-live-val" style="font-size:15px;font-weight:800;color:var(--green);font-family:var(--mono)">Rp 0</span>
+        </div>
+        <div id="svc-bonus-live-note" style="font-size:9.5px;color:var(--muted2);margin-top:4px;line-height:1.4"></div>
+      </div>
 
       <!-- Rumus kalkulasi per kategori -->
       <div style="background:linear-gradient(135deg,rgba(108,99,255,0.08),rgba(62,207,142,0.04));border:1px solid var(--border2);border-radius:10px;padding:12px;margin-top:10px;font-family:var(--mono);font-size:10px;line-height:2">
@@ -2803,7 +2848,7 @@ function roboHideBubble(e){
           Manajemen memberimu <b style="color:var(--green)">kebebasan penuh</b> mengatur waktu istirahat — makan, ngopi, scroll HP, nongkrong, semua boleh <b>tanpa batas & tanpa izin</b>, asal pekerjaan tetap berjalan lancar.
         </div>
         <div style="font-size:11px;color:var(--muted2);margin-top:8px;line-height:1.6">
-          Kami percaya kamu — tidak ada kontrol micro. Waktu kerja formal selesai dan kamu <b style="color:var(--text)">bebas total</b> mulai jam <span id="absen-freedom-jam" style="font-family:var(--mono);color:var(--green);font-weight:700">21:30</span> ✨
+          Kami percaya kamu — tidak ada kontrol micro. Waktu kerja formal selesai dan kamu <b style="color:var(--text)">bebas total</b> mulai jam <span id="absen-freedom-jam" style="font-family:var(--mono);color:var(--green);font-weight:700">21:28</span> ✨
         </div>
       </div>
 
@@ -2821,7 +2866,7 @@ function roboHideBubble(e){
         <div style="background:var(--s3);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center">
           <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--text)" id="absen-clock">--:--:--</div>
           <div style="font-size:11px;color:var(--muted2);font-family:var(--mono);margin-top:2px" id="absen-date">—</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="absen-jadwal-label">Masuk maks 08:45 · Waktu bebas mulai 21:30</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="absen-jadwal-label">Masuk maks 08:45 · Waktu bebas mulai 21:28</div>
         </div>
 
 
@@ -4117,6 +4162,7 @@ function swTab(who, name, btn){
   document.querySelectorAll(`#sc-${who} .panel`).forEach(p => p.classList.remove('on'));
   g(`${prefix}-${name}`)?.classList.add('on');
   if(who === 'staff' && name === 'sop') initSOP();
+  if(who === 'staff' && name === 'closing') renderSvcCareer();
   if(who === 'kanit' && name === 'dana') renderKanitDana();
   if(who === 'kanit' && name === 'leaderboard') { if(typeof initLbKanit==='function') initLbKanit(); }
   if(who === 'staff' && name === 'leaderboard') { if(typeof initLbStaff==='function') initLbStaff(); }
@@ -5639,6 +5685,104 @@ function hitungServiceTotal(){
   let total = 0;
   wrap.querySelectorAll('.svc-jasa').forEach(el=>{ total += parseFmt(el.value)||0; });
   s('p_service_total', fmt(total));
+  renderSvcBonusLive();
+}
+
+// ══════════════════════════════════════════════
+//  PROGRAM PENGEMBANGAN KARIR — SERVICE HP
+//  Setiap closing Service HP, karyawan dapat bonus 10% dari laba.
+//  Framing & repetisi di bawah ini sengaja dibuat konsisten tiap kali
+//  section ini dibuka, supaya lama-lama jadi asosiasi otomatis:
+//  "Service HP = bonus paling besar" — bukan instruksi yang harus diingat,
+//  tapi reaksi yang muncul sendiri begitu lihat HP pelanggan butuh service.
+// ══════════════════════════════════════════════
+const SVC_BONUS_PERSEN = 0.10; // 10% dari laba (Biaya Jasa − HPP Teknisi)
+
+const CAREER_LEVELS = [
+  { id:'trainee',   min:0,        nama:'Trainee',           ico:'🌱', warna:'#8880a8' },
+  { id:'spesialis', min:250000,   nama:'Spesialis Service',  ico:'🔧', warna:'#3ecf8e' },
+  { id:'expert',    min:750000,   nama:'Expert Closer',      ico:'⚡', warna:'#3060c0' },
+  { id:'master',    min:2000000,  nama:'Master Upseller',    ico:'🥇', warna:'#f5a623' },
+  { id:'legend',    min:5000000,  nama:'Legend Top 1',       ico:'👑', warna:'#e03050' },
+];
+
+// Pesan dirotasi acak — pola sama tiap kali, kalimat beda-beda (priming lewat repetisi, bukan pengulangan kata yang sama)
+const SVC_MANTRA = [
+  n => `${n}, tiap closing Service HP, otak lo nyimpen 1 asosiasi baru: "ini = bonus gede". Makin sering diulang, makin otomatis — nggak perlu mikir lagi pas nawarin.`,
+  n => `Repetisi kecil tiap hari ngebentuk jalur saraf baru, ${n}. Service HP satu-satunya kategori yang kasih persenan dari laba — otak lo bakal belajar sendiri ini prioritas nomor 1.`,
+  n => `${n}, 1 closing Service HP bisa setara bonus dari banyak closing kategori lain. Otak manusia secara alami condong ke reward yang paling besar & paling jelas — manfaatin itu.`,
+  n => `Setiap kali lo isi HPP & Biaya Jasa di sini, lo literally lagi ngelatih insting closing lo, ${n}. Lama-lama nawarin service jadi reflex, bukan effort.`,
+  n => `${n}, level karir di bawah ini bukan cuma angka — itu bukti otak lo udah ke-rewire buat selalu liat peluang Service HP duluan. Gas naik level!`,
+];
+
+function svcCareerGet(nama){
+  return hrGet('career_svc_'+nama) || { totalBonus:0, riwayat:[] };
+}
+function svcCareerSet(nama, data){ hrSet('career_svc_'+nama, data); }
+
+function svcCareerLevel(totalBonus){
+  let lvl = CAREER_LEVELS[0];
+  for(const l of CAREER_LEVELS){ if(totalBonus >= l.min) lvl = l; }
+  const idx  = CAREER_LEVELS.indexOf(lvl);
+  const next = CAREER_LEVELS[idx+1] || null;
+  return { lvl, next };
+}
+
+// Hitung total laba & bonus dari semua baris Service HP yang sedang diisi di form Closing
+function svcHitungProfitBonus(){
+  const wrap = g('p_service_rows');
+  let totalProfit = 0, adaRow = false, adaHppKosong = false;
+  if(wrap){
+    Array.from(wrap.children).forEach(row=>{
+      adaRow = true;
+      const jasa = parseFmt(row.querySelector('.svc-jasa')?.value);
+      const hpp  = parseFmt(row.querySelector('.svc-hpp')?.value);
+      if(hpp > 0) totalProfit += Math.max(0, jasa - hpp);
+      else adaHppKosong = true;
+    });
+  }
+  const bonus = Math.round(totalProfit * SVC_BONUS_PERSEN);
+  return { totalProfit, bonus, adaRow, adaHppKosong };
+}
+
+// Update box "Bonus kamu" secara live tiap input berubah
+function renderSvcBonusLive(){
+  const box = g('svc-bonus-live-box'); if(!box) return;
+  const { totalProfit, bonus, adaRow, adaHppKosong } = svcHitungProfitBonus();
+  box.style.display = adaRow ? 'block' : 'none';
+  if(adaRow){
+    s('svc-bonus-live-val', fmt(bonus));
+    s('svc-bonus-live-note', adaHppKosong
+      ? '⚠️ Isi HPP Teknisi di tiap item biar bonus kehitung akurat'
+      : `dari total laba ${fmt(totalProfit)} — otomatis nambah ke poin karir kamu pas closing dikirim`);
+  }
+}
+
+// Render kartu level karir (badge, total poin, progress bar)
+function renderSvcCareer(){
+  const nama = staffInfo?.nama; if(!nama) return;
+  const data = svcCareerGet(nama);
+  const { lvl, next } = svcCareerLevel(data.totalBonus);
+
+  const badge = g('svc-career-level-badge');
+  if(badge){ badge.textContent = `${lvl.ico} ${lvl.nama}`; badge.style.color = lvl.warna; }
+  s('svc-career-poin', fmt(data.totalBonus));
+
+  const bar = g('svc-career-bar');
+  const nextEl = g('svc-career-next');
+  if(next){
+    const pct = Math.min(100, Math.round((data.totalBonus - lvl.min) / (next.min - lvl.min) * 100));
+    if(bar){ bar.style.width = pct + '%'; bar.style.background = lvl.warna; }
+    if(nextEl) nextEl.textContent = `${fmt(next.min - data.totalBonus)} lagi → ${next.ico} ${next.nama}`;
+  } else {
+    if(bar){ bar.style.width = '100%'; bar.style.background = lvl.warna; }
+    if(nextEl) nextEl.textContent = '🎉 Level karir tertinggi tercapai!';
+  }
+
+  const mantraEl = g('svc-career-mantra');
+  if(mantraEl) mantraEl.textContent = SVC_MANTRA[Math.floor(Math.random()*SVC_MANTRA.length)](nama.split(' ')[0]);
+
+  renderSvcBonusLive();
 }
 
 function tambahTrxAccMaster(){
@@ -5799,7 +5943,7 @@ let hrSpecial  = hrGet('special')  || {
 // ══════════════════════════════════════════════════════════════════
 // PELANGGAN PRIORITAS
 // ══════════════════════════════════════════════════════════════════
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwT95sG0U066ElGESw50czL5e2TkOBDqJ2csw4BHKxEPfU50BUWWLrP7sf8d6FFrqkcHA/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzjqePKG5aZQ0lo_GHK7cC8JO55f83sZvquJc1gWsJvOC29-28JS51eJofKzIOuzhGLTg/exec';
 
 let plgData = hrGet('pelanggan') || [];
 let _plgSyncing = false;
@@ -5810,23 +5954,26 @@ function plgSave(){
   plgSyncToSheets();
 }
 
-// Upload semua data ke Google Sheets (no-cors karena Apps Script tidak kirim CORS header)
+// Upload semua data ke Google Sheets otomatis setiap simpan pelanggan
 function plgSyncToSheets(){
   if(_plgSyncing) return;
   _plgSyncing = true;
+  plgShowSyncStatus('🔄 Menyimpan ke cloud...');
+
   fetch(SHEETS_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify({ action: 'save', pelanggan: plgData }),
   }).then(() => {
-      _plgSyncing = false;
-      plgShowSyncStatus('✅ Tersimpan ke cloud');
-    })
-    .catch(() => {
-      _plgSyncing = false;
-      plgShowSyncStatus('⚠️ Gagal sync — tersimpan lokal');
-    });
+    _plgSyncing = false;
+    plgShowSyncStatus('✅ Tersimpan ke cloud (' + plgData.length + ' pelanggan)');
+    toast('☁️ Data pelanggan otomatis tersimpan ke Google Sheets!');
+  }).catch(() => {
+    _plgSyncing = false;
+    plgShowSyncStatus('⚠️ Gagal sync — tersimpan lokal');
+    toast('⚠️ Gagal kirim ke Sheets. Data aman di lokal.');
+  });
 }
 
 // Ambil data dari Google Sheets via JSONP (bypass CORS untuk GET)
@@ -5881,7 +6028,9 @@ function plgShowSyncStatus(msg){
   if(!el) return;
   el.textContent = msg;
   el.style.opacity = '1';
-  setTimeout(() => { el.style.opacity = '0'; }, 3000);
+  if(!msg.includes('🔄')){
+    setTimeout(() => { el.style.opacity = '0'; }, 5000);
+  }
 }
 
 function plgTabTemplate(tab){
@@ -6473,7 +6622,7 @@ function hrTabInit(tab){
 // Jadwal absen — beda untuk hari kerja (Senin–Jumat) & weekend (Sabtu–Minggu)
 const ABSEN_BUKA_MULAI       = '07:30'; // jam mulai bisa absen masuk (semua hari)
 const ABSEN_BATAS_MASUK      = '08:45'; // batas akhir absen masuk — weekday
-const ABSEN_BATAS_KELUAR     = '21:30'; // jam bebas pulang — weekday (waktu istirahat dimulai)
+const ABSEN_BATAS_KELUAR     = '21:28'; // jam bebas pulang — weekday (waktu istirahat dimulai)
 const ABSEN_BATAS_MASUK_WE   = '08:55'; // batas akhir absen masuk — weekend (Sabtu/Minggu)
 const ABSEN_BATAS_KELUAR_WE  = '21:40'; // jam bebas pulang — weekend (waktu istirahat dimulai)
 // Alias lama (tetap dipertahankan agar bagian lain yg masih memakai ABSEN_BUKA_AKHIR tidak rusak)
@@ -10804,6 +10953,45 @@ kirimClosing = async function() {
   ];
 
   await kirimKeSheets('Closing', [baris]);
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   PATCH — Program Pengembangan Karir: Service HP
+   Tiap closing dikirim, hitung 10% dari laba Service HP (Biaya Jasa −
+   HPP Teknisi), simpan ke poin karir karyawan (per nama, di HP ini),
+   lalu update level & selipkan info bonus ke modal motivasi yang
+   sudah muncul setelah closing berhasil.
+═══════════════════════════════════════════════════════════════ */
+const __origKirimClosing_career__ = kirimClosing;
+kirimClosing = async function() {
+  const nama = (typeof staffInfo !== 'undefined' && staffInfo?.nama) || null;
+  const { totalProfit, bonus, adaRow } = svcHitungProfitBonus();
+
+  await __origKirimClosing_career__();
+
+  if (nama && adaRow && bonus > 0) {
+    const data   = svcCareerGet(nama);
+    const before = data.totalBonus;
+    data.totalBonus += bonus;
+    data.riwayat = data.riwayat || [];
+    data.riwayat.push({ tanggal: today(), bonus, profit: totalProfit });
+    if (data.riwayat.length > 200) data.riwayat.splice(0, data.riwayat.length - 200);
+    svcCareerSet(nama, data);
+
+    const { lvl: lvlBefore } = svcCareerLevel(before);
+    const { lvl: lvlAfter }  = svcCareerLevel(data.totalBonus);
+    renderSvcCareer();
+
+    // Selipkan info bonus & level-up ke modal motivasi yang sudah tampil
+    const motTxt = g('mot-txt');
+    if (motTxt) {
+      let tambahan = `\n\n💰 +${fmt(bonus)} dari Service HP masuk ke poin karir kamu (Total: ${fmt(data.totalBonus)}).`;
+      if (lvlAfter.id !== lvlBefore.id) {
+        tambahan += `\n🎉 LEVEL UP! Sekarang kamu ${lvlAfter.ico} ${lvlAfter.nama}!`;
+      }
+      motTxt.textContent += tambahan;
+    }
+  }
 };
 
 // ── 3. Export CSV — bisa dibuka langsung di Excel ──
