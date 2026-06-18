@@ -145,15 +145,6 @@ padding:14px 8px;cursor:pointer;text-align:center;transition:all 0.15s;font-fami
 .qbtn.sel{border-color:var(--green);background:rgba(62,207,142,0.08);}
 .qbtn.sel .qlbl{color:var(--green);}
 
-/* Career Dev Program — Service HP */
-@keyframes svcPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,166,35,0.30);}50%{box-shadow:0 0 0 7px rgba(245,166,35,0);}}
-.svc-career-glow{animation:svcPulse 2.4s ease-in-out infinite;}
-.svc-anchor{text-align:center;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:6px 2px;transition:all 0.2s;}
-.svc-anchor .sa-lbl{font-size:8.5px;color:var(--muted2);font-weight:600;white-space:nowrap;}
-.svc-anchor .sa-val{font-size:11px;font-weight:800;color:var(--muted);margin-top:2px;}
-.svc-anchor.top1{background:rgba(245,166,35,0.16);border:1.5px solid var(--yellow);transform:scale(1.08);}
-.svc-anchor.top1 .sa-lbl,.svc-anchor.top1 .sa-val{color:var(--yellow);}
-
 .scan-bar{display:flex;gap:8px;margin-bottom:10px;}
 .scan-inp{flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:10px;
 padding:11px 14px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;}
@@ -1985,6 +1976,9 @@ function roboHideBubble(e){
     <div style="background:var(--as);border:1px solid rgba(108,99,255,0.3);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:var(--muted2);">
       📋 Closing shift — isi semua section lalu kirim ke Sheets
     </div>
+    <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.3);border-radius:10px;padding:9px 12px;margin-bottom:14px;font-size:11px;color:var(--orange);">
+      💵 Cash Pagi & Cash Penjualan otomatis masuk ke <b>Cash Monitor Kanit</b> saat kamu kirim closing
+    </div>
 
     <div class="stit">1️⃣ Cash</div>
     <div class="card">
@@ -2089,28 +2083,45 @@ function roboHideBubble(e){
       <div class="divider"></div>
       <div style="font-size:11px;font-weight:700;color:var(--blue);margin:8px 0;letter-spacing:0.5px">🔧 SERVICE HP</div>
 
-      <!-- ★ Program Pengembangan Karir — Service HP ★ -->
-      <div id="svc-career-card" class="svc-career-glow" style="background:linear-gradient(135deg,rgba(245,166,35,0.14),rgba(224,48,80,0.05));border:1px solid rgba(245,166,35,0.4);border-radius:14px;padding:13px;margin-bottom:10px">
+      <!-- ★ Career Card — framing neuroscience (bonus dari estimasi jasa) ★ -->
+      <div id="svc-career-card" style="background:linear-gradient(135deg,rgba(245,166,35,0.14),rgba(224,48,80,0.05));border:1px solid rgba(245,166,35,0.4);border-radius:14px;padding:13px;margin-bottom:10px">
+        <!-- Header -->
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
           <span style="font-size:17px">🏆</span>
           <div style="font-size:12px;font-weight:800;color:var(--yellow);letter-spacing:0.3px">SERVICE HP = BONUS TOP 1</div>
         </div>
+        <!-- Mantra neuroscience — dirotasi tiap render -->
         <div id="svc-career-mantra" style="font-size:10.5px;color:var(--muted2);line-height:1.6;margin-bottom:10px"></div>
 
+        <!-- Tabel anchor kategori lain = 0%, service = TOP -->
         <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:10px">
-          <div class="svc-anchor"><div class="sa-lbl">Transfer</div><div class="sa-val">0%</div></div>
-          <div class="svc-anchor"><div class="sa-lbl">Tartun</div><div class="sa-val">0%</div></div>
-          <div class="svc-anchor"><div class="sa-lbl">Voucher</div><div class="sa-val">0%</div></div>
-          <div class="svc-anchor"><div class="sa-lbl">ACC HP</div><div class="sa-val">0%</div></div>
-          <div class="svc-anchor top1"><div class="sa-lbl">Service HP</div><div class="sa-val">10%</div></div>
+          <div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:6px 4px;text-align:center">
+            <div style="font-size:8.5px;color:var(--muted2)">Transfer</div><div style="font-size:11px;font-weight:700;color:var(--muted2)">—</div>
+          </div>
+          <div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:6px 4px;text-align:center">
+            <div style="font-size:8.5px;color:var(--muted2)">Perdana</div><div style="font-size:11px;font-weight:700;color:var(--muted2)">—</div>
+          </div>
+          <div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:6px 4px;text-align:center">
+            <div style="font-size:8.5px;color:var(--muted2)">Voucher</div><div style="font-size:11px;font-weight:700;color:var(--muted2)">—</div>
+          </div>
+          <div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:6px 4px;text-align:center">
+            <div style="font-size:8.5px;color:var(--muted2)">Acc HP</div><div style="font-size:11px;font-weight:700;color:var(--muted2)">—</div>
+          </div>
+          <div style="background:linear-gradient(135deg,rgba(245,166,35,0.2),rgba(224,48,80,0.1));border:1.5px solid rgba(245,166,35,0.6);border-radius:8px;padding:6px 4px;text-align:center">
+            <div style="font-size:8.5px;color:var(--yellow);font-weight:700">Service HP</div>
+            <div style="font-size:13px;font-weight:800;color:var(--yellow)">✓ BONUS</div>
+          </div>
         </div>
 
+        <!-- Level badge + progress -->
         <div style="background:var(--s2);border-radius:10px;padding:10px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
             <span id="svc-career-level-badge" style="font-size:12px;font-weight:800">🌱 Trainee</span>
-            <span id="svc-career-poin" style="font-size:11px;font-family:var(--mono);color:var(--yellow);font-weight:700">Rp 0</span>
+            <span id="svc-career-poin" style="font-size:11px;font-family:var(--mono);color:var(--yellow);font-weight:700">0 unit</span>
           </div>
-          <div class="target-progress"><div class="target-bar" id="svc-career-bar" style="width:0%;background:var(--yellow)"></div></div>
+          <div style="height:6px;background:var(--border);border-radius:4px;overflow:hidden">
+            <div id="svc-career-bar" style="height:100%;border-radius:4px;background:var(--yellow);width:0%;transition:width 0.8s ease"></div>
+          </div>
           <div id="svc-career-next" style="font-size:9.5px;color:var(--muted2);margin-top:5px;font-family:var(--mono)"></div>
         </div>
       </div>
@@ -2120,13 +2131,21 @@ function roboHideBubble(e){
       <div class="divider"></div>
       <div class="rrow" style="font-weight:700"><span class="rl">Total biaya jasa service</span><span class="rv" style="color:var(--blue)" id="p_service_total">Rp 0</span></div>
 
-      <!-- Live bonus 10% laba — muncul begitu ada item service diisi -->
+      <!-- Live bonus estimasi — tampil saat ada item diisi, hanya tampilkan estimasi dari jasa -->
       <div id="svc-bonus-live-box" style="display:none;background:rgba(62,207,142,0.08);border:1px solid rgba(62,207,142,0.35);border-radius:10px;padding:10px 12px;margin-top:8px">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:10.5px;color:var(--green);font-weight:700">💰 Bonus kamu dari Service HP (10% laba)</span>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <span style="font-size:10.5px;color:var(--green);font-weight:700">💰 Estimasi bonus kamu hari ini</span>
           <span id="svc-bonus-live-val" style="font-size:15px;font-weight:800;color:var(--green);font-family:var(--mono)">Rp 0</span>
         </div>
-        <div id="svc-bonus-live-note" style="font-size:9.5px;color:var(--muted2);margin-top:4px;line-height:1.4"></div>
+        <div id="svc-bonus-live-note" style="font-size:9.5px;color:var(--muted2);line-height:1.5"></div>
+        <!-- Proyeksi bulanan -->
+        <div id="svc-bonus-proj" style="display:none;margin-top:8px;background:var(--s2);border-radius:8px;padding:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;text-align:center">
+          <div><div style="font-size:8px;color:var(--muted2)">Per minggu</div><div style="font-size:12px;font-weight:800;font-family:var(--mono);color:var(--green)" id="svc-proj-week">Rp 0</div></div>
+          <div style="border-left:1px solid var(--border);border-right:1px solid var(--border)"><div style="font-size:8px;color:var(--muted2)">Per 2 minggu</div><div style="font-size:12px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="svc-proj-2w">Rp 0</div></div>
+          <div><div style="font-size:8px;color:var(--muted2)">Per bulan</div><div style="font-size:14px;font-weight:800;font-family:var(--mono);color:var(--accent2)" id="svc-proj-month">Rp 0</div></div>
+        </div>
+        <!-- Neuroscience trigger tip (rotasi) -->
+        <div id="svc-neuro-tip" style="display:none;margin-top:8px;background:linear-gradient(135deg,rgba(155,89,182,0.1),rgba(74,158,255,0.05));border:1px solid rgba(155,89,182,0.25);border-radius:8px;padding:9px;font-size:10px;color:var(--muted2);line-height:1.7"></div>
       </div>
 
       <!-- Rumus kalkulasi per kategori -->
@@ -2848,7 +2867,7 @@ function roboHideBubble(e){
           Manajemen memberimu <b style="color:var(--green)">kebebasan penuh</b> mengatur waktu istirahat — makan, ngopi, scroll HP, nongkrong, semua boleh <b>tanpa batas & tanpa izin</b>, asal pekerjaan tetap berjalan lancar.
         </div>
         <div style="font-size:11px;color:var(--muted2);margin-top:8px;line-height:1.6">
-          Kami percaya kamu — tidak ada kontrol micro. Waktu kerja formal selesai dan kamu <b style="color:var(--text)">bebas total</b> mulai jam <span id="absen-freedom-jam" style="font-family:var(--mono);color:var(--green);font-weight:700">21:28</span> ✨
+          Kami percaya kamu — tidak ada kontrol micro. Waktu kerja formal selesai dan kamu <b style="color:var(--text)">bebas total</b> mulai jam <span id="absen-freedom-jam" style="font-family:var(--mono);color:var(--green);font-weight:700">21:30</span> ✨
         </div>
       </div>
 
@@ -2866,7 +2885,23 @@ function roboHideBubble(e){
         <div style="background:var(--s3);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center">
           <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--text)" id="absen-clock">--:--:--</div>
           <div style="font-size:11px;color:var(--muted2);font-family:var(--mono);margin-top:2px" id="absen-date">—</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="absen-jadwal-label">Masuk maks 08:45 · Waktu bebas mulai 21:28</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="absen-jadwal-label">Masuk maks 08:45 · Waktu bebas mulai 21:30</div>
+        </div>
+
+        <!-- MODE TEST JAM -->
+        <div id="absen-testmode-wrap" style="display:none;background:rgba(245,208,32,0.08);border:1px solid rgba(245,208,32,0.3);border-radius:10px;padding:10px 12px;margin-bottom:10px">
+          <div style="font-size:10px;font-weight:700;color:var(--yellow);margin-bottom:6px">🧪 MODE TEST — Simulasi Jam</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="time" id="absen-test-jam" value="21:28"
+              style="flex:1;background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:7px 10px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none">
+            <button onclick="absenTestApply()" style="background:var(--yellow);border:none;border-radius:8px;padding:8px 14px;color:#000;font-weight:800;font-size:12px;cursor:pointer;font-family:var(--sans)">Test</button>
+            <button onclick="absenTestReset()" style="background:transparent;border:1px solid var(--border2);border-radius:8px;padding:8px 12px;color:var(--muted2);font-size:11px;cursor:pointer;font-family:var(--sans)">Reset</button>
+          </div>
+          <div style="font-size:10px;color:var(--muted2);margin-top:6px">Simulasi jam untuk test buka/tutup tombol absen</div>
+        </div>
+        <div style="text-align:right;margin-top:-8px;margin-bottom:8px">
+          <span onclick="document.getElementById('absen-testmode-wrap').style.display=document.getElementById('absen-testmode-wrap').style.display==='none'?'block':'none'"
+            style="font-size:10px;color:var(--muted);cursor:pointer;font-family:var(--mono)">🧪 mode test</span>
         </div>
 
 
@@ -3471,6 +3506,7 @@ Buka sampai [jam]</div>
     <button class="tbtn" onclick="swTab('kanit','audit',this)">🔍 SO Audit</button>
     <button class="tbtn" onclick="swTab('kanit','dana',this)">🛡️ Dana</button>
     <button class="tbtn" onclick="swTab('kanit','database',this);renderGASPanel()">🗄️ Database</button>
+    <button class="tbtn" onclick="swTab('kanit','cashmon',this);initCashMon()">💵 Cash Monitor</button>
   </div>
 
   <!-- DASHBOARD -->
@@ -3602,6 +3638,70 @@ Buka sampai [jam]</div>
       📄 Export PDF Closing
     </button>
     <div class="kstatus" id="kc-status"></div>
+  </div>
+
+  <!-- CASH MONITOR -->
+  <div class="panel pad" id="k-cashmon">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,rgba(245,166,35,0.1),rgba(108,99,255,0.08));border:1px solid rgba(245,166,35,0.3);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--orange);margin-bottom:2px">💡 Monitor Cash + Saldo — 3 Cabang</div>
+      <div style="font-size:10px;color:var(--muted2);line-height:1.6">Cash fisik dari closing staff · Saldo BRILink input manual · Selisih otomatis dihitung</div>
+    </div>
+
+    <!-- Tombol tarik dari Sheets -->
+    <button onclick="cashMonTarikSheets()" id="btn-cashmon-tarik"
+      style="width:100%;padding:13px;background:linear-gradient(135deg,rgba(62,207,142,0.15),rgba(62,207,142,0.05));border:1px solid rgba(62,207,142,0.4);border-radius:12px;color:var(--green);font-size:13px;font-weight:800;cursor:pointer;font-family:var(--sans);margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:8px">
+      🔄 Tarik Data Closing dari Sheets
+    </button>
+    <div id="cashmon-tarik-status" style="font-size:11px;font-family:var(--mono);color:var(--muted2);text-align:center;margin-bottom:14px;min-height:16px"></div>
+
+    <!-- Summary bar total -->
+    <div id="cashmon-status-bar" style="border-radius:12px;padding:14px;margin-bottom:14px;text-align:center;background:var(--s2);border:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+        <div>
+          <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Total Cash</div>
+          <div style="font-size:16px;font-weight:800;font-family:var(--mono);color:var(--green)" id="cashmon-tot-cash">Rp 0</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Total Saldo</div>
+          <div style="font-size:16px;font-weight:800;font-family:var(--mono);color:var(--blue)" id="cashmon-tot-saldo">Rp 0</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Grand Total</div>
+          <div style="font-size:16px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="cashmon-tot-grand">Rp 0</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--muted2);margin-top:4px" id="cashmon-status-sub">Belum ada data</div>
+    </div>
+
+    <!-- Tabel per cabang gabungan -->
+    <div id="cashmon-cabang-list"></div>
+
+    <!-- AI ANALISIS -->
+    <div style="margin-top:14px;margin-bottom:4px">
+      <button onclick="cashMonAI()" id="btn-cashmon-ai"
+        style="width:100%;padding:13px;background:linear-gradient(135deg,rgba(108,99,255,0.15),rgba(224,48,80,0.08));border:1px solid rgba(108,99,255,0.4);border-radius:12px;color:var(--accent2);font-size:13px;font-weight:800;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:8px">
+        🤖 Analisis AI — Deteksi Anomali & Risiko
+      </button>
+    </div>
+    <div id="cashmon-ai-box" style="display:none;background:linear-gradient(135deg,rgba(108,99,255,0.08),rgba(10,8,16,0.5));border:1px solid rgba(108,99,255,0.3);border-radius:12px;padding:16px;margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="width:28px;height:28px;border-radius:50%;background:rgba(108,99,255,0.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🤖</div>
+        <div>
+          <div style="font-size:12px;font-weight:800;color:var(--accent2)">Analisis Cash Monitor</div>
+          <div style="font-size:9px;color:var(--muted2);font-family:var(--mono)" id="cashmon-ai-time">—</div>
+        </div>
+      </div>
+      <div id="cashmon-ai-result" style="font-size:12px;color:var(--text);line-height:1.8;white-space:pre-wrap">Memuat...</div>
+    </div>
+
+    <!-- Reset + Riwayat -->
+    <button onclick="cashMonReset()" style="width:100%;margin-top:4px;padding:12px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--muted2);font-size:12px;cursor:pointer;font-family:var(--sans)">🗑️ Reset Data Hari Ini</button>
+    <div class="stit" style="margin-top:16px">📅 Riwayat 7 Hari</div>
+    <div class="card">
+      <div id="cashmon-history"><div style="text-align:center;padding:16px;color:var(--muted);font-size:12px">Belum ada riwayat</div></div>
+    </div>
   </div>
 
   <!-- FEE SETTING -->
@@ -3862,9 +3962,9 @@ const FORM_PRODUK  = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfxY-dcB4Ovlk
 let GAS_URL = localStorage.getItem('sc_gas_url') || '';
 
 const CABANG = [
-  {id:'pusat',   nama:'Saudaraku Pusat', warna:'var(--green)'},
-  {id:'cabanga', nama:'Cabang A',            warna:'var(--blue)'},
-  {id:'cabangb', nama:'Cabang B',            warna:'var(--orange)'},
+  {id:'tigaraksa', nama:'Saudara Tigaraksa', warna:'var(--accent2)'},
+  {id:'batara',    nama:'Saudara Batara',    warna:'var(--green)'},
+  {id:'kirana',    nama:'Saudara Kirana',    warna:'var(--orange)'},
 ];
 const BANKS_POOL = ['BRI','BNI','BCA','BCA Xpresi','Dana','Digital'];
 
@@ -4162,7 +4262,6 @@ function swTab(who, name, btn){
   document.querySelectorAll(`#sc-${who} .panel`).forEach(p => p.classList.remove('on'));
   g(`${prefix}-${name}`)?.classList.add('on');
   if(who === 'staff' && name === 'sop') initSOP();
-  if(who === 'staff' && name === 'closing') renderSvcCareer();
   if(who === 'kanit' && name === 'dana') renderKanitDana();
   if(who === 'kanit' && name === 'leaderboard') { if(typeof initLbKanit==='function') initLbKanit(); }
   if(who === 'staff' && name === 'leaderboard') { if(typeof initLbStaff==='function') initLbStaff(); }
@@ -5642,12 +5741,6 @@ function tambahServiceRow(){
           <option value="dp">💰 DP dulu</option>
         </select>
       </div>
-      <div>
-        <div style="font-size:10px;color:var(--muted2);margin-bottom:4px;font-weight:600">HPP Teknisi (Rp) <span style="font-weight:400;color:var(--muted)">opsional</span></div>
-        <input type="number" placeholder="kosongkan jika tidak tahu" oninput="hitungServiceTotal()"
-          style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:7px 9px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none"
-          class="svc-hpp">
-      </div>
     </div>
 
     <div>
@@ -5657,23 +5750,13 @@ function tambahServiceRow(){
         class="svc-jasa">
     </div>
 
-    <div style="margin-top:8px;padding:6px 10px;background:var(--s2);border-radius:7px;display:flex;justify-content:space-between;font-size:11px">
-      <span style="color:var(--muted2)">Profit jasa</span>
-      <span class="svc-profit" style="color:var(--green);font-weight:700;font-family:var(--mono)">—</span>
-    </div>`;
+    <div style="display:none"><input type="number" placeholder="0" oninput="hitungServiceTotal()" class="svc-hpp"></div>
 
-  // Live hitung profit
+`;
+
+  // Trigger hitungServiceTotal saat jasa berubah
   row.querySelectorAll('.svc-jasa,.svc-hpp').forEach(el=>{
-    el.addEventListener('input', ()=>{
-      const jasa = parseFmt(row.querySelector('.svc-jasa')?.value);
-      const hpp  = parseFmt(row.querySelector('.svc-hpp')?.value);
-      const prof = row.querySelector('.svc-profit');
-      if(prof){
-        if(hpp > 0){ prof.textContent = fmt(jasa - hpp); prof.style.color = jasa>=hpp?'var(--green)':'var(--red)'; }
-        else { prof.textContent = '—'; prof.style.color = 'var(--muted2)'; }
-      }
-      hitungServiceTotal();
-    });
+    el.addEventListener('input', ()=>{ hitungServiceTotal(); });
   });
 
   wrap.appendChild(row);
@@ -5682,108 +5765,153 @@ function tambahServiceRow(){
 
 function hitungServiceTotal(){
   const wrap = g('p_service_rows'); if(!wrap) return;
-  let total = 0;
-  wrap.querySelectorAll('.svc-jasa').forEach(el=>{ total += parseFmt(el.value)||0; });
+  let total = 0, totalJasa = 0, unitCount = 0;
+  wrap.querySelectorAll('.svc-jasa').forEach(el=>{
+    const v = parseFmt(el.value)||0;
+    total += v;
+    if(v > 0){ totalJasa += v; unitCount++; }
+  });
   s('p_service_total', fmt(total));
-  renderSvcBonusLive();
+  renderSvcBonusLive(totalJasa, unitCount);
+  renderSvcCareer();
 }
 
-// ══════════════════════════════════════════════
-//  PROGRAM PENGEMBANGAN KARIR — SERVICE HP
-//  Setiap closing Service HP, karyawan dapat bonus 10% dari laba.
-//  Framing & repetisi di bawah ini sengaja dibuat konsisten tiap kali
-//  section ini dibuka, supaya lama-lama jadi asosiasi otomatis:
-//  "Service HP = bonus paling besar" — bukan instruksi yang harus diingat,
-//  tapi reaksi yang muncul sendiri begitu lihat HP pelanggan butuh service.
-// ══════════════════════════════════════════════
-const SVC_BONUS_PERSEN = 0.10; // 10% dari laba (Biaya Jasa − HPP Teknisi)
+// ═══════════════════════════════════════════════════════
+//  SERVICE HP — CAREER DEVELOPMENT PROGRAM
+//  Bonus DITAMPILKAN dari estimasi harga jasa (bukan laba).
+//  HPP tetap dicatat di field hidden untuk rekap owner.
+//  Framing neuroscience: repetisi asosiasi "service HP = reward terbesar"
+//  agar reaksi jadi otomatis — bukan keputusan sadar, tapi insting.
+// ═══════════════════════════════════════════════════════
 
-const CAREER_LEVELS = [
-  { id:'trainee',   min:0,        nama:'Trainee',           ico:'🌱', warna:'#8880a8' },
-  { id:'spesialis', min:250000,   nama:'Spesialis Service',  ico:'🔧', warna:'#3ecf8e' },
-  { id:'expert',    min:750000,   nama:'Expert Closer',      ico:'⚡', warna:'#3060c0' },
-  { id:'master',    min:2000000,  nama:'Master Upseller',    ico:'🥇', warna:'#f5a623' },
-  { id:'legend',    min:5000000,  nama:'Legend Top 1',       ico:'👑', warna:'#e03050' },
+// ── CONFIG BONUS: 10% dari estimasi harga jasa (angka yg staff lihat) ──
+const SVC_BONUS_RATE = 0.10;
+
+// ── Level berdasarkan total UNIT service (bukan rupiah) ──
+// Framing unit = mudah divisualisasi otak, tiap HP masuk = progress naik
+const SVC_LEVELS = [
+  { id:'trainee',   minUnit:0,  nama:'Trainee',          ico:'🌱', warna:'#8880a8', label:'0–4 unit' },
+  { id:'teknisi',   minUnit:5,  nama:'Teknisi Service',  ico:'🔧', warna:'#4a9eff', label:'5–9 unit' },
+  { id:'specialist',minUnit:10, nama:'Specialist',       ico:'⚡', warna:'#3ecf8e', label:'10–19 unit' },
+  { id:'expert',    minUnit:20, nama:'Expert Closer',    ico:'🏅', warna:'#f5c842', label:'20–34 unit' },
+  { id:'master',    minUnit:35, nama:'Master TOP 1',     ico:'👑', warna:'#e03050', label:'35+ unit' },
 ];
 
-// Pesan dirotasi acak — pola sama tiap kali, kalimat beda-beda (priming lewat repetisi, bukan pengulangan kata yang sama)
+// ── Mantra neuroscience — rotasi tiap render, TIDAK sebut laba/profit/margin ──
+// Teknik: Anchoring, Loss Aversion, Social Proof, Reciprocity, Commitment
 const SVC_MANTRA = [
-  n => `${n}, tiap closing Service HP, otak lo nyimpen 1 asosiasi baru: "ini = bonus gede". Makin sering diulang, makin otomatis — nggak perlu mikir lagi pas nawarin.`,
-  n => `Repetisi kecil tiap hari ngebentuk jalur saraf baru, ${n}. Service HP satu-satunya kategori yang kasih persenan dari laba — otak lo bakal belajar sendiri ini prioritas nomor 1.`,
-  n => `${n}, 1 closing Service HP bisa setara bonus dari banyak closing kategori lain. Otak manusia secara alami condong ke reward yang paling besar & paling jelas — manfaatin itu.`,
-  n => `Setiap kali lo isi HPP & Biaya Jasa di sini, lo literally lagi ngelatih insting closing lo, ${n}. Lama-lama nawarin service jadi reflex, bukan effort.`,
-  n => `${n}, level karir di bawah ini bukan cuma angka — itu bukti otak lo udah ke-rewire buat selalu liat peluang Service HP duluan. Gas naik level!`,
+  n => `${n}, setiap HP yang masuk service = uang langsung ke kamu. Satu-satunya kategori yang kasih kamu persenan dari setiap transaksi yang kamu tutup.`,
+  n => `Otak kita secara alami prioritaskan reward yang paling langsung terasa, ${n}. Makanya tiap kali ada pelanggan masuk, instingmu bakal nudge ke service dulu — karena itu yang paling worth it buat kamu.`,
+  n => `${n}, satu HP yang kamu service bisa setara bonus dari puluhan transaksi lain. Bukan kebetulan — memang begitu sistemnya dirancang supaya kamu dapat lebih.`,
+  n => `Tiap kali kamu isi item service di sini, otak kamu nyetak ulang asosiasi: service = hasilnya keliatan, ${n}. Makin sering diulang, makin otomatis naluri upselling-mu.`,
+  n => `${n}, staff TOP bulan ini rata-rata punya 1 kebiasaan yang sama: mereka selalu tanya "ada keluhan lain ga kak?" ke setiap pelanggan. Pertanyaan itu gratis — bonusnya tidak.`,
+  n => `Penelitian behavioral economics: otak lebih termotivasi sama reward yang bisa dihitung sendiri secara real-time. Makanya bonus service langsung muncul di sini — supaya kamu ngerasa hasilnya, bukan cuma ngiranya.`,
+  n => `${n}, setiap HP yang kamu tolak service-nya = estimasi bonus yang nggak masuk ke kamu. Bukan salah siapa-siapa — tapi worth dipikir ulang tiap kali ada peluang.`,
 ];
 
-function svcCareerGet(nama){
-  return hrGet('career_svc_'+nama) || { totalBonus:0, riwayat:[] };
-}
-function svcCareerSet(nama, data){ hrSet('career_svc_'+nama, data); }
+// Neuroscience closing tips — teknik upsell yang tidak manipulatif
+const SVC_NEURO_TIPS = [
+  '🧠 <b style="color:#f5c842">Anchoring:</b> Sebut kondisi HP-nya dulu sebelum kasih harga jasa — "LCD-nya udah retak di ujung, biasanya kalau dibiarkan bisa merambat." Pelanggan jadi lihat jasa kamu sebagai solusi, bukan pengeluaran.',
+  '🧠 <b style="color:#3ecf8e">Commitment:</b> Tanya "boleh saya cek sebentar kondisinya?" dulu — begitu mereka bilang iya, kemungkinan lanjut service naik drastis. <i>Small yes → big yes.</i>',
+  '🧠 <b style="color:#4a9eff">Social Proof:</b> "HP tipe ini banyak yang masuk minggu ini, biasanya kendalanya sama." — otak pelanggan langsung merasa pilihan mereka aman karena orang lain juga melakukannya.',
+  '🧠 <b style="color:#e03050">Loss Aversion:</b> "Kalau dibiarkan bisa kena komponen lain, biaya nanti lebih besar." — otak 2× lebih termotivasi menghindari rugi daripada mendapat keuntungan.',
+  '🧠 <b style="color:#9b59b6">Reciprocity:</b> Cek HP mereka gratis dulu, jelasin kerusakannya dengan jujur — setelah kamu bantu tanpa bayar, mereka secara natural ingin "membalas" dengan jadi pelanggan.',
+  '🧠 <b style="color:#f5c842">Scarcity:</b> "Teknisi kami hari ini ada, tapi ntar sore mungkin penuh." — kelangkaan waktu bikin keputusan lebih cepat.',
+  '🧠 <b style="color:#3ecf8e">Framing Positif:</b> "Estimasi jasa-nya segini, tapi HP-nya jadi normal lagi dan awet." — framing hasil, bukan biaya.',
+];
 
-function svcCareerLevel(totalBonus){
-  let lvl = CAREER_LEVELS[0];
-  for(const l of CAREER_LEVELS){ if(totalBonus >= l.min) lvl = l; }
-  const idx  = CAREER_LEVELS.indexOf(lvl);
-  const next = CAREER_LEVELS[idx+1] || null;
-  return { lvl, next };
+function svcGetLevel(unitCount){
+  let lvl = SVC_LEVELS[0];
+  for(const l of SVC_LEVELS){ if(unitCount >= l.minUnit) lvl = l; }
+  const idx  = SVC_LEVELS.indexOf(lvl);
+  const next = SVC_LEVELS[idx+1] || null;
+  return { lvl, next, idx };
 }
 
-// Hitung total laba & bonus dari semua baris Service HP yang sedang diisi di form Closing
-function svcHitungProfitBonus(){
+function renderSvcBonusLive(totalJasa, unitCount){
+  const box = g('svc-bonus-live-box'); if(!box) return;
+  if(!unitCount || unitCount === 0){ box.style.display='none'; return; }
+
+  box.style.display = 'block';
+
+  // Estimasi bonus = 10% dari total harga jasa (BUKAN laba)
+  const bonus = Math.round(totalJasa * SVC_BONUS_RATE);
+  const rataJasa = Math.round(totalJasa / unitCount);
+
+  // Display bonus
+  s('svc-bonus-live-val', fmt(bonus));
+
+  // Note — framing estimasi, tidak sebut laba/HPP
+  s('svc-bonus-live-note',
+    unitCount === 1
+      ? `Dari ${unitCount} item service · estimasi dihitung dari harga jasa yang kamu input`
+      : `Dari ${unitCount} item service · rata-rata Rp ${fmt(rataJasa)}/item · estimasi bertambah tiap item baru`
+  );
+
+  // Proyeksi
+  const projBox = g('svc-bonus-proj');
+  if(projBox && bonus > 0){
+    projBox.style.display = 'grid';
+    s('svc-proj-week',  fmt(bonus * 6));
+    s('svc-proj-2w',    fmt(bonus * 13));
+    s('svc-proj-month', fmt(bonus * 26));
+  } else if(projBox){
+    projBox.style.display = 'none';
+  }
+
+  // Neuroscience tip — rotasi berdasarkan unit count
+  const tipEl = g('svc-neuro-tip');
+  if(tipEl){
+    tipEl.style.display = 'block';
+    tipEl.innerHTML = SVC_NEURO_TIPS[unitCount % SVC_NEURO_TIPS.length];
+  }
+}
+
+function renderSvcCareer(){
+  const nama = staffInfo?.nama || 'Kamu';
+  const firstName = nama.split(' ')[0];
+
+  // Hitung unit dari rows yang ada
   const wrap = g('p_service_rows');
-  let totalProfit = 0, adaRow = false, adaHppKosong = false;
+  let unitCount = 0;
   if(wrap){
-    Array.from(wrap.children).forEach(row=>{
-      adaRow = true;
-      const jasa = parseFmt(row.querySelector('.svc-jasa')?.value);
-      const hpp  = parseFmt(row.querySelector('.svc-hpp')?.value);
-      if(hpp > 0) totalProfit += Math.max(0, jasa - hpp);
-      else adaHppKosong = true;
+    wrap.querySelectorAll('.svc-jasa').forEach(el=>{
+      if((parseFmt(el.value)||0) > 0) unitCount++;
     });
   }
-  const bonus = Math.round(totalProfit * SVC_BONUS_PERSEN);
-  return { totalProfit, bonus, adaRow, adaHppKosong };
-}
 
-// Update box "Bonus kamu" secara live tiap input berubah
-function renderSvcBonusLive(){
-  const box = g('svc-bonus-live-box'); if(!box) return;
-  const { totalProfit, bonus, adaRow, adaHppKosong } = svcHitungProfitBonus();
-  box.style.display = adaRow ? 'block' : 'none';
-  if(adaRow){
-    s('svc-bonus-live-val', fmt(bonus));
-    s('svc-bonus-live-note', adaHppKosong
-      ? '⚠️ Isi HPP Teknisi di tiap item biar bonus kehitung akurat'
-      : `dari total laba ${fmt(totalProfit)} — otomatis nambah ke poin karir kamu pas closing dikirim`);
-  }
-}
+  const { lvl, next, idx } = svcGetLevel(unitCount);
 
-// Render kartu level karir (badge, total poin, progress bar)
-function renderSvcCareer(){
-  const nama = staffInfo?.nama; if(!nama) return;
-  const data = svcCareerGet(nama);
-  const { lvl, next } = svcCareerLevel(data.totalBonus);
-
+  // Badge
   const badge = g('svc-career-level-badge');
   if(badge){ badge.textContent = `${lvl.ico} ${lvl.nama}`; badge.style.color = lvl.warna; }
-  s('svc-career-poin', fmt(data.totalBonus));
 
+  // Poin (tampilkan unit, BUKAN rupiah — staff tidak tahu kalkulasi laba)
+  s('svc-career-poin', `${unitCount} unit`);
+
+  // Progress bar
   const bar = g('svc-career-bar');
   const nextEl = g('svc-career-next');
   if(next){
-    const pct = Math.min(100, Math.round((data.totalBonus - lvl.min) / (next.min - lvl.min) * 100));
-    if(bar){ bar.style.width = pct + '%'; bar.style.background = lvl.warna; }
-    if(nextEl) nextEl.textContent = `${fmt(next.min - data.totalBonus)} lagi → ${next.ico} ${next.nama}`;
+    const pct = Math.min(100, Math.round((unitCount - lvl.minUnit) / (next.minUnit - lvl.minUnit) * 100));
+    if(bar){ bar.style.width = pct+'%'; bar.style.background = lvl.warna; }
+    const sisa = next.minUnit - unitCount;
+    if(nextEl) nextEl.textContent = `${sisa} unit lagi → ${next.ico} ${next.nama}`;
   } else {
-    if(bar){ bar.style.width = '100%'; bar.style.background = lvl.warna; }
-    if(nextEl) nextEl.textContent = '🎉 Level karir tertinggi tercapai!';
+    if(bar){ bar.style.width='100%'; bar.style.background = lvl.warna; }
+    if(nextEl) nextEl.textContent = '🎉 Level tertinggi — kamu benchmark toko!';
   }
 
+  // Mantra — rotasi acak per render
   const mantraEl = g('svc-career-mantra');
-  if(mantraEl) mantraEl.textContent = SVC_MANTRA[Math.floor(Math.random()*SVC_MANTRA.length)](nama.split(' ')[0]);
-
-  renderSvcBonusLive();
+  if(mantraEl){
+    const fn = SVC_MANTRA[Math.floor(Math.random() * SVC_MANTRA.length)];
+    mantraEl.textContent = fn(firstName);
+  }
 }
+
+// Init saat DOM ready
+document.addEventListener('DOMContentLoaded', ()=>{ renderSvcCareer(); });
 
 function tambahTrxAccMaster(){
   const wrap = g('p_trx_acc_rows');
@@ -5943,7 +6071,7 @@ let hrSpecial  = hrGet('special')  || {
 // ══════════════════════════════════════════════════════════════════
 // PELANGGAN PRIORITAS
 // ══════════════════════════════════════════════════════════════════
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzjqePKG5aZQ0lo_GHK7cC8JO55f83sZvquJc1gWsJvOC29-28JS51eJofKzIOuzhGLTg/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwT95sG0U066ElGESw50czL5e2TkOBDqJ2csw4BHKxEPfU50BUWWLrP7sf8d6FFrqkcHA/exec';
 
 let plgData = hrGet('pelanggan') || [];
 let _plgSyncing = false;
@@ -5954,26 +6082,23 @@ function plgSave(){
   plgSyncToSheets();
 }
 
-// Upload semua data ke Google Sheets otomatis setiap simpan pelanggan
+// Upload semua data ke Google Sheets (no-cors karena Apps Script tidak kirim CORS header)
 function plgSyncToSheets(){
   if(_plgSyncing) return;
   _plgSyncing = true;
-  plgShowSyncStatus('🔄 Menyimpan ke cloud...');
-
   fetch(SHEETS_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify({ action: 'save', pelanggan: plgData }),
   }).then(() => {
-    _plgSyncing = false;
-    plgShowSyncStatus('✅ Tersimpan ke cloud (' + plgData.length + ' pelanggan)');
-    toast('☁️ Data pelanggan otomatis tersimpan ke Google Sheets!');
-  }).catch(() => {
-    _plgSyncing = false;
-    plgShowSyncStatus('⚠️ Gagal sync — tersimpan lokal');
-    toast('⚠️ Gagal kirim ke Sheets. Data aman di lokal.');
-  });
+      _plgSyncing = false;
+      plgShowSyncStatus('✅ Tersimpan ke cloud');
+    })
+    .catch(() => {
+      _plgSyncing = false;
+      plgShowSyncStatus('⚠️ Gagal sync — tersimpan lokal');
+    });
 }
 
 // Ambil data dari Google Sheets via JSONP (bypass CORS untuk GET)
@@ -6028,9 +6153,7 @@ function plgShowSyncStatus(msg){
   if(!el) return;
   el.textContent = msg;
   el.style.opacity = '1';
-  if(!msg.includes('🔄')){
-    setTimeout(() => { el.style.opacity = '0'; }, 5000);
-  }
+  setTimeout(() => { el.style.opacity = '0'; }, 3000);
 }
 
 function plgTabTemplate(tab){
@@ -6661,13 +6784,35 @@ function absenKeluarCepat(jam, tanggal){
   return jam < batasKeluarAbsen(tanggal);
 }
 
+function absenTestApply(){
+  const val = document.getElementById('absen-test-jam')?.value;
+  if(!val){ toast('⚠️ Isi jam dulu'); return; }
+  window._absenTestJam = val;
+  toast('🧪 Simulasi jam ' + val + ' aktif');
+  // restart tick agar langsung apply
+  if(absenClockInterval) clearInterval(absenClockInterval);
+  initAbsensi();
+}
+function absenTestReset(){
+  window._absenTestJam = null;
+  toast('✅ Kembali ke jam real');
+  if(absenClockInterval) clearInterval(absenClockInterval);
+  initAbsensi();
+}
+
 function initAbsensi(){
   if(absenClockInterval) clearInterval(absenClockInterval);
 
   function tickClock(){
-    const now    = new Date();
+    // Mode test: gunakan jam simulasi kalau aktif
+    let now = new Date();
+    if(window._absenTestJam){
+      const [th, tm] = window._absenTestJam.split(':').map(Number);
+      now = new Date(); now.setHours(th, tm, 0, 0);
+    }
     const jam    = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    const jamHM  = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); // HH:MM
+    // Gunakan getHours/getMinutes langsung — anti locale-bug, selalu HH:MM 24 jam
+    const jamHM  = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
     const tglDisp= now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
     const tglISO = now.toISOString().split('T')[0];
     const weekend= isHariWeekend(tglISO);
@@ -10953,45 +11098,40 @@ kirimClosing = async function() {
   ];
 
   await kirimKeSheets('Closing', [baris]);
-};
 
-/* ═══════════════════════════════════════════════════════════════
-   PATCH — Program Pengembangan Karir: Service HP
-   Tiap closing dikirim, hitung 10% dari laba Service HP (Biaya Jasa −
-   HPP Teknisi), simpan ke poin karir karyawan (per nama, di HP ini),
-   lalu update level & selipkan info bonus ke modal motivasi yang
-   sudah muncul setelah closing berhasil.
-═══════════════════════════════════════════════════════════════ */
-const __origKirimClosing_career__ = kirimClosing;
-kirimClosing = async function() {
-  const nama = (typeof staffInfo !== 'undefined' && staffInfo?.nama) || null;
-  const { totalProfit, bonus, adaRow } = svcHitungProfitBonus();
-
-  await __origKirimClosing_career__();
-
-  if (nama && adaRow && bonus > 0) {
-    const data   = svcCareerGet(nama);
-    const before = data.totalBonus;
-    data.totalBonus += bonus;
-    data.riwayat = data.riwayat || [];
-    data.riwayat.push({ tanggal: today(), bonus, profit: totalProfit });
-    if (data.riwayat.length > 200) data.riwayat.splice(0, data.riwayat.length - 200);
-    svcCareerSet(nama, data);
-
-    const { lvl: lvlBefore } = svcCareerLevel(before);
-    const { lvl: lvlAfter }  = svcCareerLevel(data.totalBonus);
-    renderSvcCareer();
-
-    // Selipkan info bonus & level-up ke modal motivasi yang sudah tampil
-    const motTxt = g('mot-txt');
-    if (motTxt) {
-      let tambahan = `\n\n💰 +${fmt(bonus)} dari Service HP masuk ke poin karir kamu (Total: ${fmt(data.totalBonus)}).`;
-      if (lvlAfter.id !== lvlBefore.id) {
-        tambahan += `\n🎉 LEVEL UP! Sekarang kamu ${lvlAfter.ico} ${lvlAfter.nama}!`;
-      }
-      motTxt.textContent += tambahan;
+  // ── Auto-update Cash Monitor Kanit dari data closing staff ──
+  try {
+    const cmKey   = 'sc_cashmon_hari';
+    const cmNama  = ['Saudara Tigaraksa','Saudara Batara','Saudara Kirana'];
+    const lokasiStaff = (typeof staffInfo !== 'undefined' && staffInfo?.area) || (typeof APP_AREA !== 'undefined' ? APP_AREA : '');
+    // Cocokkan lokasi staff ke index cabang (case-insensitive partial match)
+    let idxCabang = cmNama.findIndex(n => lokasiStaff.toLowerCase().includes(n.toLowerCase().split(' ')[0]));
+    if(idxCabang < 0){
+      // fallback: coba match terbalik
+      idxCabang = cmNama.findIndex(n => n.toLowerCase().includes(lokasiStaff.toLowerCase().split(' ')[0]));
     }
-  }
+    if(idxCabang < 0) idxCabang = 0; // default ke Pusat kalau tidak ketemu
+
+    const cashPagi  = gv('p_cash_pagi')  || 0;
+    const cashJual  = gv('p_cash')        || 0;
+    const ambilBank = gv('p_tambah_kasmod') || 0;
+    const cashFisik = cashPagi + cashJual + ambilBank;
+    const tarikTunai= gv('p_trx_tarik')  || 0;
+
+    let cmData = {};
+    try { cmData = JSON.parse(localStorage.getItem(cmKey) || '{}'); } catch{}
+    cmData[idxCabang] = {
+      cashAwal   : cashPagi,
+      cashFisik  : cashFisik,
+      cashMasuk  : ambilBank || undefined,
+      cashKeluar : tarikTunai || undefined,
+      catatan    : `Auto dari closing ${nama} shift ${shift}`,
+      tgl        : new Date().toISOString().slice(0,10)
+    };
+    if(!ambilBank)  delete cmData[idxCabang].cashMasuk;
+    if(!tarikTunai) delete cmData[idxCabang].cashKeluar;
+    localStorage.setItem(cmKey, JSON.stringify(cmData));
+  } catch(e){ console.warn('Cash Monitor update gagal:', e); }
 };
 
 // ── 3. Export CSV — bisa dibuka langsung di Excel ──
@@ -11033,7 +11173,7 @@ function exportCSV(type) {
 }
 
 // ── 4. Kode GAS yang di-paste ke Apps Script ──
-const GAS_SCRIPT_CODE = 'function doPost(e){try{var data=JSON.parse(e.postData.contents);var sheetName=data.sheet||"Data";var rows=data.rows||[];var ss=SpreadsheetApp.getActiveSpreadsheet();var ws=ss.getSheetByName(sheetName);if(!ws){ws=ss.insertSheet(sheetName);var headers={"Closing":["Tanggal","Nama","Shift","Lokasi","Cash Pagi","Tambah Kasmod","Cash Akhir","Pinjam Bank","Tarik Nom","Tarik N","Transfer Nom","Transfer N","Pulsa Nom","Pulsa N","Data Nom","Data N","Telkomsel Nom","Telkomsel N","XL Nom","XL N","Axis Nom","Axis N","ByU Nom","ByU N","Sfren Nom","Sfren N","Indosat Nom","Indosat N","Total Nom","Total N","BCA Awal","BCA Akhir","BNI Awal","BNI Akhir","BRI Awal","BRI Akhir","Dana Awal","Dana Akhir","Digital Awal","Digital Akhir","Digipos Awal","Digipos Akhir","Rita Awal","Rita Akhir","Sidiva Awal","Sidiva Akhir","BCAX Awal","BCAX Akhir","Makan","Lain","Keterangan","Omset"],"Leaderboard":["Tanggal","Nama","Cabang","Transfer","Tartun","Voucher","ACC","Service HP","Progress%"],"AuditAcc":["Tanggal","Nama","Kode","Produk","Stok Awal","Stok Fisik","Terjual"]};if(headers[sheetName])ws.appendRow(headers[sheetName]);}rows.forEach(function(row){ws.appendRow(row);});return ContentService.createTextOutput(JSON.stringify({status:"ok",added:rows.length})).setMimeType(ContentService.MimeType.JSON);}catch(err){return ContentService.createTextOutput(JSON.stringify({status:"error",msg:err.message})).setMimeType(ContentService.MimeType.JSON);}}function doGet(e){return ContentService.createTextOutput("Saudaraku GAS aktif OK").setMimeType(ContentService.MimeType.TEXT);}';
+const GAS_SCRIPT_CODE = 'function doPost(e){try{var data=JSON.parse(e.postData.contents);var sheetName=data.sheet||"Data";var rows=data.rows||[];var ss=SpreadsheetApp.getActiveSpreadsheet();var ws=ss.getSheetByName(sheetName);if(!ws){ws=ss.insertSheet(sheetName);var headers={"Closing":["Tanggal","Nama","Shift","Lokasi","Cash Pagi","Tambah Kasmod","Cash Akhir","Pinjam Bank","Tarik Nom","Tarik N","Transfer Nom","Transfer N","Pulsa Nom","Pulsa N","Data Nom","Data N","Telkomsel Nom","Telkomsel N","XL Nom","XL N","Axis Nom","Axis N","ByU Nom","ByU N","Sfren Nom","Sfren N","Indosat Nom","Indosat N","Total Nom","Total N","BCA Awal","BCA Akhir","BNI Awal","BNI Akhir","BRI Awal","BRI Akhir","Dana Awal","Dana Akhir","Digital Awal","Digital Akhir","Digipos Awal","Digipos Akhir","Rita Awal","Rita Akhir","Sidiva Awal","Sidiva Akhir","BCAX Awal","BCAX Akhir","Rembo Awal","Rembo Akhir","Makan","Lain","Keterangan","Omset"],"Leaderboard":["Tanggal","Nama","Cabang","Transfer","Tartun","Voucher","ACC","Service HP","Progress%"],"AuditAcc":["Tanggal","Nama","Kode","Produk","Stok Awal","Stok Fisik","Terjual"]};if(headers[sheetName])ws.appendRow(headers[sheetName]);}rows.forEach(function(row){ws.appendRow(row);});return ContentService.createTextOutput(JSON.stringify({status:"ok",added:rows.length})).setMimeType(ContentService.MimeType.JSON);}catch(err){return ContentService.createTextOutput(JSON.stringify({status:"error",msg:err.message})).setMimeType(ContentService.MimeType.JSON);}}function doGet(e){try{var action=e&&e.parameter&&e.parameter.action?e.parameter.action:"ping";if(action==="ping"){return ContentService.createTextOutput("Saudaraku GAS aktif OK").setMimeType(ContentService.MimeType.TEXT);}if(action==="closing_hari_ini"){var tz=Session.getScriptTimeZone();var today=Utilities.formatDate(new Date(),tz,"dd/MM/yyyy");var ss=SpreadsheetApp.getActiveSpreadsheet();var ws=ss.getSheetByName("Closing");if(!ws){return ContentService.createTextOutput(JSON.stringify({status:"ok",rows:[]})).setMimeType(ContentService.MimeType.JSON);}var data=ws.getDataRange().getValues();var header=data[0];var idxTgl=0,idxNama=1,idxShift=2,idxLokasi=3,idxCashPagi=4,idxCashAkhir=6,idxTarik=8,idxTambah=5;var result=[];for(var i=1;i<data.length;i++){var row=data[i];var tglCell=row[idxTgl]?String(row[idxTgl]):"";if(tglCell.indexOf(today)===0||tglCell.indexOf(today.split("/")[2]+"-"+today.split("/")[1]+"-"+today.split("/")[0])===0){result.push({nama:row[idxNama],shift:row[idxShift],lokasi:row[idxLokasi],cashPagi:Number(row[idxCashPagi])||0,cashAkhir:Number(row[idxCashAkhir])||0,tambah:Number(row[idxTambah])||0,tarik:Number(row[idxTarik])||0});}}return ContentService.createTextOutput(JSON.stringify({status:"ok",rows:result,today:today})).setMimeType(ContentService.MimeType.JSON);}return ContentService.createTextOutput(JSON.stringify({status:"error",msg:"unknown action"})).setMimeType(ContentService.MimeType.JSON);}catch(err){return ContentService.createTextOutput(JSON.stringify({status:"error",msg:err.message})).setMimeType(ContentService.MimeType.JSON);}}';
 
 function tampilKodeGAS() {
   var el = document.getElementById('gas-code-box');
@@ -11428,6 +11568,347 @@ function cl_clearTerbilang(el){
 </div>
 
 <script>
+
+// ══════════════════════════════════════════════════════
+// CASH MONITOR — Monitor Cash Harian 3 Cabang
+// ══════════════════════════════════════════════════════
+const CM_KEY      = 'sc_cashmon_hari';
+const CM_LOG_KEY  = 'sc_cashmon_log';
+const CM_CABANG   = ['Saudara Tigaraksa','Saudara Batara','Saudara Kirana'];
+const CM_COLORS   = ['var(--accent2)','var(--green)','var(--orange)'];
+const CM_DOTS     = ['#e03050','#3ecf8e','#f5a623'];
+
+function cashMonToday(){ return new Date().toISOString().slice(0,10); }
+function cashMonLoad(){
+  try { return JSON.parse(localStorage.getItem(CM_KEY)) || {}; } catch{ return {}; }
+}
+function cashMonSave(d){ localStorage.setItem(CM_KEY, JSON.stringify(d)); }
+function cashMonLogLoad(){
+  try { return JSON.parse(localStorage.getItem(CM_LOG_KEY)) || []; } catch{ return []; }
+}
+function cashMonLogSave(l){ localStorage.setItem(CM_LOG_KEY, JSON.stringify(l)); }
+
+function initCashMon(){
+  const data = cashMonLoad();
+  renderCashMonCabang(data);
+  renderCashMonHistory();
+}
+
+function renderCashMonSummary(data){
+  // update total bar
+  let totCash = 0, totSaldo = 0, totSelisih = 0, adaSelisih = false;
+  CM_CABANG.forEach((_,i) => {
+    const d = data[i] || {};
+    totCash  += d.cashFisik || 0;
+    totSaldo += d.saldoBrilink || 0;
+    const eks = (d.cashAwal||0) + (d.cashMasuk||0) - (d.cashKeluar||0);
+    if(d.cashFisik !== undefined && d.cashAwal){ totSelisih += d.cashFisik - eks; adaSelisih = true; }
+  });
+  const totGrand = totCash + totSaldo;
+  const elC = document.getElementById('cashmon-tot-cash');
+  const elS = document.getElementById('cashmon-tot-saldo');
+  const elG = document.getElementById('cashmon-tot-grand');
+  const elSub = document.getElementById('cashmon-status-sub');
+  if(elC) elC.textContent = fmt(totCash);
+  if(elS) elS.textContent = fmt(totSaldo);
+  if(elG) elG.textContent = fmt(totGrand);
+  if(elSub) elSub.textContent = adaSelisih
+    ? (totSelisih === 0 ? '✅ Semua balance' : totSelisih < 0 ? `⚠️ Total selisih kurang ${fmt(Math.abs(totSelisih))}` : `ℹ️ Total selisih lebih ${fmt(totSelisih)}`)
+    : 'Input data cabang di bawah';
+  const bar = document.getElementById('cashmon-status-bar');
+  if(bar) bar.style.borderColor = !adaSelisih ? 'var(--border)' : totSelisih === 0 ? 'rgba(62,207,142,0.35)' : totSelisih < 0 ? 'rgba(224,48,80,0.35)' : 'rgba(48,96,192,0.35)';
+}
+
+function renderCashMonCabang(data){
+  const wrap = document.getElementById('cashmon-cabang-list');
+  if(!wrap) return;
+  wrap.innerHTML = CM_CABANG.map((nama, i) => {
+    const d = data[i] || {};
+    const ekspektasi = (d.cashAwal||0) + (d.cashMasuk||0) - (d.cashKeluar||0);
+    const selisih    = d.cashFisik !== undefined && d.cashAwal ? d.cashFisik - ekspektasi : null;
+    const selColor   = selisih === null ? 'var(--muted2)' : selisih === 0 ? 'var(--green)' : selisih > 0 ? 'var(--blue)' : 'var(--red)';
+    const totalCabang = (d.cashFisik||0) + (d.saldoBrilink||0);
+    return `
+    <div class="card" style="margin-bottom:12px;border-color:${CM_DOTS[i]}50">
+      <!-- Header cabang -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="width:10px;height:10px;border-radius:50%;background:${CM_DOTS[i]};flex-shrink:0"></div>
+        <div style="font-size:13px;font-weight:800;color:${CM_COLORS[i]};flex:1">${nama}</div>
+        <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:var(--yellow)">${fmt(totalCabang)}</div>
+      </div>
+
+      <!-- Total mini: cash + saldo -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
+        <div style="background:var(--gs);border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--green);font-weight:700;margin-bottom:2px">CASH FISIK</div>
+          <div style="font-size:14px;font-weight:800;font-family:var(--mono);color:var(--green)">${d.cashFisik !== undefined ? fmt(d.cashFisik) : '—'}</div>
+        </div>
+        <div style="background:var(--bs);border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--blue);font-weight:700;margin-bottom:2px">SALDO BRILINK</div>
+          <div style="font-size:14px;font-weight:800;font-family:var(--mono);color:var(--blue)">${d.saldoBrilink ? fmt(d.saldoBrilink) : '—'}</div>
+        </div>
+      </div>
+
+      <!-- Input 5 field -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div>
+          <div style="font-size:10px;color:var(--muted2);margin-bottom:4px;font-weight:600">💰 Cash Awal Titipan</div>
+          <input type="text" inputmode="decimal" id="cm_awal_${i}" placeholder="3.150.000"
+            value="${d.cashAwal ? fmt(d.cashAwal) : ''}"
+            oninput="fmtInput(this);cashMonUpdate(${i})"
+            style="width:100%;background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--muted2);margin-bottom:4px;font-weight:600">💵 Cash Fisik Closing</div>
+          <input type="text" inputmode="decimal" id="cm_fisik_${i}" placeholder="hitung manual"
+            value="${d.cashFisik !== undefined ? fmt(d.cashFisik) : ''}"
+            oninput="fmtInput(this);cashMonUpdate(${i})"
+            style="width:100%;background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--muted2);margin-bottom:4px;font-weight:600">📲 Saldo BRILink</div>
+          <input type="text" inputmode="decimal" id="cm_saldo_${i}" placeholder="saldo rekening"
+            value="${d.saldoBrilink ? fmt(d.saldoBrilink) : ''}"
+            oninput="fmtInput(this);cashMonUpdate(${i})"
+            style="width:100%;background:var(--s3);border:1px solid rgba(48,96,192,0.4);border-radius:8px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--muted2);margin-bottom:4px;font-weight:600">⬆️ Cash Masuk Tambahan</div>
+          <input type="text" inputmode="decimal" id="cm_masuk_${i}" placeholder="ATM / kiriman"
+            value="${d.cashMasuk ? fmt(d.cashMasuk) : ''}"
+            oninput="fmtInput(this);cashMonUpdate(${i})"
+            style="width:100%;background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+        <div style="grid-column:1/-1">
+          <div style="font-size:10px;color:var(--muted2);margin-bottom:4px;font-weight:600">⬇️ Cash Keluar (Tarik Tunai Nasabah)</div>
+          <input type="text" inputmode="decimal" id="cm_keluar_${i}" placeholder="total tarik tunai hari ini"
+            value="${d.cashKeluar ? fmt(d.cashKeluar) : ''}"
+            oninput="fmtInput(this);cashMonUpdate(${i})"
+            style="width:100%;background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+        </div>
+      </div>
+
+      <!-- Rekonsiliasi cash -->
+      <div style="background:var(--s3);border-radius:10px;padding:10px 12px;margin-bottom:8px">
+        <div style="font-size:9px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">🔍 Rekonsiliasi Cash</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid var(--border)">
+          <span style="color:var(--muted2)">Ekspektasi</span>
+          <span style="font-family:var(--mono);font-weight:600" id="cm_eks_${i}">${fmt(ekspektasi)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;padding:6px 0 0">
+          <span>Selisih Cash</span>
+          <span style="font-family:var(--mono);color:${selColor}" id="cm_sel_${i}">${selisih === null ? '—' : selisih === 0 ? '✅ Balance' : (selisih > 0 ? '+' : '') + fmt(selisih)}</span>
+        </div>
+        ${selisih !== null && selisih !== 0 ? `<div style="font-size:10px;color:${selColor};margin-top:6px;padding:5px 8px;background:${selisih<0?'var(--rs)':'var(--bs)'};border-radius:6px">${selisih < 0 ? '⚠️ Cash kurang — perlu klarifikasi' : 'ℹ️ Cash lebih — cek kembalian/titipan'}</div>` : ''}
+      </div>
+
+      <input class="finp" id="cm_cat_${i}" placeholder="Catatan (opsional)..." value="${d.catatan||''}" oninput="cashMonUpdate(${i})" style="font-size:11px;padding:8px 10px">
+    </div>`;
+  }).join('');
+  renderCashMonSummary(data);
+}
+
+function cashMonUpdate(i){
+  const data   = cashMonLoad();
+  const awal   = parseRp(document.getElementById(`cm_awal_${i}`)?.value)   || 0;
+  const fisik  = parseRp(document.getElementById(`cm_fisik_${i}`)?.value);
+  const saldo  = parseRp(document.getElementById(`cm_saldo_${i}`)?.value)  || 0;
+  const masuk  = parseRp(document.getElementById(`cm_masuk_${i}`)?.value)  || 0;
+  const keluar = parseRp(document.getElementById(`cm_keluar_${i}`)?.value) || 0;
+  const cat    = document.getElementById(`cm_cat_${i}`)?.value || '';
+  data[i] = { cashAwal: awal||undefined, cashFisik: fisik, saldoBrilink: saldo||undefined, cashMasuk: masuk||undefined, cashKeluar: keluar||undefined, catatan: cat, tgl: cashMonToday() };
+  if(!awal)  delete data[i].cashAwal;
+  if(!saldo) delete data[i].saldoBrilink;
+  if(!masuk) delete data[i].cashMasuk;
+  if(!keluar)delete data[i].cashKeluar;
+  cashMonSave(data);
+
+  // update rekonsiliasi inline
+  const ekspektasi = awal + masuk - keluar;
+  const selisih    = fisik !== null && fisik !== undefined ? fisik - ekspektasi : null;
+  const selColor   = selisih === null ? 'var(--muted2)' : selisih === 0 ? 'var(--green)' : selisih > 0 ? 'var(--blue)' : 'var(--red)';
+  const elEks = document.getElementById(`cm_eks_${i}`);
+  const elSel = document.getElementById(`cm_sel_${i}`);
+  if(elEks) elEks.textContent = fmt(ekspektasi);
+  if(elSel){ elSel.textContent = selisih === null ? '—' : selisih === 0 ? '✅ Balance' : (selisih > 0 ? '+' : '') + fmt(selisih); elSel.style.color = selColor; }
+  renderCashMonSummary(data);
+}
+
+async function cashMonAI(){
+  const btn = document.getElementById('btn-cashmon-ai');
+  const box = document.getElementById('cashmon-ai-box');
+  const res = document.getElementById('cashmon-ai-result');
+  const tim = document.getElementById('cashmon-ai-time');
+
+  box.style.display = 'block';
+  if(btn) btn.disabled = true;
+  if(res) res.textContent = '⏳ AI sedang menganalisis data...';
+
+  const data    = cashMonLoad();
+  const log     = cashMonLogLoad();
+  const cabang  = CM_CABANG;
+  const now     = new Date();
+  const jamNow  = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  const tgl     = now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  // Susun ringkasan data per cabang
+  const ringkasan = cabang.map((nama, i) => {
+    const d = data[i] || {};
+    const ekspektasi  = (d.cashAwal||0) + (d.cashMasuk||0) - (d.cashKeluar||0);
+    const selisih     = d.cashFisik !== undefined ? d.cashFisik - ekspektasi : null;
+    const sudahIsie   = d.cashAwal && d.cashFisik !== undefined;
+    const totalCabang = (d.cashFisik||0) + (d.saldoBrilink||0);
+    const riwayat = log.map(l => {
+      const c = l.cabang?.[i];
+      return c ? `${l.tgl}: selisih ${c.selisih !== null ? (c.selisih >= 0 ? '+' : '') + c.selisih : 'belum diisi'}` : null;
+    }).filter(Boolean).slice(0,5).join(', ');
+    return `${nama}:
+- Status: ${sudahIsie ? 'sudah closing' : 'BELUM closing (jam ' + jamNow + ')'}
+- Cash Awal Titipan: Rp ${(d.cashAwal||0).toLocaleString('id-ID')}
+- Cash Masuk Tambahan: Rp ${(d.cashMasuk||0).toLocaleString('id-ID')}
+- Cash Keluar (Tarik Tunai): Rp ${(d.cashKeluar||0).toLocaleString('id-ID')}
+- Cash Fisik Closing: ${d.cashFisik !== undefined ? 'Rp ' + d.cashFisik.toLocaleString('id-ID') : 'belum diisi'}
+- Saldo BRILink: ${d.saldoBrilink ? 'Rp ' + d.saldoBrilink.toLocaleString('id-ID') : 'belum diisi'}
+- Total Cabang (Cash+Saldo): Rp ${totalCabang.toLocaleString('id-ID')}
+- Selisih Cash: ${selisih !== null ? (selisih >= 0 ? '+' : '') + 'Rp ' + Math.abs(selisih).toLocaleString('id-ID') + (selisih < 0 ? ' (KURANG)' : selisih > 0 ? ' (LEBIH)' : ' (BALANCE)') : 'belum bisa dihitung'}
+- Riwayat 7 hari: ${riwayat || 'belum ada riwayat'}`;
+  }).join('\n\n');
+
+  const prompt = `Kamu adalah sistem monitoring cash untuk bisnis BRILink dan konter HP bernama Saudara Cell dengan 3 cabang.
+
+Hari ini: ${tgl}, jam sekarang: ${jamNow}
+Jam closing normal: 21:28
+
+Data cash monitor hari ini:
+${ringkasan}
+
+Tugasmu:
+1. Deteksi anomali atau risiko dari data di atas
+2. Identifikasi cabang yang belum closing jika sudah lewat jam 21:28
+3. Analisis selisih — apakah wajar atau mencurigakan berdasarkan riwayat
+4. Berikan rekomendasi tindakan konkret untuk owner (bukan saran umum)
+5. Gunakan bahasa Indonesia kasual, singkat, langsung ke poin
+
+Format jawaban:
+- Mulai dengan status keseluruhan 1 kalimat
+- Per cabang: status + analisis singkat + rekomendasi jika perlu
+- Akhiri dengan prioritas tindakan owner malam ini
+
+Maksimal 200 kata. Jangan bertele-tele.`;
+
+  try {
+    const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const json = await apiRes.json();
+    const txt  = json?.content?.[0]?.text || 'Tidak ada respons dari AI.';
+    if(res) res.textContent = txt;
+    if(tim) tim.textContent = 'Dianalisis jam ' + jamNow;
+  } catch(e) {
+    if(res) res.textContent = '❌ Gagal hubungi AI: ' + e.message;
+  }
+  if(btn){ btn.disabled = false; btn.textContent = '🤖 Analisis Ulang'; }
+}
+
+async function cashMonTarikSheets(){
+  const btn = document.getElementById('btn-cashmon-tarik');
+  const sts = document.getElementById('cashmon-tarik-status');
+  const gasUrl = localStorage.getItem('sc_gas_url') || '';
+  if(!gasUrl){
+    if(sts) sts.textContent = '⚠️ GAS URL belum diset — isi dulu di tab Database';
+    if(sts) sts.style.color = 'var(--orange)';
+    return;
+  }
+  if(btn){ btn.textContent = '⏳ Mengambil data...'; btn.disabled = true; }
+  if(sts){ sts.textContent = 'Menghubungi Google Sheets...'; sts.style.color = 'var(--muted2)'; }
+  try {
+    const res  = await fetch(gasUrl + '?action=closing_hari_ini');
+    const json = await res.json();
+    if(json.status !== 'ok') throw new Error(json.msg || 'Error dari GAS');
+    const rows = json.rows || [];
+    if(!rows.length){
+      if(sts){ sts.textContent = '📭 Belum ada closing hari ini di Sheets'; sts.style.color = 'var(--muted2)'; }
+      if(btn){ btn.textContent = '🔄 Tarik Data Closing Hari Ini dari Sheets'; btn.disabled = false; }
+      return;
+    }
+    const cmKey  = 'sc_cashmon_hari';
+    const cmNama = ['Saudara Tigaraksa','Saudara Batara','Saudara Kirana'];
+    let cmData = {};
+    try { cmData = JSON.parse(localStorage.getItem(cmKey) || '{}'); } catch{}
+    rows.forEach(r => {
+      const lokasi = String(r.lokasi || '').toLowerCase();
+      let idx = cmNama.findIndex(n => lokasi.includes(n.toLowerCase().split(' ')[0]));
+      if(idx < 0) idx = cmNama.findIndex(n => n.toLowerCase().split(' ')[0].includes(lokasi.split(' ')[0]));
+      if(idx < 0) idx = 0;
+      cmData[idx] = {
+        cashAwal   : r.cashPagi || 0,
+        cashFisik  : (r.cashPagi||0) + (r.cashAkhir||0) + (r.tambah||0),
+        cashMasuk  : r.tambah  || undefined,
+        cashKeluar : r.tarik   || undefined,
+        catatan    : `Dari Sheets — ${r.nama} shift ${r.shift}`,
+        tgl        : new Date().toISOString().slice(0,10)
+      };
+      if(!cmData[idx].cashMasuk)  delete cmData[idx].cashMasuk;
+      if(!cmData[idx].cashKeluar) delete cmData[idx].cashKeluar;
+    });
+    localStorage.setItem(cmKey, JSON.stringify(cmData));
+    initCashMon();
+    if(sts){ sts.textContent = `✅ ${rows.length} cabang diupdate — ${new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}`; sts.style.color = 'var(--green)'; }
+    toast('✅ Cash Monitor diupdate dari Sheets!');
+  } catch(e){
+    if(sts){ sts.textContent = '❌ Gagal: ' + e.message; sts.style.color = 'var(--red)'; }
+  }
+  if(btn){ btn.textContent = '🔄 Tarik Data Closing Hari Ini dari Sheets'; btn.disabled = false; }
+}
+
+function cashMonReset(){
+  if(!confirm('Reset data cash monitor hari ini? Data akan disimpan ke riwayat dulu.')) return;
+  const data = cashMonLoad();
+  // Simpan ke log
+  const log = cashMonLogLoad();
+  const today = cashMonToday();
+  const entry = { tgl: today, cabang: CM_CABANG.map((nama,i) => {
+    const d = data[i]||{};
+    const ekspektasi = (d.cashAwal||0)+(d.cashMasuk||0)-(d.cashKeluar||0);
+    return { nama, cashAwal:d.cashAwal||0, cashFisik:d.cashFisik||0, selisih: d.cashFisik!==undefined ? d.cashFisik-ekspektasi : null };
+  })};
+  log.unshift(entry);
+  if(log.length > 7) log.splice(7);
+  cashMonLogSave(log);
+  localStorage.removeItem(CM_KEY);
+  initCashMon();
+  toast('✅ Data direset, riwayat tersimpan');
+}
+
+function renderCashMonHistory(){
+  const log = cashMonLogLoad();
+  const el  = document.getElementById('cashmon-history');
+  if(!el) return;
+  if(!log.length){ el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px">Belum ada riwayat</div>'; return; }
+  el.innerHTML = log.map(entry => {
+    const totalSel = entry.cabang.reduce((s,c) => s + (c.selisih||0), 0);
+    const selColor = totalSel === 0 ? 'var(--green)' : totalSel < 0 ? 'var(--red)' : 'var(--blue)';
+    return `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700">${entry.tgl}</div>
+        <div style="font-size:12px;font-weight:800;font-family:var(--mono);color:${selColor}">${totalSel===0?'✅ Balance':(totalSel>0?'+':'')+fmt(totalSel)}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+        ${entry.cabang.map((c,i) => `<div style="background:var(--s3);border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:${CM_COLORS[i]};font-weight:700;margin-bottom:2px">${c.nama.split(' ')[0]}</div>
+          <div style="font-size:11px;font-family:var(--mono);font-weight:700;color:${c.selisih===null?'var(--muted2)':c.selisih===0?'var(--green)':c.selisih<0?'var(--red)':'var(--blue)'}">${c.selisih===null?'—':c.selisih===0?'OK':(c.selisih>0?'+':'')+fmt(c.selisih)}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+// ══════════════════════════════════════════════════════
 
 // ── PWA: unregister semua SW agar tidak error di iOS ──
 if('serviceWorker' in navigator){
