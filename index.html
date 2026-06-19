@@ -3473,8 +3473,11 @@ Buka sampai [jam]</div>
         </div>
       </div>
 
-      <!-- Export -->
-      <button class="outbtn" onclick="plgExportPDF()" style="margin-bottom:4px;font-size:12px">📄 Export PDF</button>
+      <!-- Export + CRM Sheet -->
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="outbtn" onclick="plgExportPDF()" style="flex:1;font-size:12px;margin-bottom:0">📄 Export PDF</button>
+        <button onclick="crmSheetBuka()" style="flex:1;background:rgba(48,96,192,0.08);border:1px solid rgba(48,96,192,0.35);border-radius:10px;padding:10px;font-size:12px;font-weight:700;color:var(--blue);cursor:pointer">📊 CRM Sheet</button>
+      </div>
 
       <!-- List -->
       <div id="plg-list"></div>
@@ -3483,6 +3486,114 @@ Buka sampai [jam]</div>
 
   </div>
 </div>
+
+  <!-- ══ MODAL CRM SHEET PASSWORD ══ -->
+  <div id="modal-crm-sheet" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(8px)" onclick="if(event.target===this)crmSheetTutup()">
+    <div style="background:var(--s2);border:1px solid rgba(48,96,192,0.25);border-radius:22px;padding:26px 20px;width:calc(100% - 36px);max-width:350px;box-shadow:0 0 48px rgba(48,96,192,0.18),0 12px 40px rgba(0,0,0,0.55)">
+      <div style="display:flex;justify-content:center;margin-bottom:18px">
+        <div style="background:rgba(48,96,192,0.12);border:1px solid rgba(48,96,192,0.3);border-radius:20px;padding:4px 16px;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1px">RESTRICTED ACCESS</div>
+      </div>
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:38px;margin-bottom:8px">🗂️</div>
+        <div style="font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.3px">CRM Sheet</div>
+        <div style="font-size:11px;color:var(--muted2);margin-top:3px">Pelanggan Prioritas · Saudara Cell</div>
+      </div>
+      <div style="height:1px;background:var(--border);margin:0 0 16px"></div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(48,96,192,0.07);border:1px solid rgba(48,96,192,0.2);border-radius:12px;padding:10px 12px">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#3060c0,#5080e0);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">👩</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="font-size:11px;font-weight:800;color:var(--text)">Pauja Khoirunisa</div>
+              <div style="background:rgba(48,96,192,0.15);border:1px solid rgba(48,96,192,0.3);border-radius:6px;padding:1px 7px;font-size:9px;font-weight:700;color:var(--blue)">SENIOR PIC</div>
+            </div>
+            <div style="font-size:9px;color:var(--muted2);margin-top:2px">Penanggung jawab utama CRM 📋</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(62,207,142,0.05);border:1px solid rgba(62,207,142,0.15);border-radius:12px;padding:10px 12px">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#3ecf8e,#2aaa6e);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">👩</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="font-size:11px;font-weight:800;color:var(--text)">Sri Dewi</div>
+              <div style="background:rgba(62,207,142,0.12);border:1px solid rgba(62,207,142,0.25);border-radius:6px;padding:1px 7px;font-size:9px;font-weight:700;color:var(--green)">CO-PIC</div>
+            </div>
+            <div style="font-size:9px;color:var(--muted2);margin-top:2px">Ada kendala? Hubungi salah satu ya 🙏</div>
+          </div>
+        </div>
+      </div>
+      <div style="position:relative;margin-bottom:8px">
+        <input class="finp" id="crm-pw-input" type="password" placeholder="🔑  Masukkan password..." maxlength="30"
+          onkeydown="if(event.key==='Enter')crmSheetVerify()"
+          style="font-size:13px;padding-right:44px;letter-spacing:0.5px">
+        <button onclick="crmTogglePw()" id="crm-pw-eye" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:15px;cursor:pointer;color:var(--muted2);padding:4px">👁️</button>
+      </div>
+      <div id="crm-pw-err" style="display:none;background:rgba(224,48,80,0.08);border:1px solid rgba(224,48,80,0.2);border-radius:8px;padding:7px 10px;font-size:11px;color:var(--accent);margin-bottom:10px;font-family:var(--mono)">
+        ❌ Password salah — minta ke Pauja kalau lupa ya!
+      </div>
+      <button onclick="crmSheetVerify()" style="width:100%;background:linear-gradient(135deg,#3060c0,#5080e0);border:none;border-radius:12px;padding:13px;color:#fff;font-weight:800;font-size:13px;cursor:pointer;margin-bottom:8px">
+        🔓 Masuk ke CRM Sheet
+      </button>
+      <button onclick="crmSheetTutup()" style="width:100%;background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:10px;color:var(--muted2);font-weight:700;font-size:12px;cursor:pointer">
+        Batal
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ MODAL CRM DASHBOARD ══ -->
+  <div id="modal-crm-dash" style="display:none;position:fixed;inset:0;background:var(--s1);z-index:9998;flex-direction:column;overflow:hidden">
+    <div style="background:var(--s2);border-bottom:1px solid var(--border2);padding:14px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0">
+      <button onclick="crmDashTutup()" style="background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--muted2);cursor:pointer">← Kembali</button>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:800;color:var(--text)">📊 CRM Dashboard</div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)" id="crm-dash-ts">Saudara Cell · Pelanggan Prioritas</div>
+      </div>
+      <button onclick="crmDashSync()" id="crm-sync-btn" style="background:rgba(48,96,192,0.1);border:1px solid rgba(48,96,192,0.3);border-radius:10px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--blue);cursor:pointer">🔄 Sync</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:14px 14px 30px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+        <div style="background:rgba(62,207,142,0.08);border:1px solid rgba(62,207,142,0.22);border-radius:12px;padding:12px 8px;text-align:center">
+          <div style="font-size:26px;font-weight:800;color:var(--green);font-family:var(--mono);line-height:1" id="crm-kpi-total">0</div>
+          <div style="font-size:9px;font-weight:700;color:var(--muted2);margin-top:4px">📋 TOTAL LEADS</div>
+        </div>
+        <div style="background:rgba(255,70,70,0.08);border:1px solid rgba(255,70,70,0.22);border-radius:12px;padding:12px 8px;text-align:center">
+          <div style="font-size:26px;font-weight:800;color:#ff5555;font-family:var(--mono);line-height:1" id="crm-kpi-belum">0</div>
+          <div style="font-size:9px;font-weight:700;color:var(--muted2);margin-top:4px">🆕 BELUM DIHUBUNGI</div>
+        </div>
+        <div style="background:rgba(48,96,192,0.08);border:1px solid rgba(48,96,192,0.22);border-radius:12px;padding:12px 8px;text-align:center">
+          <div style="font-size:26px;font-weight:800;color:var(--blue);font-family:var(--mono);line-height:1" id="crm-kpi-sudah">0</div>
+          <div style="font-size:9px;font-weight:700;color:var(--muted2);margin-top:4px">📞 SUDAH DIHUBUNGI</div>
+        </div>
+      </div>
+      <div id="crm-sync-bar" style="display:none;background:rgba(48,96,192,0.08);border:1px solid rgba(48,96,192,0.2);border-radius:10px;padding:9px 12px;font-size:11px;color:var(--blue);font-family:var(--mono);margin-bottom:12px;text-align:center"></div>
+      <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:14px">
+        <div style="font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:0.5px;margin-bottom:10px">🧠 PANDUAN FOLLOW-UP BERDASARKAN AGING</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#ff5555;flex-shrink:0"></div><div style="font-size:10px;color:var(--muted2);width:50px;flex-shrink:0;font-family:var(--mono)">0–2 hari</div><div style="font-size:10px;color:var(--text)">Kirim WA perkenalan — jangan jualan dulu</div></div>
+          <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#f0a500;flex-shrink:0"></div><div style="font-size:10px;color:var(--muted2);width:50px;flex-shrink:0;font-family:var(--mono)">3–6 hari</div><div style="font-size:10px;color:var(--text)">Follow up — tawarkan promo aktif minggu ini</div></div>
+          <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:#ff8c00;flex-shrink:0"></div><div style="font-size:10px;color:var(--muted2);width:50px;flex-shrink:0;font-family:var(--mono)">7–13 hari</div><div style="font-size:10px;color:var(--text)">Re-engagement — ada layanan baru?</div></div>
+          <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:var(--blue);flex-shrink:0"></div><div style="font-size:10px;color:var(--muted2);width:50px;flex-shrink:0;font-family:var(--mono)">14+ hari</div><div style="font-size:10px;color:var(--text)">Win-back — hadiah spesial pelanggan setia</div></div>
+          <div style="display:flex;align-items:center;gap:10px"><div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0"></div><div style="font-size:10px;color:var(--muted2);width:50px;flex-shrink:0;font-family:var(--mono)">Closing</div><div style="font-size:10px;color:var(--text)">Upsell — tawarkan servis HP &amp; aksesoris</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:7px;margin-bottom:10px">
+        <input class="finp" id="crm-search" placeholder="🔍 Cari nama / WA..." oninput="crmDashRender()" style="flex:1;font-size:12px;padding:8px 10px">
+        <select id="crm-filter-status" onchange="crmDashRender()" style="background:var(--s2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:11px;padding:8px;outline:none">
+          <option value="">Semua</option>
+          <option value="belum">Belum dihubungi</option>
+          <option value="sudah">Sudah dihubungi</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 46px 60px 46px;gap:4px;padding:7px 10px;background:var(--s2);border:1px solid var(--border);border-radius:8px;margin-bottom:5px">
+        <div style="font-size:9px;font-weight:700;color:var(--muted2);letter-spacing:0.4px">NAMA / CABANG</div>
+        <div style="font-size:9px;font-weight:700;color:var(--muted2);text-align:center">AGING</div>
+        <div style="font-size:9px;font-weight:700;color:var(--muted2);text-align:center">STATUS</div>
+        <div style="font-size:9px;font-weight:700;color:var(--muted2);text-align:center">WA</div>
+      </div>
+      <div id="crm-dash-list" style="display:flex;flex-direction:column;gap:4px">
+        <div style="text-align:center;padding:24px;color:var(--muted);font-size:12px">Memuat data pelanggan...</div>
+      </div>
+    </div>
+  </div>
 
   <!-- LEADERBOARD (STAFF — view only) -->
 <!-- APP KANIT -->
@@ -6073,7 +6184,15 @@ let hrSpecial  = hrGet('special')  || {
 // ══════════════════════════════════════════════════════════════════
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwT95sG0U066ElGESw50czL5e2TkOBDqJ2csw4BHKxEPfU50BUWWLrP7sf8d6FFrqkcHA/exec';
 
-let plgData = hrGet('pelanggan') || [];
+// ── Seed data dari pelanggan_prioritas_crm.xlsx (Golden · 99 pelanggan) ──
+const _CRM_SEED = [{"id":1781308800000,"nama":"Putra","wa":"6287734924979","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308801000,"nama":"Agung","wa":"6281316619139","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308802000,"nama":"Nurul Huda","wa":"6285810222169","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308803000,"nama":"H. Suma","wa":"6288290667961","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308804000,"nama":"Supari","wa":"6281311377521","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308805000,"nama":"Yulia","wa":"6285817158955","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308806000,"nama":"Andres","wa":"6285894739147","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308807000,"nama":"Faisal","wa":"6282310040434","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308808000,"nama":"Udur","wa":"6281386475571","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308809000,"nama":"Arya","wa":"6283173751242","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308810000,"nama":"Ardian","wa":"6285217538465","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308811000,"nama":"Imron","wa":"6285817342183","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308812000,"nama":"Enah","wa":"6289636234822","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308813000,"nama":"Randi","wa":"6281993716878","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308814000,"nama":"Adit","wa":"6285863547341","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308815000,"nama":"Prancira","wa":"6285719647968","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308816000,"nama":"Fardah","wa":"6285888212116","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308817000,"nama":"Sutma","wa":"6285694800870","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308818000,"nama":"Fidya","wa":"6285777962756","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308819000,"nama":"Waar","wa":"6281384485243","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308820000,"nama":"Juonda","wa":"6283806291798","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308821000,"nama":"Indra","wa":"6285723609057","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308822000,"nama":"Wati","wa":"6281285646898","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308823000,"nama":"Maya","wa":"6285714647968","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308824000,"nama":"Tanto","wa":"62895902669674","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308825000,"nama":"Eneng","wa":"628999163313","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308826000,"nama":"Aya","wa":"6285189176187","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308827000,"nama":"Mai","wa":"6289508341004","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308828000,"nama":"Wagi","wa":"6285782018685","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308829000,"nama":"Subadi","wa":"6282311815322","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308830000,"nama":"Dinda","wa":"6287853715848","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308831000,"nama":"Sindi","wa":"6282363378862","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308832000,"nama":"Bima","wa":"62888713981","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308833000,"nama":"Angga","wa":"6285770266120","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308834000,"nama":"Rina","wa":"6285185801641","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308835000,"nama":"Mia","wa":"6282124254016","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308836000,"nama":"Ali","wa":"6281336633068","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308837000,"nama":"Paiso","wa":"628218344910","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308838000,"nama":"Rohman","wa":"6285224845883","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308839000,"nama":"Nurmanro","wa":"6287776113395","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308840000,"nama":"M. Subadi","wa":"6287770603858","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308841000,"nama":"Agung","wa":"6285774391947","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308842000,"nama":"Dwi","wa":"6285129784376","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308843000,"nama":"Aip","wa":"6289509026735","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308844000,"nama":"Gunansh","wa":"6285703381822","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308845000,"nama":"Fitri","wa":"62801025741798","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308846000,"nama":"Adinda","wa":"6285213412983","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308847000,"nama":"Toland","wa":"6285710581479","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308848000,"nama":"Meura","wa":"6287876206072","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308849000,"nama":"Alycia","wa":"6280509488322","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308850000,"nama":"Heri","wa":"6285928041981","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308851000,"nama":"Daud","wa":"6285213619561","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308852000,"nama":"Anwar","wa":"62856072022721","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308853000,"nama":"Sutamro","wa":"6282377869523","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308854000,"nama":"Amel","wa":"6281369399786","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308855000,"nama":"Ayu","wa":"6281411594658","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308856000,"nama":"Acel","wa":"6282185259401","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308857000,"nama":"Supri","wa":"6281208212","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308858000,"nama":"Dary","wa":"6285215630885","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308859000,"nama":"Tera","wa":"6281513767681","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308860000,"nama":"Hartari","wa":"62862856692934","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308861000,"nama":"Zen","wa":"6281322116665","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308862000,"nama":"Asep","wa":"6285779161970","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308863000,"nama":"Nur","wa":"6281315927080","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308864000,"nama":"Bunda","wa":"6281318438667","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308865000,"nama":"Raica","wa":"628568757576","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308866000,"nama":"Irvan","wa":"628584772867","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308867000,"nama":"Lestari","wa":"6285794293270","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308868000,"nama":"Langu","wa":"6282363378867","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308869000,"nama":"Merlu","wa":"6285273120228","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308870000,"nama":"Eka","wa":"6285715128421","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308871000,"nama":"Rama","wa":"6285718154463","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308872000,"nama":"Cok","wa":"6285742335778","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308873000,"nama":"Aalo","wa":"628521601829","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308874000,"nama":"Bapak Agus","wa":"6281319698811","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308875000,"nama":"Bayu","wa":"6283173457633","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308876000,"nama":"Ali","wa":"6283148626333","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308877000,"nama":"Tp 1","wa":"6282282371853","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308878000,"nama":"Rani","wa":"628213657164","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308879000,"nama":"Uyun","wa":"6285714370466","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308880000,"nama":"Asep","wa":"6281380321800","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308881000,"nama":"Nursalmit","wa":"6281295121955","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308882000,"nama":"Darin","wa":"6281213157773","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308883000,"nama":"Asep","wa":"62881024364401","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308884000,"nama":"Murji","wa":"6285891687902","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308885000,"nama":"Abdul Halik","wa":"6281317418903","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308886000,"nama":"Anti","wa":"6287875480761","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308887000,"nama":"Dinda","wa":"62881011381240","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308888000,"nama":"Hasan","wa":"628388869716","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308889000,"nama":"Lilis","wa":"6283830889577","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308890000,"nama":"Rismansuri","wa":"6283195420141","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308891000,"nama":"Sigit","wa":"6285693827941","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308892000,"nama":"Gardkary Banyumas","wa":"6281212702666","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308893000,"nama":"Sakido","wa":"6281219778062","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308894000,"nama":"Yndes","wa":"6282227880914","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308895000,"nama":"Ilhan","wa":"6283823708650","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308896000,"nama":"Gilang","wa":"628992169300","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308897000,"nama":"Kamala","wa":"6283857233163","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""},{"id":1781308898000,"nama":"Subhan","wa":"6285725088495","cabang":"Golden","tgl":"2026-06-13","ket":"🔗 Brilink","lastContact":""}];
+let plgData = (function(){
+  const stored = hrGet('pelanggan');
+  if(stored && stored.length) return stored;
+  // First load: isi dari seed sheet
+  hrSet('pelanggan', _CRM_SEED);
+  return _CRM_SEED.map(p => ({...p}));
+})();
 let _plgSyncing = false;
 
 // Simpan ke localStorage + sync ke Google Sheets
@@ -6146,6 +6265,142 @@ function plgLoadFromSheets(){
     toast('⚠️ Gagal load. Pastikan Apps Script di-deploy ulang & akses "Anyone".');
   };
   document.head.appendChild(script);
+}
+
+// ══ CRM SHEET — password gate + dashboard ══
+const CRM_PASS = 'saudara123';
+
+function crmSheetBuka(){
+  const el = document.getElementById('modal-crm-sheet');
+  if(!el) return;
+  el.style.display = 'flex';
+  const inp = document.getElementById('crm-pw-input');
+  if(inp){ inp.value = ''; inp.focus(); }
+  const err = document.getElementById('crm-pw-err');
+  if(err) err.style.display = 'none';
+}
+
+function crmSheetTutup(){
+  const el = document.getElementById('modal-crm-sheet');
+  if(el) el.style.display = 'none';
+}
+
+function crmTogglePw(){
+  const inp = document.getElementById('crm-pw-input');
+  const eye = document.getElementById('crm-pw-eye');
+  if(!inp) return;
+  if(inp.type === 'password'){ inp.type = 'text'; if(eye) eye.textContent = '🙈'; }
+  else { inp.type = 'password'; if(eye) eye.textContent = '👁️'; }
+}
+
+function crmSheetVerify(){
+  const inp = document.getElementById('crm-pw-input');
+  const err = document.getElementById('crm-pw-err');
+  if(!inp) return;
+  if(inp.value.trim() === CRM_PASS){
+    crmSheetTutup();
+    crmDashBuka();
+  } else {
+    if(err) err.style.display = 'block';
+    inp.value = '';
+    inp.focus();
+    setTimeout(()=>{ if(err) err.style.display='none'; }, 3000);
+  }
+}
+
+function crmDashBuka(){
+  const el = document.getElementById('modal-crm-dash');
+  if(!el) return;
+  el.style.display = 'flex';
+  const ts = document.getElementById('crm-dash-ts');
+  if(ts) ts.textContent = 'Update: ' + new Date().toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  crmDashRender();
+}
+
+function crmDashTutup(){
+  const el = document.getElementById('modal-crm-dash');
+  if(el) el.style.display = 'none';
+}
+
+function crmDashSync(){
+  const btn = document.getElementById('crm-sync-btn');
+  const bar = document.getElementById('crm-sync-bar');
+  if(btn){ btn.textContent = '⏳'; btn.disabled = true; }
+  if(bar){ bar.style.display='block'; bar.textContent = '🔄 Menyinkronkan ' + plgData.length + ' pelanggan ke Google Sheets...'; }
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action: 'save', pelanggan: plgData }),
+  }).then(()=>{
+    if(btn){ btn.textContent = '🔄 Sync'; btn.disabled = false; }
+    if(bar){ bar.textContent = '✅ Berhasil sync ' + plgData.length + ' data · ' + new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
+    setTimeout(()=>{ if(bar) bar.style.display='none'; }, 4000);
+    crmDashRender();
+  }).catch(()=>{
+    if(btn){ btn.textContent = '🔄 Sync'; btn.disabled = false; }
+    if(bar){ bar.textContent = '⚠️ Gagal sync — data aman di lokal'; }
+    setTimeout(()=>{ if(bar) bar.style.display='none'; }, 4000);
+  });
+}
+
+function crmDashRender(){
+  const list = document.getElementById('crm-dash-list');
+  const kpiTotal = document.getElementById('crm-kpi-total');
+  const kpiBelum = document.getElementById('crm-kpi-belum');
+  const kpiSudah = document.getElementById('crm-kpi-sudah');
+  if(!list) return;
+
+  const cari   = (document.getElementById('crm-search')?.value || '').toLowerCase();
+  const filSts = document.getElementById('crm-filter-status')?.value || '';
+  const today  = new Date(); today.setHours(0,0,0,0);
+
+  const totalAll = plgData.length;
+  const sudahAll = plgData.filter(p => p.lastContact).length;
+  if(kpiTotal) kpiTotal.textContent = totalAll;
+  if(kpiBelum) kpiBelum.textContent = totalAll - sudahAll;
+  if(kpiSudah) kpiSudah.textContent = sudahAll;
+
+  let filtered = plgData.map(p => {
+    const tglMasuk = p.tgl ? new Date(p.tgl) : new Date(p.id);
+    tglMasuk.setHours(0,0,0,0);
+    const aging = Math.max(0, Math.floor((today - tglMasuk) / 86400000));
+    const sudah = !!p.lastContact;
+    return {...p, _aging: aging, _sudah: sudah};
+  }).filter(p => {
+    const matchCari = !cari || p.nama.toLowerCase().includes(cari) || (p.wa||'').includes(cari);
+    const matchSts  = !filSts || (filSts==='belum' && !p._sudah) || (filSts==='sudah' && p._sudah);
+    return matchCari && matchSts;
+  }).sort((a,b) => b._aging - a._aging);
+
+  if(!filtered.length){
+    list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:12px">' + (cari||filSts ? '🔍 Tidak ada hasil' : '⭐ Belum ada pelanggan') + '</div>';
+    return;
+  }
+
+  function agingColor(d){ return d<=2?'#ff5555':d<=6?'#f0a500':d<=13?'#ff8c00':'var(--blue)'; }
+  function statusBadge(d, sudah){
+    if(sudah) return '<span style="font-size:9px;font-weight:700;color:var(--green)">✅ Sudah</span>';
+    if(d<=2)  return '<span style="font-size:9px;font-weight:700;color:#ff5555">🔴 Hot</span>';
+    if(d<=6)  return '<span style="font-size:9px;font-weight:700;color:#f0a500">🟡 Sedang</span>';
+    if(d<=13) return '<span style="font-size:9px;font-weight:700;color:#ff8c00">🟠 Dingin</span>';
+    return '<span style="font-size:9px;font-weight:700;color:var(--blue)">🔵 Cold</span>';
+  }
+
+  list.innerHTML = filtered.map(p => {
+    const waClean = (p.wa||'').replace(/\.0$/,'');
+    return '<div style="display:grid;grid-template-columns:1fr 46px 60px 46px;gap:4px;align-items:center;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:9px 10px">' +
+      '<div style="min-width:0">' +
+        '<div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + p.nama + '</div>' +
+        '<div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:1px">' + (p.cabang||'Golden') + (p.ket ? ' · ' + p.ket.substring(0,18) : '') + '</div>' +
+      '</div>' +
+      '<div style="text-align:center"><div style="font-size:13px;font-weight:800;color:' + agingColor(p._aging) + ';font-family:var(--mono)">' + p._aging + '</div><div style="font-size:8px;color:var(--muted2)">hari</div></div>' +
+      '<div style="text-align:center">' + statusBadge(p._aging, p._sudah) + '</div>' +
+      '<div style="text-align:center">' +
+        (waClean ? '<a href="https://wa.me/' + waClean + '" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.25);font-size:14px;text-decoration:none">💬</a>' : '<span style="font-size:10px;color:var(--muted)">—</span>') +
+      '</div>' +
+    '</div>';
+  }).join('');
 }
 
 function plgShowSyncStatus(msg){
@@ -6742,13 +6997,16 @@ function hrTabInit(tab){
 // ══════════════════════
 //  ABSENSI
 // ══════════════════════
-// Jadwal absen — beda untuk hari kerja (Senin–Jumat) & weekend (Sabtu–Minggu)
+// Jadwal absen — jam masuk tetap beda weekday/weekend, jam keluar SAMA semua hari
 const ABSEN_BUKA_MULAI       = '07:30'; // jam mulai bisa absen masuk (semua hari)
 const ABSEN_BATAS_MASUK      = '08:45'; // batas akhir absen masuk — weekday
-const ABSEN_BATAS_KELUAR     = '21:28'; // jam bebas pulang — weekday (waktu istirahat dimulai)
 const ABSEN_BATAS_MASUK_WE   = '08:55'; // batas akhir absen masuk — weekend (Sabtu/Minggu)
-const ABSEN_BATAS_KELUAR_WE  = '21:40'; // jam bebas pulang — weekend (waktu istirahat dimulai)
-// Alias lama (tetap dipertahankan agar bagian lain yg masih memakai ABSEN_BUKA_AKHIR tidak rusak)
+// Absen KELUAR: window lintas-hari, sama untuk semua hari (weekday & weekend)
+const ABSEN_BATAS_KELUAR     = '21:28'; // jam mulai bebas pulang (malam)
+const ABSEN_TUTUP_KELUAR     = '07:00'; // jam tutup absen pulang (pagi besoknya)
+// Alias lama (tetap dipertahankan, sekarang sama semua hari — agar bagian lain yg masih
+// memakai ABSEN_BATAS_KELUAR_WE tidak rusak)
+const ABSEN_BATAS_KELUAR_WE  = ABSEN_BATAS_KELUAR;
 const ABSEN_BUKA_AKHIR        = ABSEN_BATAS_MASUK;
 
 function isHariWeekend(tanggal){
@@ -6760,8 +7018,18 @@ function isHariWeekend(tanggal){
 function batasMasukAbsen(tanggal){
   return isHariWeekend(tanggal) ? ABSEN_BATAS_MASUK_WE : ABSEN_BATAS_MASUK;
 }
+// Jam buka window keluar (mulai bebas pulang) — sama semua hari
 function batasKeluarAbsen(tanggal){
-  return isHariWeekend(tanggal) ? ABSEN_BATAS_KELUAR_WE : ABSEN_BATAS_KELUAR;
+  return ABSEN_BATAS_KELUAR;
+}
+
+// ── Cek apakah window absen KELUAR sedang TERBUKA pada jam tertentu ──
+// Window-nya lintas hari: 21:28 malam s.d. 07:00 pagi besoknya.
+// jamHM format 'HH:MM'. true = window terbuka (boleh absen pulang).
+function absenKeluarSedangBuka(jamHM){
+  if(!jamHM) return false;
+  // Terbuka kalau: jam >= 21:28 (malam ini) ATAU jam < 07:00 (pagi, lanjutan malam sebelumnya)
+  return jamHM >= ABSEN_BATAS_KELUAR || jamHM < ABSEN_TUTUP_KELUAR;
 }
 
 function jamAbsenStatus(jam, tanggal){
@@ -6778,10 +7046,10 @@ function absenMasukTelat(jam, tanggal){
   if(!jam) return false;
   return jam > batasMasukAbsen(tanggal);
 }
-// Cek apakah absen KELUAR pada jam tertentu dianggap PULANG CEPAT (sebelum batas keluar hari itu)
+// Cek apakah absen KELUAR pada jam tertentu dianggap PULANG CEPAT (sebelum window terbuka)
 function absenKeluarCepat(jam, tanggal){
   if(!jam) return false;
-  return jam < batasKeluarAbsen(tanggal);
+  return !absenKeluarSedangBuka(jam);
 }
 
 function absenTestApply(){
@@ -6824,7 +7092,7 @@ function initAbsensi(){
 
     // Update label jadwal sesuai hari
     const lblEl = g('absen-jadwal-label');
-    if(lblEl) lblEl.textContent = `Masuk maks ${bMasuk} · Waktu bebas mulai ${bKeluar}${weekend?' (weekend)':''}`;
+    if(lblEl) lblEl.textContent = `Masuk maks ${bMasuk} · Pulang ${bKeluar}\u201307:00`;
 
     // Update freedom card jam
     const fJam = g('absen-freedom-jam');
@@ -6841,7 +7109,10 @@ function initAbsensi(){
     const cdWrap   = g('absen-keluar-countdown');
     const cdTimer  = g('absen-countdown-timer');
 
-    // ── Hitung countdown keluar dalam detik ──
+    // ── Hitung countdown ke jam BUKA window keluar (21:28) dalam detik ──
+    // Kalau sekarang masih pagi/siang/sore (sebelum 21:28), target = 21:28 hari ini.
+    // (Tidak perlu tangani kasus 'sudah lewat tengah malam' karena saat itu window sudah OPEN,
+    //  jadi fungsi ini hanya dipanggil saat window masih CLOSED / sebelum 21:28.)
     function hitungSisaDetik(){
       const [hK, mK] = bKeluar.split(':').map(Number);
       const target   = new Date(now); target.setHours(hK, mK, 0, 0);
@@ -6907,7 +7178,8 @@ function initAbsensi(){
 
     } else if(!sudahKeluar){
       // ── Sudah masuk, belum absen keluar ──
-      const belumBebas = jamHM < bKeluar;
+      // Window absen pulang lintas-hari: terbuka 21:28 malam s.d. 07:00 pagi (semua hari)
+      const belumBebas = !absenKeluarSedangBuka(jamHM);
 
       if(clockEl) clockEl.style.color = belumBebas ? 'var(--orange)' : 'var(--green)';
 
@@ -6932,7 +7204,7 @@ function initAbsensi(){
         }
       }
 
-      // Tampilkan / update countdown
+      // Tampilkan / update countdown (hanya relevan kalau sebelum 21:28 — window belum buka sama sekali)
       if(belumBebas){
         const sisa = hitungSisaDetik();
         if(cdWrap)  cdWrap.style.display  = 'block';
@@ -6944,11 +7216,11 @@ function initAbsensi(){
       if(banner){
         if(belumBebas){
           banner.style.display  = 'block';
-          banner.innerHTML      = `🌿 Kamu bebas istirahat kapan saja hari ini — absen pulang terbuka otomatis jam <b>${bKeluar}</b>${weekend?' (jadwal weekend)':''}. Nikmati dulu! ☕`;
+          banner.innerHTML      = `🌿 Kamu bebas istirahat kapan saja hari ini — absen pulang terbuka otomatis jam <b>${bKeluar}</b> s.d. <b>${ABSEN_TUTUP_KELUAR}</b> pagi. Nikmati dulu! ☕`;
           banner.style.background = 'rgba(62,207,142,0.06)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.25)';
         } else {
           banner.style.display  = 'block';
-          banner.innerHTML      = `🎉 Waktu bebas sudah dimulai! Silakan absen pulang — sampai jumpa besok, istirahat yang baik 🌙`;
+          banner.innerHTML      = `🎉 Waktu bebas sudah dimulai! Silakan absen pulang sebelum jam <b>${ABSEN_TUTUP_KELUAR}</b> pagi — sampai jumpa besok, istirahat yang baik 🌙`;
           banner.style.background = 'var(--gs)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.35)';
         }
       }
@@ -7139,7 +7411,8 @@ function simpanAbsensi(){
   const nama     = staffInfo?.nama || vs('si-nama') || 'Staff';
   const now      = new Date();
   const tanggal  = now.toISOString().split('T')[0];
-  const jam      = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+  // Format jam manual HH:MM (anti locale-bug — jangan pakai toLocaleTimeString untuk perbandingan)
+  const jam      = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
   const ket      = vs('absen-ket');
   const statusEl = g('absen-status');
   const bMasuk   = batasMasukAbsen(tanggal);
@@ -7159,7 +7432,9 @@ function simpanAbsensi(){
   }
   if(absenTipe === 'keluar'){
     const jamHM = jam;
-    if(jamHM < bKeluar){
+    if(!absenKeluarSedangBuka(jamHM)){
+      // Hitung sisa waktu ke jam buka (21:28) — selalu di masa depan hari ini
+      // karena fungsi ini hanya tercapai saat window CLOSED (yaitu antara 07:00–21:28)
       const [hK, mK] = bKeluar.split(':').map(Number);
       const target   = new Date(now); target.setHours(hK, mK, 0, 0);
       const sisa     = Math.max(0, Math.floor((target - now) / 1000));
