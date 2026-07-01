@@ -157,13 +157,6 @@ color:#000;font-weight:800;font-size:18px;cursor:pointer;flex-shrink:0;}
 padding:12px;display:flex;align-items:center;gap:12px;margin-bottom:10px;
 animation:fadeUp 0.2s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-@keyframes selisihPulseGreen{0%{box-shadow:0 0 0 0 rgba(62,207,142,0.35)}70%{box-shadow:0 0 0 8px rgba(62,207,142,0)}100%{box-shadow:0 0 0 0 rgba(62,207,142,0)}}
-@keyframes selisihPulseAmber{0%{box-shadow:0 0 0 0 rgba(245,166,35,0.35)}70%{box-shadow:0 0 0 8px rgba(245,166,35,0)}100%{box-shadow:0 0 0 0 rgba(245,166,35,0)}}
-.live-selisih{display:flex;align-items:center;gap:6px;border-radius:8px;padding:6px 10px;margin-top:6px;font-size:11px;font-weight:600;font-family:var(--mono);transition:all 0.25s ease;animation:fadeUp 0.2s ease;}
-.live-selisih.ls-idle{background:transparent;color:var(--muted2);padding-left:0;font-weight:500;}
-.live-selisih.ls-ok{background:rgba(62,207,142,0.1);color:var(--green);animation:fadeUp 0.2s ease,selisihPulseGreen 0.6s ease;}
-.live-selisih.ls-warn{background:rgba(245,166,35,0.1);color:var(--orange);animation:fadeUp 0.2s ease,selisihPulseAmber 0.6s ease;}
-.live-selisih.ls-bad{background:rgba(224,48,80,0.1);color:var(--red);animation:fadeUp 0.2s ease,selisihPulseAmber 0.6s ease;}
 .found-ico{width:38px;height:38px;background:rgba(62,207,142,0.1);border-radius:10px;
 display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .found-name{font-size:13px;font-weight:700;}
@@ -1996,7 +1989,7 @@ function roboHideBubble(e){
       </div>
       <div style="background:var(--s3);border-radius:10px;padding:12px">
         <div style="font-size:11px;color:var(--muted2);margin-bottom:6px">💰 Cash Penjualan Closing <span style="font-size:9px;background:var(--gs);color:var(--green);padding:1px 6px;border-radius:8px">uang hasil jual</span></div>
-        <input type="text" inputmode="decimal" class="finp" id="p_cash" placeholder="Contoh: 1.500.000" oninput="fmtInput(this);cl_calc()"><div id="p_cash_tb" style="min-height:14px"></div>
+        <input type="text" inputmode="decimal" class="finp" id="p_cash" placeholder="Contoh: 1.500.000" oninput="fmtInput(this);cl_calc()"><div id="p_cash_tb" style="font-size:10px;color:var(--blue);font-family:var(--mono);margin-top:4px;min-height:14px"></div>
       </div>
       <div class="field" style="margin-top:10px"><label>Ambil dari Bank (jika ada)</label>
         <input type="text" inputmode="decimal" class="finp" id="p_tambah_kasmod" placeholder="Contoh: 0" oninput="fmtInput(this);cl_calc()">
@@ -2011,15 +2004,70 @@ function roboHideBubble(e){
       </div>
     </div>
 
-    <div class="stit">3️⃣ Transaksi Harian <span style="font-size:9px;background:var(--gs);color:var(--green);padding:1px 6px;border-radius:8px;font-weight:600">LOG REAL-TIME</span></div>
-    <div style="background:rgba(62,207,142,0.08);border:1px solid rgba(62,207,142,0.3);border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:var(--green)">
-      ⏱️ Catat tiap transaksi LANGSUNG pas kejadian (tap "+"), bukan nginget-nginget total di akhir shift. Tiap catatan ada jam-nya & gak bisa diedit — cuma bisa dibatalkan dengan jejak.
-    </div>
+    <div class="stit">3️⃣ Transaksi Harian</div>
     <div class="card">
-      <div id="trx-log-container"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:8px">
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">Jenis</div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">Nominal (Rp)</div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">Jml</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:8px;align-items:center">
+        <div style="font-size:12px;font-weight:600">💸 Tarik Tunai</div>
+        <input type="text" inputmode="decimal" id="p_trx_tarik" placeholder="0" oninput="fmtInput(this);cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_tarik_n" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:8px;align-items:center">
+        <div style="font-size:12px;font-weight:600">📲 Transfer</div>
+        <input type="text" inputmode="decimal" id="p_trx_transfer" placeholder="0" oninput="fmtInput(this);cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_transfer_n" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:8px;align-items:center">
+        <div style="font-size:12px;font-weight:600">📱 Pulsa & Token</div>
+        <input type="text" inputmode="decimal" id="p_trx_pulsa" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_pulsa_n" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:8px;align-items:center">
+        <div style="font-size:12px;font-weight:600">📦 Paket Data</div>
+        <input type="text" inputmode="decimal" id="p_trx_data" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_data_n" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
       <div class="divider"></div>
-      <div class="rrow" style="font-weight:700"><span class="rl">Total nominal</span><span class="rv cg" id="p_trx_total">Rp 0</span></div>
-      <div class="rrow"><span class="rl">Total jumlah trx</span><span class="rv cb" id="p_trx_total_n">0 kali</span></div>
+      <div style="font-size:11px;font-weight:700;color:var(--accent2);margin:8px 0;letter-spacing:0.5px">📱 PENJUALAN PERDANA</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:6px">
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">Operator</div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">Nominal (Rp)</div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">Jml</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:6px;align-items:center">
+        <div style="font-size:12px;font-weight:600">Telkomsel</div>
+        <input type="text" inputmode="decimal" id="p_trx_ptsel" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_ptsel_n" placeholder="0" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:6px;align-items:center">
+        <div style="font-size:12px;font-weight:600">XL</div>
+        <input type="text" inputmode="decimal" id="p_trx_pxl" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_pxl_n" placeholder="0" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:6px;align-items:center">
+        <div style="font-size:12px;font-weight:600">Axis</div>
+        <input type="text" inputmode="decimal" id="p_trx_paxis" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_paxis_n" placeholder="0" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:6px;align-items:center">
+        <div style="font-size:12px;font-weight:600">ByU</div>
+        <input type="text" inputmode="decimal" id="p_trx_pbyu" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_pbyu_n" placeholder="0" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:6px;align-items:center">
+        <div style="font-size:12px;font-weight:600">Smartfren</div>
+        <input type="text" inputmode="decimal" id="p_trx_psfren" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_psfren_n" placeholder="0" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:8px;align-items:center">
+        <div style="font-size:12px;font-weight:600">Indosat</div>
+        <input type="text" inputmode="decimal" id="p_trx_pindo" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+        <input type="text" inputmode="decimal" id="p_trx_pindo_n" placeholder="0" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
       <div class="divider"></div>
       <div style="font-size:11px;font-weight:700;color:var(--orange);margin:8px 0;letter-spacing:0.5px">🛍️ PENJUALAN ACC HP</div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
@@ -2028,6 +2076,8 @@ function roboHideBubble(e){
       </div>
       <div id="p_trx_acc_rows"></div>
       <div class="divider"></div>
+      <div class="rrow" style="font-weight:700"><span class="rl">Total nominal</span><span class="rv cg" id="p_trx_total">Rp 0</span></div>
+      <div class="rrow"><span class="rl">Total jumlah trx</span><span class="rv cb" id="p_trx_total_n">0 kali</span></div>
 
       <!-- SERVICE HP -->
       <div class="divider"></div>
@@ -2246,13 +2296,48 @@ function roboHideBubble(e){
     <div class="stit">7️⃣ Setoran & Rekonsiliasi Kas</div>
     <div class="card" id="setoran-card">
 
-      <!-- A: CASH FISIK OTOMATIS -->
+      <!-- A: CASH FISIK OTOMATIS (ekspektasi sistem) -->
       <div style="background:linear-gradient(135deg,rgba(245,208,32,0.07),rgba(245,208,32,0.02));border:1px solid rgba(245,208,32,0.22);border-radius:12px;padding:14px;margin-bottom:12px">
-        <div style="font-size:11px;font-weight:700;color:var(--yellow);margin-bottom:4px">💵 Total Cash Fisik di Tangan</div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px">Dihitung otomatis: Cash Pagi + Cash Penjualan</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+          <div style="font-size:11px;font-weight:700;color:var(--yellow)">💵 Ekspektasi Sistem</div>
+          <span style="font-size:9px;background:rgba(245,208,32,0.15);color:var(--yellow);padding:1px 7px;border-radius:8px;font-family:var(--mono)">OTOMATIS</span>
+        </div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px">Cash Pagi + Cash Penjualan + Ambil Bank</div>
         <div style="font-size:24px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="p_cash_fisik_auto">Rp 0</div>
-        <input type="hidden" id="p_cash_fisik_manual" value="">
         <input type="hidden" id="p_cust_transfer" value="0">
+      </div>
+
+      <!-- A2: HITUNG FISIK MANUAL — wajib isi sebelum rekonsiliasi -->
+      <div style="background:linear-gradient(135deg,rgba(139,92,246,0.10),rgba(139,92,246,0.03));border:2px solid rgba(139,92,246,0.35);border-radius:12px;padding:14px;margin-bottom:12px" id="card_fisik_manual">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+          <div style="font-size:11px;font-weight:700;color:#a78bfa">🪙 Hitung Fisik Manual</div>
+          <span style="font-size:9px;background:rgba(139,92,246,0.18);color:#a78bfa;padding:1px 7px;border-radius:8px;font-family:var(--mono)">WAJIB ISI</span>
+        </div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px;line-height:1.6">
+          Hitung semua uang di laci secara fisik — termasuk modal brankas.<br>
+          <span style="color:#a78bfa">Ini sumber kebenaran nyata. Jangan taksir, hitung beneran.</span>
+        </div>
+        <input type="text" inputmode="decimal" class="finp" id="p_cash_fisik_manual"
+          placeholder="Ketik total uang fisik di laci"
+          oninput="fmtInput(this);cl_preview_selisih()"
+          style="font-size:16px;font-family:var(--mono);border:1.5px solid rgba(139,92,246,0.4);background:rgba(139,92,246,0.07)">
+        <!-- Preview selisih real-time -->
+        <div id="preview_selisih_wrap" style="display:none;margin-top:10px;border-radius:8px;padding:10px 12px;font-size:12px;font-family:var(--mono);background:var(--s3);border:1px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span style="color:var(--muted2)">Ekspektasi sistem</span>
+            <span id="prev_ekspektasi" style="color:var(--yellow)">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span style="color:var(--muted2)">Hitung fisik kamu</span>
+            <span id="prev_fisik" style="color:#a78bfa">—</span>
+          </div>
+          <div style="height:1px;background:var(--border);margin:6px 0"></div>
+          <div style="display:flex;justify-content:space-between;font-weight:800">
+            <span>Selisih</span>
+            <span id="prev_selisih_val" style="font-weight:900">—</span>
+          </div>
+          <div id="prev_selisih_hint" style="font-size:10px;margin-top:5px;color:var(--muted2);line-height:1.5"></div>
+        </div>
       </div>
 
       <!-- SETOR TUNAI KE BANK -->
@@ -2397,19 +2482,25 @@ function roboHideBubble(e){
           <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:8px">
             <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:0.5px;margin-bottom:10px">📥 KAS MASUK</div>
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">Cash Pagi</span>
+              <span style="color:var(--muted2)">Cash Pagi (Modal)</span>
               <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_pagi_val">—</span>
             </div>
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">Cash Penjualan</span>
+              <span style="color:var(--muted2)">Cash Penjualan Produk</span>
               <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_penjualan">—</span>
             </div>
+            <div id="rp_row_transfer" style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+              <span style="color:var(--muted2)">+ Transfer (cash masuk dari customer)</span>
+              <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_transfer">—</span>
+            </div>
+            <div id="rp_row_tarik" style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+              <span style="color:var(--muted2)">− Tarik Tunai (cash keluar ke customer)</span>
+              <span style="font-family:var(--mono);font-weight:600;color:var(--red)" id="rp_cust_transfer">—</span>
+            </div>
             <div style="display:flex;justify-content:space-between;padding:8px 0 0;font-size:12px;font-weight:700">
-              <span>Total Cash Fisik</span>
+              <span>= Total Cash Fisik Sistem</span>
               <span style="font-family:var(--mono);color:var(--green)" id="rp_total_masuk">—</span>
             </div>
-            <span id="rp_cash_transfer" style="display:none">0</span>
-            <span id="rp_cust_transfer" style="display:none">0</span>
           </div>
 
           <!-- Kas Keluar -->
@@ -2430,20 +2521,22 @@ function roboHideBubble(e){
           </div>
 
           <!-- Rekonsiliasi Fisik -->
-          <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:8px">
+          <div style="background:var(--s3);border-radius:12px;padding:14px;margin-bottom:8px" id="rp_rekon_box">
             <div style="font-size:10px;font-weight:700;color:var(--yellow);letter-spacing:0.5px;margin-bottom:10px">🔍 REKONSILIASI FISIK vs SISTEM</div>
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">Cash fisik di tangan (manual)</span>
-              <span style="font-family:var(--mono);font-weight:600;color:var(--yellow)" id="rp_fisik_manual">—</span>
+              <span style="color:var(--muted2)">🪙 Hitung fisik kamu</span>
+              <span style="font-family:var(--mono);font-weight:600;color:#a78bfa" id="rp_fisik_manual">—</span>
             </div>
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">Ekspektasi sistem <span style="font-size:9px;color:var(--muted2)">(total trx §3)</span></span>
+              <span style="color:var(--muted2)">💻 Ekspektasi sistem</span>
               <span style="font-family:var(--mono);font-weight:600" id="rp_ekspektasi">—</span>
             </div>
-            <div style="display:flex;justify-content:space-between;padding:8px 0 0;font-size:12px;font-weight:700">
-              <span>Selisih Fisik vs Sistem</span>
+            <div style="display:flex;justify-content:space-between;padding:8px 0 2px;font-size:13px;font-weight:800">
+              <span>⚖️ Selisih Fisik vs Sistem</span>
               <span style="font-family:var(--mono)" id="rp_selisih_fisik">—</span>
             </div>
+            <!-- Akar selisih diagnosis -->
+            <div id="rp_akar_selisih" style="display:none;margin-top:10px;border-radius:8px;padding:10px 12px;font-size:11px;font-family:var(--mono);line-height:1.6;border:1px solid var(--border)"></div>
           </div>
 
           <!-- Distribusi Akhir -->
@@ -2467,21 +2560,63 @@ function roboHideBubble(e){
           <div id="rp_catatan" style="border-radius:10px;padding:12px;font-size:11px;font-family:var(--mono);line-height:1.7;margin-bottom:16px;background:var(--s3);border:1px solid var(--border)"></div>
 
           <!-- Tombol aksi -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <button onclick="cl_tutupRekonPopup(); cl_bukaPanelSetor()"
-              style="background:var(--green);border:none;border-radius:12px;padding:14px;color:#000;font-weight:800;font-size:13px;cursor:pointer;font-family:var(--sans)">
-              💸 Lanjut Setor
-            </button>
-            <button onclick="cl_tutupRekonPopup()"
-              style="background:transparent;border:1px solid var(--border2);border-radius:12px;padding:14px;color:var(--muted2);font-size:13px;cursor:pointer;font-family:var(--sans)">
-              ✏️ Edit Data
-            </button>
+          <!-- Tombol aksi -->
+          <div id="rp_lanjut_wrap">
+            <!-- BALANCE: bisa lanjut -->
+            <div id="rp_btn_balance" style="display:none;grid-template-columns:1fr 1fr;gap:8px">
+              <button onclick="cl_tutupRekonPopup(); cl_bukaPanelSetor()"
+                style="background:var(--green);border:none;border-radius:12px;padding:14px;color:#000;font-weight:800;font-size:13px;cursor:pointer;font-family:var(--sans)">
+                💸 Lanjut Setor
+              </button>
+              <button onclick="cl_tutupRekonPopup()"
+                style="background:transparent;border:1px solid var(--border2);border-radius:12px;padding:14px;color:var(--muted2);font-size:13px;cursor:pointer;font-family:var(--sans)">
+                ✏️ Edit Data
+              </button>
+            </div>
+            <!-- SELISIH: wajib koreksi dulu -->
+            <div id="rp_btn_selisih" style="display:none">
+              <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.35);border-radius:12px;padding:14px;margin-bottom:8px;text-align:center">
+                <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:4px">🔒 Setoran Diblok</div>
+                <div style="font-size:11px;color:var(--muted2);font-family:var(--mono);line-height:1.6" id="rp_blok_reason">Selisih harus diselesaikan dulu sebelum setor.</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <button onclick="cl_tutupRekonPopup()"
+                  style="background:var(--accent);border:none;border-radius:12px;padding:14px;color:#fff;font-weight:800;font-size:13px;cursor:pointer;font-family:var(--sans)">
+                  ✏️ Koreksi Data
+                </button>
+                <button onclick="cl_laporSelisih()"
+                  style="background:transparent;border:1px solid rgba(245,208,32,0.4);border-radius:12px;padding:14px;color:var(--yellow);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans)">
+                  📢 Laporkan ke KC
+                </button>
+              </div>
+            </div>
           </div>
 
         </div>
       </div>
     </div>
     <!-- ══════ END POPUP ══════ -->
+
+    <!-- ══════ LOADING OVERLAY PROSES HITUNG ══════ -->
+    <div id="rekon_loading_overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:650;align-items:center;justify-content:center;flex-direction:column;gap:0">
+      <div style="background:var(--s2);border:1px solid var(--border2);border-radius:20px;width:calc(100% - 40px);max-width:360px;padding:32px 28px;text-align:center">
+        <div style="font-size:40px;margin-bottom:16px" id="rlo_icon">🧮</div>
+        <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:8px" id="rlo_title">Memproses Data...</div>
+        <div style="font-size:11px;color:var(--muted2);font-family:var(--mono);min-height:32px;line-height:1.6;transition:opacity 0.3s" id="rlo_sub">Mohon tunggu sebentar</div>
+        <!-- Progress bar -->
+        <div style="background:var(--s3);border-radius:99px;height:6px;margin:18px 0 8px;overflow:hidden">
+          <div id="rlo_bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),#a78bfa);width:0%;transition:width 0.4s ease;"></div>
+        </div>
+        <!-- Step dots -->
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:12px" id="rlo_dots">
+          <div class="rlo-dot" style="width:8px;height:8px;border-radius:50%;background:var(--s3);transition:background 0.3s"></div>
+          <div class="rlo-dot" style="width:8px;height:8px;border-radius:50%;background:var(--s3);transition:background 0.3s"></div>
+          <div class="rlo-dot" style="width:8px;height:8px;border-radius:50%;background:var(--s3);transition:background 0.3s"></div>
+          <div class="rlo-dot" style="width:8px;height:8px;border-radius:50%;background:var(--s3);transition:background 0.3s"></div>
+        </div>
+      </div>
+    </div>
+    <!-- ══════ END LOADING OVERLAY ══════ -->
 
     <!-- ══════ POPUP KONFIRMASI SETOR ══════ -->
     <div id="setor_popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:700;align-items:flex-end;justify-content:center;padding:0">
@@ -4168,8 +4303,6 @@ function _masukStaff(){
     else { nikBadge.style.display = 'none'; }
   }
   initStaff();
-  resetClosingState(); // safety kedua: pastikan tiap masuk = state kas bersih, gak nyangkut dari sesi sebelumnya
-  loadTrxLog();         // muat log transaksi real-time milik staff+tanggal+shift ini (kalau resume shift yg sama, datanya balik; kalau shift baru, kosong)
   showScreen('sc-staff');
 }
 
@@ -4314,22 +4447,7 @@ function logout(){
   if(g('si-nik')) g('si-nik').value = '';
   updDots('staff');
   updDots('kanit');
-  resetClosingState(); // wajib: cegah data kas/trx shift lama nyangkut ke sesi berikutnya
   showScreen('sc-login');
-}
-
-// ── Reset total state closing/kas — dipanggil tiap logout & tiap kali masuk tab closing baru ──
-function resetClosingState(){
-  _omsetTrx   = 0;
-  _sudahSetor = false;
-  _trxLog     = []; // pointer di memori dikosongkan; data per shift tetap aman di localStorage (dimuat ulang oleh loadTrxLog saat login)
-  document.querySelectorAll('#s-closing input').forEach(inp => { inp.value = ''; });
-  const acc = g('p_trx_acc_rows'); if(acc) acc.innerHTML = '';
-  const ds  = g('p_trx_doublecheck'); if(ds){ ds.style.display = 'none'; ds.innerHTML = ''; }
-  const lt  = g('p_cash_tb'); if(lt){ lt.innerHTML = ''; lt.className = ''; }
-  const lp  = g('p_cash_pagi_tb'); if(lp){ lp.innerHTML = ''; }
-  const wrap = g('setor_action_wrap'); if(wrap) wrap.style.display = 'none';
-  const doneBanner = g('setor_done_banner'); if(doneBanner) doneBanner.style.display = 'none';
 }
 
 // ===== TABS =====
@@ -4570,9 +4688,17 @@ function cl_updatePreviewOmset(){
 }
 
 function cl_hitungTrx(){
-  // Sumber utama: _trxLog (catatan real-time per transaksi, bukan total yang diketik di akhir)
+  const brilink = ['tarik','transfer','pulsa','data'];
+  const perdana = ['ptsel','pxl','paxis','pbyu','psfren','pindo'];
   let totNom = 0, totN = 0;
-  _trxLog.filter(e => !e.voided).forEach(e => { totNom += e.nominal * e.qty; totN += e.qty; });
+  brilink.forEach(id => {
+    totNom += parseRp(g('p_trx_' + id)?.value)         || 0;
+    totN   += parseInt(g('p_trx_' + id + '_n')?.value)  || 0;
+  });
+  perdana.forEach(id => {
+    totNom += parseRp(g('p_trx_' + id)?.value)         || 0;
+    totN   += parseInt(g('p_trx_' + id + '_n')?.value)  || 0;
+  });
   // Tambah acc HP dari rows
   const wrap = g('p_trx_acc_rows');
   if(wrap) wrap.querySelectorAll('div[data-mode]').forEach(row => {
@@ -4583,10 +4709,8 @@ function cl_hitungTrx(){
   });
   s('p_trx_total',   fmt(totNom));
   s('p_trx_total_n', totN + ' kali');
-  syncLegacyTrxFields();
   _omsetTrx = totNom; // simpan ke global → dipakai preview omset
   cl_updatePreviewOmset();
-  updateLiveSelisih();
 
   // Double check: bandingkan dengan cash penjualan
   const cashPenjualan = parseRp(g('p_cash')?.value) || 0;
@@ -4619,253 +4743,43 @@ let _omsetTrx   = 0; // total nominal transaksi harian — sumber omset
 // ══════════════════════════════════════════════════════════════════
 // SATU RUMUS TERPUSAT — semua fungsi pakai ini
 //
-// Cash Fisik  = Cash Pagi + Cash Penjualan + Ambil dari Bank
+// Cash Fisik Sistem  = Cash Pagi
+//                    + Cash Penjualan Produk (HP, pulsa, aksesoris, perdana)
+//                    + Transfer Diterima (customer kasih cash → saldo BRILink berkurang)
+//                    − Tarik Tunai Diberikan (counter kasih cash → saldo BRILink bertambah)
+//                    + Ambil dari Bank
+//
 // Harus Setor = Cash Fisik − Setor Tunai ke Bank − Modal Brankas − Pengeluaran
 //
-// Catatan:
-// • Cash Penjualan = hitung fisik uang di laci (sudah include fee BriLink transfer)
-// • Ambil dari Bank = cash yang diambil dari bank masuk ke laci hari ini
-// • Tarik Tunai BriLink TIDAK dikurangi (customer kasih cash ke laci, pusat yg transfer)
+// ⚠️ PENTING:
+// • Transfer Bank   → CASH MASUK ke laci (+), saldo BRILink berkurang
+// • Tarik Tunai     → CASH KELUAR dari laci (−), saldo BRILink bertambah
+// • Penjualan Produk= hanya penjualan HP, pulsa, aksesoris, perdana (p_cash)
+// • Ambil dari Bank = cash fisik yang diambil dari rekening masuk ke laci hari ini
 // • Setor Tunai ke Bank = cash yang keluar dari laci ke bank (opsional)
-// • REKONSILIASI REAL: cashJual (fisik, manual) dibandingkan ke omsetSistem (_omsetTrx,
-//   total semua item transaksi di Section 3). Selisih = cashJual - omsetSistem.
-//   Ini BUKAN hardcoded "selalu balance" — kalau staff salah hitung / ada cash hilang,
-//   selisih ini akan kelihatan jelas di popup Proses & Hitung.
 // ══════════════════════════════════════════════════════════════════
-// ══════════════════════════════════════════════════════════════════
-// LIVE SELISIH INDICATOR — feedback instan saat input (bukan nunggu submit)
-// Prinsip neurosains buat Gen Z: feedback loop cepat = dopamine, bahasa
-// non-menghakimi = gak mancing cortisol/defensive, warna progresif
-// (netral → kuning → merah) biar otak baca status sekali lirik tanpa baca teks.
-// ══════════════════════════════════════════════════════════════════
-function updateLiveSelisih(){
-  const el = g('p_cash_tb');
-  if(!el) return;
-  const cashJual = parseRp(g('p_cash')?.value) || 0;
-  const omset    = _omsetTrx || 0;
-
-  el.classList.remove('live-selisih','ls-idle','ls-ok','ls-warn','ls-bad');
-
-  if(cashJual === 0 && omset === 0){
-    el.innerHTML = '';
-    return;
-  }
-  if(omset === 0){
-    el.classList.add('live-selisih','ls-idle');
-    el.innerHTML = '✨ Isi transaksi di Section 3️⃣ biar auto-kecek selisihnya';
-    return;
-  }
-  if(cashJual === 0){
-    el.classList.add('live-selisih','ls-idle');
-    el.innerHTML = `🔎 Total trx ${fmt(omset)} — tinggal cocokin sama uang fisik di tangan`;
-    return;
-  }
-
-  const selisih = cashJual - omset;
-  const abs     = Math.abs(selisih);
-
-  if(abs <= 5000){
-    el.classList.add('live-selisih','ls-ok');
-    el.innerHTML = '✅ Pas! Cash sama trx udah cocok';
-  } else if(abs <= 20000){
-    el.classList.add('live-selisih','ls-warn');
-    el.innerHTML = `👀 Beda dikit ${fmt(abs)} (${selisih<0?'kurang':'lebih'}) — coba cek ulang, gapapa santai${renderSumberSelisih()}`;
-  } else {
-    el.classList.add('live-selisih','ls-bad');
-    el.innerHTML = `⚠️ Selisih ${fmt(abs)} (${selisih<0?'kurang':'lebih'}) — yuk hitung ulang sebelum lanjut${renderSumberSelisih()}`;
-  }
-}
-
-// ══════════════════════════════════════════════════════════════════
-// LOG TRANSAKSI REAL-TIME — Opsi A: tiap transaksi dicatat LANGSUNG
-// pas kejadian dengan timestamp, bukan ditotal-total di akhir shift.
-// Kenapa: kalau total cuma diketik sekali di akhir, staff yang niat
-// curang tinggal ngarang angka yang "pas" sama cash di laci — gak
-// ada jejak waktu yang bisa dicek silang. Dengan log per-transaksi,
-// tiap catatan ada jam-nya dan gak bisa diedit (cuma bisa dibatalkan
-// dengan jejak voided=true, gak dihapus permanen).
-// ══════════════════════════════════════════════════════════════════
-const TRX_CATEGORIES = [
-  {id:'tarik',   label:'💸 Tarik Tunai',     group:'brilink'},
-  {id:'transfer',label:'📲 Transfer',        group:'brilink'},
-  {id:'pulsa',   label:'📱 Pulsa & Token',   group:'brilink'},
-  {id:'data',    label:'📦 Paket Data',      group:'brilink'},
-  {id:'ptsel',   label:'Telkomsel',          group:'perdana'},
-  {id:'pxl',     label:'XL',                 group:'perdana'},
-  {id:'paxis',   label:'Axis',               group:'perdana'},
-  {id:'pbyu',    label:'ByU',                group:'perdana'},
-  {id:'psfren',  label:'Smartfren',          group:'perdana'},
-  {id:'pindo',   label:'Indosat',            group:'perdana'},
-];
-let _trxLog = []; // {id, kat, nominal, qty, ts, voided, voidedAt}
-
-function trxLogKey(){
-  const tgl   = new Date().toISOString().slice(0,10);
-  const nama  = (staffInfo?.nama  || 'anon').toLowerCase().replace(/\s+/g,'_');
-  const shift = staffInfo?.shift  || '-';
-  const area  = (staffInfo?.area  || (typeof APP_AREA!=='undefined'?APP_AREA:'pusat')).toString().toLowerCase().replace(/\s+/g,'_');
-  return `sc_trxlog_${area}_${tgl}_${shift}_${nama}`;
-}
-function loadTrxLog(){
-  try{ const raw = localStorage.getItem(trxLogKey()); _trxLog = raw ? JSON.parse(raw) : []; }
-  catch(e){ _trxLog = []; }
-  renderTrxLogUI();
-  cl_hitungTrx();
-}
-function saveTrxLog(){ try{ localStorage.setItem(trxLogKey(), JSON.stringify(_trxLog)); }catch(e){} }
-
-function renderTrxLogUI(){
-  const wrap = g('trx-log-container');
-  if(!wrap) return;
-  const groupLabel = {brilink:'💰 BRILINK & PULSA', perdana:'📱 PENJUALAN PERDANA'};
-  let html = '';
-  ['brilink','perdana'].forEach(grp => {
-    html += `<div style="font-size:11px;font-weight:700;color:var(--accent2);margin:10px 0 6px;letter-spacing:0.5px">${groupLabel[grp]}</div>`;
-    TRX_CATEGORIES.filter(c => c.group === grp).forEach(c => {
-      const entries  = _trxLog.filter(e => e.kat === c.id && !e.voided);
-      const totalNom = entries.reduce((s,e) => s + e.nominal * e.qty, 0);
-      const totalQty = entries.reduce((s,e) => s + e.qty, 0);
-      const logHtml  = entries.length > 0
-        ? `<div style="margin-top:6px;font-size:9.5px;font-family:var(--mono);color:var(--muted2);line-height:1.9">` +
-          entries.slice().reverse().map(e => {
-            const jam = new Date(e.ts).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-            return `${jam} · ${fmt(e.nominal)}${e.qty>1?' ×'+e.qty:''} <span onclick="trxVoid('${e.id}')" style="color:var(--red);cursor:pointer;margin-left:6px;text-decoration:underline">batal</span>`;
-          }).join('<br>') + `</div>`
-        : '';
-      html += `
-      <div style="background:var(--s3);border-radius:10px;padding:10px;margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <span style="font-size:12px;font-weight:600">${c.label}</span>
-          <span style="font-size:11px;font-family:var(--mono);font-weight:700;color:${totalNom>0?'var(--green)':'var(--muted2)'}">${fmt(totalNom)}${totalQty>0?' · '+totalQty+'x':''}</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 50px 40px;gap:6px">
-          <input type="text" inputmode="decimal" id="tl_nom_${c.id}" placeholder="Nominal trx" oninput="fmtInput(this)"
-            style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
-          <input type="text" inputmode="numeric" id="tl_qty_${c.id}" placeholder="1"
-            style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%;text-align:center">
-          <button onclick="trxCatat('${c.id}')"
-            style="background:var(--green);border:none;border-radius:8px;color:#04140c;font-weight:800;font-size:15px;cursor:pointer">+</button>
-        </div>
-        ${logHtml}
-      </div>`;
-    });
-  });
-  wrap.innerHTML = html;
-}
-
-function trxCatat(katId){
-  const nomEl = g('tl_nom_' + katId);
-  const qtyEl = g('tl_qty_' + katId);
-  const nominal = parseRp(nomEl?.value) || 0;
-  const qty     = parseInt(qtyEl?.value) || 1;
-  if(nominal <= 0){ toast('⚠️ Isi nominal transaksinya dulu'); return; }
-  _trxLog.push({
-    id: 'tx_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
-    kat: katId, nominal, qty, ts: Date.now(), voided: false
-  });
-  saveTrxLog();
-  if(nomEl) nomEl.value = '';
-  if(qtyEl) qtyEl.value = '';
-  renderTrxLogUI();
-  cl_hitungTrx();
-  toast('✅ Tercatat ' + fmt(nominal) + (qty > 1 ? ' ×' + qty : ''));
-}
-
-function trxVoid(entryId){
-  const e = _trxLog.find(x => x.id === entryId);
-  if(!e) return;
-  if(!confirm('Batalkan catatan transaksi ini?\n' + fmt(e.nominal) + (e.qty>1?' ×'+e.qty:'') + '\n\n(Tetap tersimpan sebagai riwayat, gak dihapus permanen — buat audit.)')) return;
-  e.voided   = true;
-  e.voidedAt = Date.now();
-  saveTrxLog();
-  renderTrxLogUI();
-  cl_hitungTrx();
-}
-
-function getTrxBreakdown(){
-  return TRX_CATEGORIES.map(c => {
-    const entries = _trxLog.filter(e => e.kat === c.id && !e.voided);
-    const value   = entries.reduce((s,e) => s + e.nominal * e.qty, 0);
-    const qty     = entries.reduce((s,e) => s + e.qty, 0);
-    return { id: c.id, label: c.label, value, qty };
-  });
-}
-
-// ── Jembatan kompatibilitas: laporan PDF & sync Google Sheets masih baca
-// breakdown per kategori lewat id lama (p_trx_tarik, dst). Daripada bongkar
-// puluhan titik baca di report builder, kita sinkronkan hidden input dari
-// _trxLog tiap kali cl_hitungTrx() jalan — satu sumber kebenaran (_trxLog),
-// banyak konsumen, gak ada yang putus.
-function syncLegacyTrxFields(){
-  let mirror = g('trx-legacy-mirror');
-  if(!mirror){
-    mirror = document.createElement('div');
-    mirror.id = 'trx-legacy-mirror';
-    mirror.style.display = 'none';
-    document.body.appendChild(mirror);
-  }
-  getTrxBreakdown().forEach(c => {
-    let nomEl = g('p_trx_' + c.id), nEl = g('p_trx_' + c.id + '_n');
-    if(!nomEl){ nomEl = document.createElement('input'); nomEl.id = 'p_trx_' + c.id; mirror.appendChild(nomEl); }
-    if(!nEl){ nEl = document.createElement('input'); nEl.id = 'p_trx_' + c.id + '_n'; mirror.appendChild(nEl); }
-    nomEl.value = c.value;
-    nEl.value   = c.qty;
-  });
-}
-
-// Render petunjuk sumber selisih: kategori kosong (paling sering kelupaan) + kategori terbesar
-function renderSumberSelisih(){
-  const rows   = getTrxBreakdown();
-  const kosong = rows.filter(r => r.value === 0).map(r => r.label);
-  const isiAcc = !!(g('p_trx_acc_rows') && g('p_trx_acc_rows').children.length > 0);
-  const top    = rows.filter(r => r.value > 0).sort((a,b) => b.value - a.value).slice(0,3);
-
-  let html = '';
-  if(kosong.length > 0){
-    html += `<div style="margin-top:6px">⚠️ <b>Kategori belum ada catatan</b> (cek dulu, sering kelupaan): ${kosong.join(', ')}${isiAcc ? '' : ', 🛠️ Acc HP'}</div>`;
-  }
-  if(top.length > 0){
-    html += `<div style="margin-top:4px">🔍 <b>Cek ulang dari yang paling besar:</b> ${top.map(r => r.label + ' ' + fmt(r.value)).join(' · ')}</div>`;
-  }
-  return html;
-}
-
 function hitungKas(){
   const cashPagi    = parseRp(g('p_cash_pagi')?.value)             || 0;
-  const cashJual    = parseRp(g('p_cash')?.value)                  || 0;
+  const cashJual    = parseRp(g('p_cash')?.value)                  || 0; // penjualan produk saja
   const ambilBank   = parseRp(g('p_tambah_kasmod')?.value)         || 0;
   const setorBank   = parseRp(g('p_setor_bank')?.value)            || 0;
   const modal       = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
   const makan       = parseRp(g('p_makan')?.value)                 || 0;
   const lain        = parseRp(g('p_lainlain')?.value)              || 0;
+  // ── BRILink: efek langsung ke cash fisik di laci ──
+  const trxTransfer = parseRp(g('p_trx_transfer')?.value)          || 0; // customer kasih cash → cash MASUK (+)
+  const trxTarik    = parseRp(g('p_trx_tarik')?.value)             || 0; // counter kasih cash ke customer → cash KELUAR (−)
+
   const pengeluaran = makan + lain;
-  const cashFisik   = cashPagi + cashJual + ambilBank;
+  // ⚠️ Transfer menambah cash, Tarik mengurangi cash — wajib eksplisit
+  const cashFisik   = cashPagi + cashJual + trxTransfer - trxTarik + ambilBank;
   const harusSetor  = cashFisik - setorBank - modal - pengeluaran;
-
-  // ── REKONSILIASI FISIK vs SISTEM (real check, bukan hardcoded) ──
-  // omsetSistem = total nominal transaksi yang diinput satu-satu di section 3
-  //               (BRILink + perdana + acc HP). Ini adalah "ekspektasi" sistem.
-  // cashJual    = uang fisik hasil jual yang dihitung & diinput staff di laci.
-  // Kalau staff jujur & tidak ada human error, cashJual harus ≈ omsetSistem.
-  const omsetSistem    = _omsetTrx || 0;
-  const selisihFisik   = cashJual - omsetSistem; // + = lebih (cash nemu), - = kurang (cash hilang)
-  const TOLERANSI      = 5000; // toleransi pembulatan receh
-  const isBalanceFisik = Math.abs(selisihFisik) <= TOLERANSI;
-
-  // ── VALIDASI MUSTAHIL: modal brankas kembali gak boleh > cash fisik di tangan ──
-  // Kalau ini kejadian, harusSetor jadi negatif & ke-swallow diam-diam jadi Rp0 oleh
-  // Math.max(0,...) di tempat lain. Itu nutup-nutupin data ngaco — sistem harus teriak, bukan diam.
-  const modalInvalid = modal > cashFisik;
-
-  return {
-    cashPagi, cashJual, ambilBank, setorBank, modal, pengeluaran, makan, lain,
-    cashFisik, harusSetor, omsetSistem, selisihFisik, isBalanceFisik, modalInvalid
-  };
+  return { cashPagi, cashJual, ambilBank, setorBank, modal, pengeluaran, makan, lain,
+           trxTransfer, trxTarik, cashFisik, harusSetor };
 }
 
 function cl_calc_setor(){
   const k = hitungKas();
-  updateLiveSelisih();
   const elAuto = g('p_cash_fisik_auto');
   if(elAuto) elAuto.textContent = fmt(k.cashFisik);
   s('setor_cash_fisik',       fmt(k.cashPagi + k.cashJual));
@@ -4899,14 +4813,122 @@ function cl_hint_brankas(){
   }
 }
 
+// ── PREVIEW SELISIH REAL-TIME ──
+function cl_preview_selisih(){
+  const k = hitungKas();
+  const ekspektasi = k.modal + Math.max(0, k.harusSetor);
+  const fisikManual = parseRp(g('p_cash_fisik_manual')?.value) || 0;
+  const wrap = g('preview_selisih_wrap');
+  if(!wrap) return;
+  if(fisikManual === 0){ wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  s('prev_ekspektasi', fmt(ekspektasi));
+  s('prev_fisik', fmt(fisikManual));
+  const selisih = fisikManual - ekspektasi;
+  const elSel = g('prev_selisih_val');
+  const elHint = g('prev_selisih_hint');
+  if(elSel){
+    elSel.textContent = (selisih > 0 ? '+' : '') + fmt(Math.abs(selisih));
+    elSel.style.color = selisih === 0 ? 'var(--green)' : selisih > 0 ? 'var(--blue)' : 'var(--red)';
+  }
+  if(elHint) elHint.textContent = selisih === 0 ? '✅ Pas — siap lanjut rekonsiliasi' : selisih > 0 ? '⬆️ Lebih dari ekspektasi — cek sebelum proses' : '⬇️ Kurang dari ekspektasi — cek sebelum proses';
+}
+
+// ── ANALISA AKAR SELISIH ──
+function _akarSelisih(selisih, k){
+  const abs = Math.abs(selisih);
+  const items = [];
+  if(selisih === 0) return { level: 'ok', items: [] };
+
+  if(selisih < 0){
+    // FISIK KURANG — cash di laci lebih sedikit dari ekspektasi sistem
+    if(abs <= 1000)
+      items.push({ icon:'🟡', text:'Kemungkinan selisih kembalian / recehan. Masih dalam batas wajar.' });
+    else if(abs <= 10000)
+      items.push({ icon:'🟠', text:'Pengeluaran mungkin ada yang belum dicatat (jajan, ojol, titipan).' });
+    else
+      items.push({ icon:'🔴', text:'Kekurangan signifikan — wajib diselidiki sebelum setor.' });
+
+    // BRILink hint untuk selisih negatif
+    items.push({ icon:'💳', text:`Cek kolom Tarik Tunai — kalau ada tarik tunai yang belum diinput, cash di laci berkurang tapi sistem tidak tahu. Contoh: tartun Rp${(abs/1000).toFixed(0)}rb lupa diisi → selisih persis segini.` });
+    items.push({ icon:'💡', text:'Cek struk & catatan pengeluaran. Bandingkan input Tarik Tunai dengan transaksi BRILink hari ini.' });
+
+  } else {
+    // FISIK LEBIH — cash di laci lebih banyak dari ekspektasi sistem
+    if(abs <= 1000)
+      items.push({ icon:'🟡', text:'Kelebihan kecil — kemungkinan kembalian customer kurang / recehan tambah.' });
+    else if(abs <= 10000)
+      items.push({ icon:'🟠', text:'Kemungkinan ada penjualan yang tidak dicatat, atau input cash penjualan kurang dari aktual.' });
+    else
+      items.push({ icon:'🔴', text:'Kelebihan besar — wajib diselidiki. Ada uang masuk yang tidak tercatat di sistem.' });
+
+    // BRILink hint untuk selisih positif
+    items.push({ icon:'💳', text:`Cek kolom Transfer — kalau ada customer transfer tapi belum diinput, cash di laci bertambah tapi sistem tidak tahu. Contoh: TF Rp${(abs/1000).toFixed(0)}rb lupa diisi → selisih persis segini.` });
+    items.push({ icon:'💡', text:'Cek struk & catatan transaksi. Bandingkan input Transfer dengan riwayat BRILink hari ini.' });
+  }
+
+  const level = abs === 0 ? 'ok' : abs <= 1000 ? 'warn' : abs <= 10000 ? 'caution' : 'danger';
+  return { level, items };
+}
+
 // ── PROSES & HITUNG → buka popup detail ──
 function cl_prosesHitung(){
-  const k          = hitungKas();
-  const harusSetor = k.harusSetor;
-  const cashFisik  = k.cashFisik;
-  const selisih    = k.selisihFisik; // REAL selisih: cash penjualan (fisik) vs total transaksi (sistem)
-  // Sanity check internal: cashFisik harus persis sama dengan modal + harusSetor + setorBank + pengeluaran
-  const sisaAkhir  = cashFisik - k.modal - Math.max(0, harusSetor) - k.setorBank - k.pengeluaran;
+  // Validasi: fisik manual wajib diisi
+  const fisikManualVal = g('p_cash_fisik_manual')?.value?.trim();
+  if(!fisikManualVal || fisikManualVal === '' || fisikManualVal === '0'){
+    const card = g('card_fisik_manual');
+    if(card){
+      card.style.border = '2px solid rgba(239,68,68,0.7)';
+      card.style.background = 'rgba(239,68,68,0.06)';
+      card.scrollIntoView({ behavior:'smooth', block:'center' });
+      setTimeout(()=>{
+        card.style.border = '2px solid rgba(139,92,246,0.35)';
+        card.style.background = 'linear-gradient(135deg,rgba(139,92,246,0.10),rgba(139,92,246,0.03))';
+      }, 2500);
+    }
+    alert('⚠️ Isi dulu "Hitung Fisik Manual" — hitung semua uang di laci secara nyata sebelum rekonsiliasi.');
+    return;
+  }
+
+  const k           = hitungKas();
+  const harusSetor  = k.harusSetor;
+  const cashFisik   = k.cashFisik;
+  const fisikManual = parseRp(fisikManualVal) || 0;
+  const ekspektasi  = k.modal + Math.max(0, harusSetor);
+  const selisih     = fisikManual - ekspektasi;
+  const absSelisih  = Math.abs(selisih);
+
+  // ── Jalankan animasi loading ──
+  const overlay = g('rekon_loading_overlay');
+  if(overlay){ overlay.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+
+  const steps = [
+    { pct: 20, icon:'📊', title:'Membaca data input...', sub:'Memvalidasi cash pagi, penjualan & pengeluaran' },
+    { pct: 45, icon:'🔢', title:'Menghitung ekspektasi sistem...', sub:`Modal ${fmt(k.modal)} + Harus Setor ${fmt(Math.max(0,harusSetor))} = ${fmt(ekspektasi)}` },
+    { pct: 70, icon:'🔍', title:'Membandingkan fisik vs sistem...', sub:`Fisik ${fmt(fisikManual)} vs Ekspektasi ${fmt(ekspektasi)}` },
+    { pct: 90, icon:'📋', title:'Menyusun laporan rekonsiliasi...', sub:'Mendeteksi akar selisih & status balance' },
+    { pct:100, icon: selisih === 0 ? '✅' : '⚠️', title: selisih === 0 ? 'BALANCE — Semua cocok!' : `Selisih Terdeteksi: ${selisih > 0 ? '+' : ''}${fmt(absSelisih)}`, sub: selisih === 0 ? 'Rekonsiliasi berhasil' : 'Investigasi diperlukan sebelum setor' },
+  ];
+
+  let step = 0;
+  const dots = document.querySelectorAll('.rlo-dot');
+
+  function nextStep(){
+    if(step >= steps.length){ return; }
+    const st = steps[step];
+    s('rlo_icon', st.icon); s('rlo_title', st.title); s('rlo_sub', st.sub);
+    const bar = g('rlo_bar'); if(bar) bar.style.width = st.pct + '%';
+    if(dots[step]) dots[step].style.background = selisih === 0 ? 'var(--green)' : step === steps.length-1 ? 'var(--red)' : 'var(--accent)';
+    step++;
+    if(step < steps.length) setTimeout(nextStep, step === steps.length-1 ? 600 : 380);
+    else setTimeout(()=>_showRekonPopup(k, harusSetor, cashFisik, fisikManual, ekspektasi, selisih, absSelisih), 750);
+  }
+  nextStep();
+}
+
+function _showRekonPopup(k, harusSetor, cashFisik, fisikManual, ekspektasi, selisih, absSelisih){
+  // Tutup loading
+  const overlay = g('rekon_loading_overlay'); if(overlay) overlay.style.display = 'none';
 
   // ── Isi popup ──
   const ts = g('rp_timestamp');
@@ -4914,63 +4936,68 @@ function cl_prosesHitung(){
 
   s('rp_cash_pagi_val',  fmt(k.cashPagi));
   s('rp_cash_penjualan', fmt(k.cashJual));
-  s('rp_cash_transfer',  '0');
-  s('rp_cust_transfer',  '0');
+  s('rp_cash_transfer',  fmt(k.trxTransfer));
+  s('rp_cust_transfer',  fmt(k.trxTarik));
   s('rp_total_masuk',    fmt(cashFisik));
   s('rp_makan',          fmt(k.makan));
   s('rp_lain',           fmt(k.lain));
   s('rp_total_keluar',   fmt(k.pengeluaran));
-  s('rp_fisik_manual',   fmt(k.cashJual));
-  s('rp_ekspektasi',     fmt(k.omsetSistem));
-  s('rp_modal_kembali',  k.modal > 0 ? fmt(k.modal) : '⚠ Belum diisi');
-  s('rp_harus_setor',    fmt(Math.max(0, harusSetor)));
 
-  // Status selisih FISIK vs SISTEM — sekarang real, bukan hardcoded
+  // Rekonsiliasi fisik — REAL
+  s('rp_fisik_manual', fmt(fisikManual));
+  const elEk = g('rp_ekspektasi');
+  if(elEk){ elEk.textContent = fmt(ekspektasi); elEk.style.color = 'var(--yellow)'; }
+
   const elSF = g('rp_selisih_fisik');
   if(elSF){
-    if(k.omsetSistem <= 0){
-      elSF.textContent = '⚠ Belum isi transaksi'; elSF.style.color = 'var(--orange)';
-    } else if(k.isBalanceFisik){
-      elSF.textContent = '✅ Balance (' + fmt(Math.abs(selisih)) + ')'; elSF.style.color = 'var(--green)';
-    } else if(selisih < 0){
-      elSF.textContent = '🔴 Kurang ' + fmt(Math.abs(selisih)); elSF.style.color = 'var(--red)';
+    const prefix = selisih > 0 ? '+' : selisih < 0 ? '-' : '';
+    elSF.textContent = selisih === 0 ? '✅ BALANCE' : prefix + fmt(absSelisih);
+    elSF.style.color = selisih === 0 ? 'var(--green)' : selisih > 0 ? 'var(--blue)' : 'var(--red)';
+  }
+
+  // Akar selisih
+  const akar = _akarSelisih(selisih, k);
+  const elAkar = g('rp_akar_selisih');
+  if(elAkar){
+    if(akar.items.length > 0){
+      const colorMap = { warn:'rgba(245,208,32,0.08)', caution:'rgba(245,166,35,0.09)', danger:'rgba(239,68,68,0.08)' };
+      const borderMap = { warn:'rgba(245,208,32,0.3)', caution:'rgba(245,166,35,0.3)', danger:'rgba(239,68,68,0.35)' };
+      elAkar.style.background = colorMap[akar.level] || colorMap.warn;
+      elAkar.style.borderColor = borderMap[akar.level] || borderMap.warn;
+      elAkar.style.display = 'block';
+      elAkar.innerHTML = '<div style="font-weight:800;font-size:10px;letter-spacing:1px;margin-bottom:8px;color:var(--muted2)">🔬 ANALISA AKAR SELISIH</div>' +
+        akar.items.map(i => `<div style="margin-bottom:5px">${i.icon} ${i.text}</div>`).join('');
     } else {
-      elSF.textContent = '🟡 Lebih ' + fmt(Math.abs(selisih)); elSF.style.color = 'var(--yellow)';
+      elAkar.style.display = 'none';
     }
   }
-  const elEk = g('rp_ekspektasi');
-  if(elEk) elEk.style.color = k.omsetSistem > 0 ? (k.isBalanceFisik ? 'var(--green)' : 'var(--red)') : 'var(--muted2)';
 
-  // Sisa akhir — sanity check internal, harus selalu Rp 0 kalau rumus konsisten
+  // Distribusi akhir
+  s('rp_modal_kembali', k.modal > 0 ? fmt(k.modal) : '⚠ Belum diisi');
+  s('rp_harus_setor',   fmt(Math.max(0, harusSetor)));
+  const sisaAkhir = fisikManual - k.modal - Math.max(0, harusSetor);
   const elSA = g('rp_sisa_akhir');
   if(elSA){
     elSA.textContent = fmt(sisaAkhir);
     elSA.style.color = Math.abs(sisaAkhir) < 500 ? 'var(--green)' : 'var(--red)';
   }
 
-  // Status balance utama — sekarang gabungan: harus ada setoran DAN fisik=sistem cocok
-  const box    = g('rp_balance_box');
-  const valEl  = g('rp_status_val');
-  const subEl  = g('rp_status_sub');
+  // Status balance utama
+  const box = g('rp_balance_box'); const valEl = g('rp_status_val'); const subEl = g('rp_status_sub');
   if(box && valEl && subEl){
-    if(k.modalInvalid){
-      box.style.background  = 'rgba(224,48,80,0.1)'; box.style.borderColor = 'rgba(224,48,80,0.4)';
-      valEl.textContent = '🔴 DATA MUSTAHIL'; valEl.style.color = 'var(--red)';
-      subEl.textContent = `Modal Brankas ${fmt(k.modal)} lebih besar dari Cash Fisik ${fmt(cashFisik)} — gak mungkin, cek input!`; subEl.style.color = 'var(--red)';
-    } else if(k.omsetSistem <= 0){
-      box.style.background  = 'rgba(245,166,35,0.08)'; box.style.borderColor = 'rgba(245,166,35,0.3)';
-      valEl.textContent = '⚠ DATA TRANSAKSI KOSONG'; valEl.style.color = 'var(--orange)';
-      subEl.textContent = 'Isi dulu Section 3️⃣ Transaksi Harian biar bisa dicek selisihnya'; subEl.style.color = 'var(--orange)';
-    } else if(!k.isBalanceFisik){
-      box.style.background  = 'rgba(224,48,80,0.08)'; box.style.borderColor = 'rgba(224,48,80,0.35)';
-      valEl.textContent = '🔴 TIDAK BALANCE'; valEl.style.color = 'var(--red)';
-      subEl.textContent = `Cash penjualan ${fmt(k.cashJual)} ≠ Total transaksi ${fmt(k.omsetSistem)} (selisih ${fmt(Math.abs(selisih))}) — cek ulang hitungan!`; subEl.style.color = 'var(--red)';
-    } else if(harusSetor > 0){
-      box.style.background  = 'rgba(62,207,142,0.08)'; box.style.borderColor = 'rgba(62,207,142,0.35)';
+    if(selisih === 0 && harusSetor > 0){
+      box.style.background = 'rgba(62,207,142,0.08)'; box.style.borderColor = 'rgba(62,207,142,0.35)';
       valEl.textContent = '✅ BALANCE'; valEl.style.color = 'var(--green)';
-      subEl.textContent = `Cash Fisik ${fmt(cashFisik)} = Setor ${fmt(Math.max(0,harusSetor))} + Modal ${fmt(k.modal)} + Pengeluaran ${fmt(k.pengeluaran)}`; subEl.style.color = 'var(--green)';
+      subEl.textContent = `Fisik ${fmt(fisikManual)} = Modal ${fmt(k.modal)} + Setor ${fmt(Math.max(0,harusSetor))}`; subEl.style.color = 'var(--green)';
+    } else if(selisih !== 0){
+      const isMin = selisih < 0;
+      box.style.background = 'rgba(239,68,68,0.08)'; box.style.borderColor = 'rgba(239,68,68,0.35)';
+      valEl.textContent = isMin ? '⚠️ FISIK KURANG' : '⚠️ FISIK LEBIH';
+      valEl.style.color = 'var(--red)';
+      subEl.textContent = `Fisik ${fmt(fisikManual)} vs Ekspektasi ${fmt(ekspektasi)} — selisih ${isMin?'-':'+'} ${fmt(absSelisih)}`;
+      subEl.style.color = 'var(--red)';
     } else {
-      box.style.background  = 'rgba(245,166,35,0.08)'; box.style.borderColor = 'rgba(245,166,35,0.3)';
+      box.style.background = 'rgba(245,166,35,0.08)'; box.style.borderColor = 'rgba(245,166,35,0.3)';
       valEl.textContent = '⚠ Tidak Ada Setoran'; valEl.style.color = 'var(--orange)';
       subEl.textContent = 'Cash fisik habis untuk modal & pengeluaran'; subEl.style.color = 'var(--orange)';
     }
@@ -4980,32 +5007,28 @@ function cl_prosesHitung(){
   const cat = g('rp_catatan');
   if(cat){
     const notes = [];
-    if(k.modalInvalid) notes.push(`🔴 Modal Brankas (${fmt(k.modal)}) gak boleh lebih besar dari Cash Fisik (${fmt(cashFisik)}) — cek angka modal/cash penjualan.`);
     if(k.modal === 0) notes.push('⚠️ Modal brankas kembali belum diisi.');
-    if(k.omsetSistem <= 0) notes.push('⚠️ Section 3️⃣ Transaksi Harian belum diisi — selisih tidak bisa dicek.');
-    else if(!k.isBalanceFisik) notes.push(`🔴 Selisih kas ${fmt(Math.abs(selisih))} (${selisih<0?'KURANG':'LEBIH'}) — wajib dicek ulang sebelum setor!${renderSumberSelisih()}`);
-    if(harusSetor <= 0) notes.push('⚠️ Tidak ada yang perlu disetor hari ini.');
+    if(selisih < 0)   notes.push(`⚠️ Fisik kurang ${fmt(absSelisih)} — wajib selesaikan sebelum bisa setor.`);
+    if(selisih > 0)   notes.push(`⚠️ Fisik lebih ${fmt(absSelisih)} — cek ulang, laporkan ke KC.`);
+    if(harusSetor <= 0 && selisih === 0) notes.push('⚠️ Tidak ada yang perlu disetor hari ini.');
     if(notes.length === 0) notes.push('✅ Semua data lengkap & balance. Lanjutkan ke konfirmasi setoran.');
-    const hasWarn = notes.some(n=>n.startsWith('⚠')||n.startsWith('🔴'));
-    cat.style.color     = hasWarn ? 'var(--orange)' : 'var(--green)';
-    cat.style.background= hasWarn ? 'rgba(245,166,35,0.06)' : 'rgba(62,207,142,0.06)';
-    cat.style.borderColor= hasWarn ? 'rgba(245,166,35,0.25)' : 'rgba(62,207,142,0.25)';
+    cat.style.color = notes.some(n=>n.startsWith('⚠')) ? 'var(--orange)' : 'var(--green)';
+    cat.style.background = notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.06)' : 'rgba(62,207,142,0.06)';
+    cat.style.borderColor = notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.25)' : 'rgba(62,207,142,0.25)';
     cat.innerHTML = notes.join('<br>');
   }
 
   // Update balance box ringkas di main card
-  const bxMain  = g('setor_balance_box');
-  const selMain = g('setor_selisih');
-  const subMain = g('setor_balance_sub');
+  const bxMain = g('setor_balance_box'); const selMain = g('setor_selisih'); const subMain = g('setor_balance_sub');
   if(bxMain && selMain && subMain){
-    if(k.omsetSistem > 0 && !k.isBalanceFisik){
-      bxMain.style.background='rgba(224,48,80,0.08)'; bxMain.style.borderColor='rgba(224,48,80,0.35)';
-      selMain.textContent='🔴 SELISIH ' + fmt(Math.abs(selisih)); selMain.style.color='var(--red)';
-      subMain.textContent=`Cash ${fmt(k.cashJual)} vs Trx ${fmt(k.omsetSistem)} — cek ulang!`;
-    } else if(harusSetor > 0){
+    if(selisih === 0 && harusSetor > 0){
       bxMain.style.background='rgba(62,207,142,0.08)'; bxMain.style.borderColor='rgba(62,207,142,0.35)';
       selMain.textContent='✅ BALANCE'; selMain.style.color='var(--green)';
       subMain.textContent=`Disetor ${fmt(Math.max(0,harusSetor))} · Brankas ${fmt(k.modal)}`;
+    } else if(selisih !== 0){
+      bxMain.style.background='rgba(239,68,68,0.08)'; bxMain.style.borderColor='rgba(239,68,68,0.35)';
+      selMain.textContent=`⚠ Selisih ${selisih>0?'+':''}${fmt(absSelisih)}`; selMain.style.color='var(--red)';
+      subMain.textContent='Wajib koreksi sebelum bisa setor';
     } else {
       bxMain.style.background='rgba(245,166,35,0.06)'; bxMain.style.borderColor='rgba(245,166,35,0.25)';
       selMain.textContent='⚠ Tidak Ada Setoran'; selMain.style.color='var(--orange)';
@@ -5013,19 +5036,40 @@ function cl_prosesHitung(){
     }
   }
 
-  // Tampilkan tombol setor — kecuali kalau ada data mustahil yang wajib dibenerin dulu
-  const wrap = g('setor_action_wrap');
-  if(wrap){
-    wrap.style.display = k.modalInvalid ? 'none' : 'block';
-    const btnNom = g('setor_btn_nominal');
-    if(btnNom) btnNom.textContent = fmt(Math.max(0, harusSetor));
-    const btnSub = g('setor_btn_sub');
-    if(btnSub && !_sudahSetor) btnSub.textContent = 'Tap untuk konfirmasi tujuan & bukti setor';
+  // Tombol setor — tampilkan berdasarkan selisih
+  const wrap = g('setor_action_wrap'); if(wrap) wrap.style.display = 'block';
+  const btnNom = g('setor_btn_nominal'); if(btnNom) btnNom.textContent = fmt(Math.max(0, harusSetor));
+  const btnSub = g('setor_btn_sub'); if(btnSub && !_sudahSetor) btnSub.textContent = 'Tap untuk konfirmasi tujuan & bukti setor';
+  const mainBtn = g('setor_nominal_btn'); if(mainBtn) mainBtn.style.background = harusSetor > 0 ? 'var(--accent)' : 'var(--s3)';
+
+  // Kontrol tombol di popup
+  const btnBal = g('rp_btn_balance'); const btnSel = g('rp_btn_selisih');
+  if(selisih === 0){
+    if(btnBal) btnBal.style.display = 'grid';
+    if(btnSel) btnSel.style.display = 'none';
+    if(setoranBtn){ setoranBtn.style.pointerEvents = 'auto'; setoranBtn.style.opacity = '1'; }
+  } else {
+    if(btnBal) btnBal.style.display = 'none';
+    if(btnSel) btnSel.style.display = 'block';
+    s('rp_blok_reason', selisih < 0
+      ? `Fisik kurang ${fmt(absSelisih)} dari ekspektasi. Koreksi data atau laporkan ke KC.`
+      : `Fisik lebih ${fmt(absSelisih)} dari ekspektasi. Cek & laporkan ke KC sebelum setor.`);
+    // Blok tombol setor di bawah
+    const setoranBtn = g('setor_nominal_btn');
+    if(setoranBtn){ setoranBtn.style.pointerEvents = 'none'; setoranBtn.style.opacity = '0.35'; }
   }
 
   // Buka popup
-  const pop = g('rekon_popup');
-  if(pop){ pop.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  const pop = g('rekon_popup'); if(pop){ pop.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+}
+
+function cl_laporSelisih(){
+  const k = hitungKas();
+  const fisikManual = parseRp(g('p_cash_fisik_manual')?.value) || 0;
+  const ekspektasi  = k.modal + Math.max(0, k.harusSetor);
+  const selisih = fisikManual - ekspektasi;
+  cl_tutupRekonPopup();
+  alert(`📢 Laporan selisih telah dicatat.\n\nFisik: ${fmt(fisikManual)}\nEkspektasi: ${fmt(ekspektasi)}\nSelisih: ${selisih > 0 ? '+' : ''}${fmt(Math.abs(selisih))}\n\nSegera hubungi KC / Kanit untuk klarifikasi sebelum melanjutkan setoran.`);
 }
 
 function cl_tutupRekonPopup(){
@@ -5095,6 +5139,24 @@ function cl_tutupSetorPopup(){
 }
 
 function cl_konfirmasiSetor(){
+  // ═══ SECURITY GATE — berlapis, bukan cuma UI ═══
+  // Cek fisik manual wajib ada
+  const fisikManualVal = g('p_cash_fisik_manual')?.value?.trim();
+  if(!fisikManualVal || fisikManualVal === '' || fisikManualVal === '0'){
+    toast('🔒 Rekonsiliasi belum dilakukan — isi Hitung Fisik Manual dulu');
+    return;
+  }
+  // Re-hitung selisih — sumber kebenaran dari kalkulasi, bukan dari UI state
+  const k = hitungKas();
+  const fisikManual = parseRp(fisikManualVal) || 0;
+  const ekspektasi  = k.modal + Math.max(0, k.harusSetor);
+  const selisih     = fisikManual - ekspektasi;
+  if(selisih !== 0){
+    const arah = selisih < 0 ? `Fisik kurang ${fmt(Math.abs(selisih))}` : `Fisik lebih ${fmt(Math.abs(selisih))}`;
+    toast(`🔒 DIBLOK — ${arah} dari ekspektasi. Wajib koreksi dulu.`);
+    return;
+  }
+  // ═══ LOLOS GATE — lanjut ke panel setor ═══
   cl_bukaPanelSetor();
 }
 
