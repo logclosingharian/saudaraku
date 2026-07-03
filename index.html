@@ -2296,29 +2296,73 @@ function roboHideBubble(e){
     <div class="stit">7️⃣ Setoran & Rekonsiliasi Kas</div>
     <div class="card" id="setoran-card">
 
-      <!-- A: CASH FISIK OTOMATIS (ekspektasi sistem) -->
+      <input type="hidden" id="p_cust_transfer" value="0">
+
+      <!-- A: PANDUAN HITUNG FISIK (dropdown) -->
       <div style="background:linear-gradient(135deg,rgba(245,208,32,0.07),rgba(245,208,32,0.02));border:1px solid rgba(245,208,32,0.22);border-radius:12px;padding:14px;margin-bottom:12px">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-          <div style="font-size:11px;font-weight:700;color:var(--yellow)">💵 Ekspektasi Sistem</div>
-          <span style="font-size:9px;background:rgba(245,208,32,0.15);color:var(--yellow);padding:1px 7px;border-radius:8px;font-family:var(--mono)">OTOMATIS</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="togglePanduan()">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="font-size:11px;font-weight:700;color:var(--yellow)">📖 Panduan: Apa yang harus dihitung?</div>
+          </div>
+          <span id="panduan_chevron" style="font-size:14px;color:var(--yellow);transition:transform .3s">▼</span>
         </div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px">Cash Pagi + Cash Penjualan + Ambil Bank</div>
-        <div style="font-size:24px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="p_cash_fisik_auto">Rp 0</div>
-        <input type="hidden" id="p_cust_transfer" value="0">
+        <div id="panduan_body" style="display:none;margin-top:12px">
+          <div style="font-size:10px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px;line-height:1.8">
+            Ambil <strong style="color:var(--text)">semua uang fisik di laci</strong>, hitung total, lalu masukkan di bawah. Berikut yang harus ada:
+          </div>
+          <div style="font-size:11px;font-family:var(--mono);line-height:2.2">
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">💰 Modal pagi (brankas awal)</span><span id="pand_modal" style="color:var(--yellow)">—</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">🛍️ Cash penjualan produk</span><span id="pand_jual" style="color:var(--green)">—</span></div>
+            <div id="pand_row_tf" style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">📲 Transfer BRILink masuk <span style="font-size:9px">(customer kasih cash ke kamu)</span></span><span id="pand_tf" style="color:var(--green)">—</span></div>
+            <div id="pand_row_tk" style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">🏧 Tarik Tunai keluar <span style="font-size:9px">(kamu kasih cash ke customer)</span></span><span id="pand_tk" style="color:var(--red)">—</span></div>
+            <div id="pand_row_pusat" style="display:flex;justify-content:space-between;display:none"><span style="color:var(--muted2)">🏠 Tambahan dari Pusat</span><span id="pand_pusat" style="color:var(--blue)">—</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">💸 Pengeluaran (makan+lain)</span><span id="pand_peng" style="color:var(--red)">—</span></div>
+            <div style="height:1px;background:var(--border2);margin:6px 0"></div>
+            <div style="display:flex;justify-content:space-between;font-weight:800;font-size:12px">
+              <span>= Yang harus ada di laci</span>
+              <span id="pand_total" style="color:var(--yellow)">—</span>
+            </div>
+          </div>
+          <div style="margin-top:10px;background:rgba(245,208,32,0.06);border-radius:8px;padding:8px 10px;font-size:10px;color:var(--muted2);font-family:var(--mono);line-height:1.7">
+            ⚠️ <strong style="color:var(--yellow)">Jangan hanya hitung uang dari jualan.</strong><br>
+            Uang modal pagi yang tidak dipakai tarik tunai = masih ada di laci.<br>
+            Uang dari Transfer BRILink = masuk ke laci (customer kasih ke kamu).<br>
+            Uang Tarik Tunai = sudah keluar dari laci (kamu kasih ke customer).
+          </div>
+        </div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:8px" id="pand_ekspektasi_mini">
+          Ekspektasi sistem: <span id="p_cash_fisik_auto" style="color:var(--yellow);font-weight:700">Rp 0</span>
+        </div>
+      </div>
+
+      <!-- A1: TAMBAHAN DARI PUSAT (opsional) -->
+      <div style="background:linear-gradient(135deg,rgba(68,153,255,0.07),rgba(68,153,255,0.02));border:1px solid rgba(68,153,255,0.2);border-radius:12px;padding:12px 14px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+          <div style="font-size:11px;font-weight:700;color:var(--blue)">🏠 Tambahan Cash dari Pusat</div>
+          <span style="font-size:9px;background:rgba(68,153,255,0.12);color:var(--blue);padding:1px 7px;border-radius:8px;font-family:var(--mono)">JIKA ADA</span>
+        </div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:8px;line-height:1.6">
+          Isi jika hari ini dapat tambahan cash dari Ibu/Pusat untuk cover saldo BRILink kurang.<br>
+          <span style="color:var(--blue)">Wajib dilaporkan — ini bukan pendapatan, ini utang cabang ke pusat.</span>
+        </div>
+        <input type="text" inputmode="decimal" class="finp" id="p_tambahan_pusat"
+          placeholder="Isi jika ada, atau biarkan kosong"
+          oninput="fmtInput(this);cl_calc();cl_preview_selisih()"
+          style="font-family:var(--mono);border:1px solid rgba(68,153,255,0.25);background:rgba(68,153,255,0.05)">
       </div>
 
       <!-- A2: HITUNG FISIK MANUAL — wajib isi sebelum rekonsiliasi -->
       <div style="background:linear-gradient(135deg,rgba(139,92,246,0.10),rgba(139,92,246,0.03));border:2px solid rgba(139,92,246,0.35);border-radius:12px;padding:14px;margin-bottom:12px" id="card_fisik_manual">
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-          <div style="font-size:11px;font-weight:700;color:#a78bfa">🪙 Hitung Fisik Manual</div>
+          <div style="font-size:11px;font-weight:700;color:#a78bfa">🪙 Hitung Fisik Aktual</div>
           <span style="font-size:9px;background:rgba(139,92,246,0.18);color:#a78bfa;padding:1px 7px;border-radius:8px;font-family:var(--mono)">WAJIB ISI</span>
         </div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:10px;line-height:1.6">
-          Hitung semua uang di laci secara fisik — termasuk modal brankas.<br>
-          <span style="color:#a78bfa">Ini sumber kebenaran nyata. Jangan taksir, hitung beneran.</span>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-bottom:8px;line-height:1.6">
+          Ambil semua uang di laci, hitung secara fisik, masukkan totalnya.<br>
+          <span style="color:#a78bfa">Lihat panduan di atas jika bingung apa yang harus dihitung.</span>
         </div>
         <input type="text" inputmode="decimal" class="finp" id="p_cash_fisik_manual"
-          placeholder="Ketik total uang fisik di laci"
+          placeholder="Total uang fisik di laci (hitung semua)"
           oninput="fmtInput(this);cl_preview_selisih()"
           style="font-size:16px;font-family:var(--mono);border:1.5px solid rgba(139,92,246,0.4);background:rgba(139,92,246,0.07)">
         <!-- Preview selisih real-time -->
@@ -2328,7 +2372,7 @@ function roboHideBubble(e){
             <span id="prev_ekspektasi" style="color:var(--yellow)">—</span>
           </div>
           <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-            <span style="color:var(--muted2)">Hitung fisik kamu</span>
+            <span style="color:var(--muted2)">Fisik aktual kamu</span>
             <span id="prev_fisik" style="color:#a78bfa">—</span>
           </div>
           <div style="height:1px;background:var(--border);margin:6px 0"></div>
@@ -2336,7 +2380,7 @@ function roboHideBubble(e){
             <span>Selisih</span>
             <span id="prev_selisih_val" style="font-weight:900">—</span>
           </div>
-          <div id="prev_selisih_hint" style="font-size:10px;margin-top:5px;color:var(--muted2);line-height:1.5"></div>
+          <div id="prev_selisih_hint" style="font-size:10px;margin-top:5px;line-height:1.5"></div>
         </div>
       </div>
 
@@ -2496,6 +2540,10 @@ function roboHideBubble(e){
             <div id="rp_row_tarik" style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
               <span style="color:var(--muted2)">− Tarik Tunai (cash keluar ke customer)</span>
               <span style="font-family:var(--mono);font-weight:600;color:var(--red)" id="rp_cust_transfer">—</span>
+            </div>
+            <div id="rp_row_tambahan_pusat" style="display:none;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+              <span style="color:var(--blue)">+ Tambahan dari Pusat/Ibu</span>
+              <span style="font-family:var(--mono);font-weight:600;color:var(--blue)" id="rp_tambahan_pusat">—</span>
             </div>
             <div style="display:flex;justify-content:space-between;padding:8px 0 0;font-size:12px;font-weight:700">
               <span>= Total Cash Fisik Sistem</span>
@@ -2967,10 +3015,23 @@ function roboHideBubble(e){
 
       <div class="card">
         <div class="ctit">📍 Catat Kehadiran</div>
-        <div style="background:var(--s3);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center">
+        <div style="background:var(--s3);border-radius:10px;padding:14px 14px 12px;margin-bottom:12px;text-align:center">
+          <!-- Jam Dinding Animasi -->
+          <div style="display:flex;justify-content:center;margin-bottom:8px">
+            <div id="absen-walldock" style="position:relative;width:104px;height:104px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--s2),#0c0a14 78%);border:3px solid var(--border2);box-shadow:0 4px 14px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.03);flex-shrink:0">
+              <div style="position:absolute;top:6px;left:0;right:0;text-align:center;font-size:9px;font-family:var(--mono);color:var(--muted2);font-weight:700">12</div>
+              <div style="position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;font-family:var(--mono);color:var(--muted2);font-weight:700">6</div>
+              <div style="position:absolute;top:0;bottom:0;left:8px;display:flex;align-items:center;font-size:9px;font-family:var(--mono);color:var(--muted2);font-weight:700">9</div>
+              <div style="position:absolute;top:0;bottom:0;right:7px;display:flex;align-items:center;font-size:9px;font-family:var(--mono);color:var(--muted2);font-weight:700">3</div>
+              <div id="absen-hand-hour" style="position:absolute;left:50%;bottom:50%;width:4px;height:26px;background:var(--text);border-radius:3px;transform-origin:50% 100%;margin-left:-2px;transition:transform 0.3s cubic-bezier(.4,2.2,.4,1)"></div>
+              <div id="absen-hand-min"  style="position:absolute;left:50%;bottom:50%;width:3px;height:36px;background:var(--accent2);border-radius:3px;transform-origin:50% 100%;margin-left:-1.5px;transition:transform 0.3s cubic-bezier(.4,2.2,.4,1)"></div>
+              <div id="absen-hand-sec"  style="position:absolute;left:50%;bottom:50%;width:1.5px;height:40px;background:var(--green);border-radius:2px;transform-origin:50% 100%;margin-left:-0.75px;transition:transform 0.15s cubic-bezier(.4,2.2,.4,1)"></div>
+              <div style="position:absolute;left:50%;top:50%;width:8px;height:8px;background:var(--accent2);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 4px rgba(255,96,128,0.6);z-index:2"></div>
+            </div>
+          </div>
           <div style="font-size:28px;font-weight:800;font-family:var(--mono);color:var(--text)" id="absen-clock">--:--:--</div>
           <div style="font-size:11px;color:var(--muted2);font-family:var(--mono);margin-top:2px" id="absen-date">—</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="absen-jadwal-label">Masuk maks 09:28 · Waktu bebas mulai 21:30</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="absen-jadwal-label">Masuk maks 08:45 · Waktu bebas mulai 21:30</div>
         </div>
 
         <!-- MODE TEST JAM -->
@@ -3032,9 +3093,9 @@ function roboHideBubble(e){
           </div>
           <!-- Countdown saat waktu bebas belum dimulai -->
           <div id="absen-keluar-countdown" style="display:none;margin-top:10px;background:linear-gradient(135deg,rgba(62,207,142,0.08),rgba(108,99,255,0.05));border:1px solid rgba(62,207,142,0.25);border-radius:10px;padding:10px 14px;text-align:center;">
-            <div style="font-size:10px;color:var(--green);font-weight:700;letter-spacing:0.8px;margin-bottom:4px">☕ WAKTU BEBAS ISTIRAHATMU DIMULAI DALAM</div>
-            <div id="absen-countdown-timer" style="font-size:22px;font-weight:800;font-family:var(--mono);color:var(--text);letter-spacing:2px">--:--:--</div>
-            <div style="font-size:10px;color:var(--muted2);margin-top:4px">Santai dulu — absen pulang terbuka otomatis tepat waktunya 🌙</div>
+            <div style="font-size:10px;color:var(--green);font-weight:700;letter-spacing:0.8px;margin-bottom:4px" id="cd-label-top">⏰ HITUNG MUNDUR</div>
+            <div id="absen-countdown-timer" style="font-size:28px;font-weight:900;font-family:var(--mono);color:var(--text);letter-spacing:3px;line-height:1.1">--:--:--</div>
+            <div style="font-size:10px;color:var(--muted2);margin-top:4px" id="cd-label-bot">Santai dulu — absen terbuka otomatis tepat waktunya 🌙</div>
           </div>
         </div>
         <div class="field"><label>Catatan (opsional)</label>
@@ -3703,6 +3764,43 @@ Buka sampai [jam]</div>
     <button class="tbtn" onclick="swTab('kanit','dana',this)">🛡️ Dana</button>
     <button class="tbtn" onclick="swTab('kanit','database',this);renderGASPanel()">🗄️ Database</button>
     <button class="tbtn" onclick="swTab('kanit','cashmon',this);initCashMon()">💵 Cash Monitor</button>
+    <button class="tbtn" onclick="swTab('kanit','jadwal',this);loadAbsenCfgUI()">⏰ Jadwal</button>
+  </div>
+
+  <!-- JADWAL ABSEN SETTINGS -->
+  <div class="panel pad" id="k-jadwal">
+    <div style="font-size:13px;font-weight:800;margin-bottom:4px">⏰ Pengaturan Jadwal Absensi</div>
+    <div style="font-size:11px;color:var(--muted2);font-family:var(--mono);margin-bottom:16px;line-height:1.6">
+      Setting ini langsung aktif tanpa perlu reload. Semua cabang menggunakan setting yang disimpan di device ini.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono);letter-spacing:.5px;margin-bottom:5px">ABSEN MASUK BUKA</div>
+        <input type="time" id="cfg-buka-mulai" class="finp" style="font-family:var(--mono)">
+        <div style="font-size:9px;color:var(--muted2);margin-top:3px">Jam pertama bisa absen masuk</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono);letter-spacing:.5px;margin-bottom:5px">BATAS MASUK (TELAT)</div>
+        <input type="time" id="cfg-batas-masuk" class="finp" style="font-family:var(--mono)">
+        <div style="font-size:9px;color:var(--muted2);margin-top:3px">Lewat ini = telat, tombol kunci</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono);letter-spacing:.5px;margin-bottom:5px">ABSEN KELUAR BUKA</div>
+        <input type="time" id="cfg-batas-keluar" class="finp" style="font-family:var(--mono)">
+        <div style="font-size:9px;color:var(--muted2);margin-top:3px">Jam pertama bisa absen pulang</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono);letter-spacing:.5px;margin-bottom:5px">ABSEN KELUAR TUTUP</div>
+        <input type="time" id="cfg-lock-keluar" class="finp" style="font-family:var(--mono)">
+        <div style="font-size:9px;color:var(--muted2);margin-top:3px">Lewat ini = tombol keluar terkunci (misal 02:00)</div>
+      </div>
+    </div>
+    <div style="background:rgba(245,208,32,0.06);border:1px solid rgba(245,208,32,0.2);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--muted2);font-family:var(--mono);margin-bottom:14px;line-height:1.7" id="cfg-preview-jadwal">
+      Preview: —
+    </div>
+    <button onclick="simpanAbsenCfg()" style="width:100%;background:var(--accent);border:none;border-radius:12px;padding:13px;color:#fff;font-weight:800;font-size:14px;cursor:pointer;font-family:var(--sans)">
+      💾 Simpan Jadwal
+    </button>
   </div>
 
   <!-- DASHBOARD -->
@@ -4759,29 +4857,69 @@ let _omsetTrx   = 0; // total nominal transaksi harian — sumber omset
 // • Setor Tunai ke Bank = cash yang keluar dari laci ke bank (opsional)
 // ══════════════════════════════════════════════════════════════════
 function hitungKas(){
-  const cashPagi    = parseRp(g('p_cash_pagi')?.value)             || 0;
-  const cashJual    = parseRp(g('p_cash')?.value)                  || 0; // penjualan produk saja
-  const ambilBank   = parseRp(g('p_tambah_kasmod')?.value)         || 0;
-  const setorBank   = parseRp(g('p_setor_bank')?.value)            || 0;
-  const modal       = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
-  const makan       = parseRp(g('p_makan')?.value)                 || 0;
-  const lain        = parseRp(g('p_lainlain')?.value)              || 0;
-  // ── BRILink: efek langsung ke cash fisik di laci ──
-  const trxTransfer = parseRp(g('p_trx_transfer')?.value)          || 0; // customer kasih cash → cash MASUK (+)
-  const trxTarik    = parseRp(g('p_trx_tarik')?.value)             || 0; // counter kasih cash ke customer → cash KELUAR (−)
+  const cashPagi       = parseRp(g('p_cash_pagi')?.value)             || 0;
+  const cashJual       = parseRp(g('p_cash')?.value)                  || 0;
+  const ambilBank      = parseRp(g('p_tambah_kasmod')?.value)         || 0;
+  const setorBank      = parseRp(g('p_setor_bank')?.value)            || 0;
+  const modal          = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
+  const makan          = parseRp(g('p_makan')?.value)                 || 0;
+  const lain           = parseRp(g('p_lainlain')?.value)              || 0;
+  // BRILink — efek langsung ke cash fisik di laci:
+  // Transfer: customer kasih cash ke kita → cash MASUK (+)
+  // Tarik Tunai: kita kasih cash ke customer → cash KELUAR (−)
+  const trxTransfer    = parseRp(g('p_trx_transfer')?.value)          || 0;
+  const trxTarik       = parseRp(g('p_trx_tarik')?.value)             || 0;
+  // Tambahan dari Pusat/Ibu: cash masuk ke laci bukan dari transaksi normal
+  // Wajib dilaporkan — dicatat sebagai utang cabang ke pusat
+  const tambahanPusat  = parseRp(g('p_tambahan_pusat')?.value)        || 0;
 
   const pengeluaran = makan + lain;
-  // ⚠️ Transfer menambah cash, Tarik mengurangi cash — wajib eksplisit
-  const cashFisik   = cashPagi + cashJual + trxTransfer - trxTarik + ambilBank;
+  // Ekspektasi total uang di laci akhir hari (sebelum setor):
+  // Modal awal + penjualan + transfer masuk - tarik keluar + ambil bank + tambahan pusat - pengeluaran
+  const cashFisik   = cashPagi + cashJual + trxTransfer - trxTarik + ambilBank + tambahanPusat;
   const harusSetor  = cashFisik - setorBank - modal - pengeluaran;
   return { cashPagi, cashJual, ambilBank, setorBank, modal, pengeluaran, makan, lain,
-           trxTransfer, trxTarik, cashFisik, harusSetor };
+           trxTransfer, trxTarik, tambahanPusat, cashFisik, harusSetor };
 }
+
+function togglePanduan(){
+  const body = g('panduan_body');
+  const chev = g('panduan_chevron');
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  if(chev) chev.style.transform = open ? '' : 'rotate(180deg)';
+  if(!open) _updatePanduan();
+}
+
+function _updatePanduan(){
+  const k = hitungKas();
+  const ekspektasi = k.modal > 0
+    ? k.cashPagi + k.cashJual + k.trxTransfer - k.trxTarik + k.ambilBank + k.tambahanPusat - k.pengeluaran
+    : k.cashFisik - k.pengeluaran;
+
+  const sv = (n, plus=false) => (plus && n > 0 ? '+' : n < 0 ? '−' : '') + fmt(Math.abs(n));
+
+  _s('pand_modal', sv(k.cashPagi));
+  _s('pand_jual',  sv(k.cashJual, true));
+  // Transfer & Tarik — hanya tampilkan baris jika ada nilai
+  const rowTf = g('pand_row_tf'); if(rowTf) rowTf.style.display = k.trxTransfer > 0 ? 'flex' : 'none';
+  const rowTk = g('pand_row_tk'); if(rowTk) rowTk.style.display = k.trxTarik > 0    ? 'flex' : 'none';
+  _s('pand_tf', '+' + fmt(k.trxTransfer));
+  _s('pand_tk', '−' + fmt(k.trxTarik));
+  const rowPusat = g('pand_row_pusat'); if(rowPusat) rowPusat.style.display = k.tambahanPusat > 0 ? 'flex' : 'none';
+  _s('pand_pusat', '+' + fmt(k.tambahanPusat));
+  _s('pand_peng', '−' + fmt(k.pengeluaran));
+  _s('pand_total', fmt(ekspektasi));
+}
+
+function _s(id, val){ const el = g(id); if(el) el.textContent = val; }
 
 function cl_calc_setor(){
   const k = hitungKas();
   const elAuto = g('p_cash_fisik_auto');
-  if(elAuto) elAuto.textContent = fmt(k.cashFisik);
+  if(elAuto) elAuto.textContent = fmt(k.cashFisik - k.pengeluaran);
+  // Refresh panduan kalau terbuka
+  if(g('panduan_body')?.style.display !== 'none') _updatePanduan();
   s('setor_cash_fisik',       fmt(k.cashPagi + k.cashJual));
   s('setor_cash_fisik_alert', fmt(k.cashFisik));
   s('setor_ambil_bank',       fmt(k.ambilBank));
@@ -4831,43 +4969,71 @@ function cl_preview_selisih(){
     elSel.textContent = (selisih > 0 ? '+' : '') + fmt(Math.abs(selisih));
     elSel.style.color = selisih === 0 ? 'var(--green)' : selisih > 0 ? 'var(--blue)' : 'var(--red)';
   }
-  if(elHint) elHint.textContent = selisih === 0 ? '✅ Pas — siap lanjut rekonsiliasi' : selisih > 0 ? '⬆️ Lebih dari ekspektasi — cek sebelum proses' : '⬇️ Kurang dari ekspektasi — cek sebelum proses';
+  if(elHint){
+    if(selisih === 0){
+      elHint.style.color = 'var(--green)';
+      elHint.textContent = '✅ Pas — siap lanjut rekonsiliasi';
+    } else if(selisih > 0){
+      elHint.style.color = 'var(--blue)';
+      elHint.textContent = '💰 Surplus — boleh lanjut, selisih lebih akan dicatat KC';
+    } else {
+      elHint.style.color = 'var(--red)';
+      elHint.textContent = '⚠️ Kurang — wajib cek dulu. Lihat panduan di atas, pastikan sudah hitung modal + BRILink.';
+    }
+  }
 }
 
 // ── ANALISA AKAR SELISIH ──
 function _akarSelisih(selisih, k){
-  const abs = Math.abs(selisih);
-  const items = [];
+  const abs     = Math.abs(selisih);
+  const netBRL  = (k.trxTransfer || 0) - (k.trxTarik || 0); // net efek BRILink ke cash
+  const items   = [];
   if(selisih === 0) return { level: 'ok', items: [] };
 
-  if(selisih < 0){
-    // FISIK KURANG — cash di laci lebih sedikit dari ekspektasi sistem
-    if(abs <= 1000)
-      items.push({ icon:'🟡', text:'Kemungkinan selisih kembalian / recehan. Masih dalam batas wajar.' });
-    else if(abs <= 10000)
-      items.push({ icon:'🟠', text:'Pengeluaran mungkin ada yang belum dicatat (jajan, ojol, titipan).' });
-    else
-      items.push({ icon:'🔴', text:'Kekurangan signifikan — wajib diselidiki sebelum setor.' });
+  // ── DETEKSI: apakah selisih ini persis cocok dengan efek BRILink? ──
+  const matchTarik    = k.trxTarik > 0 && Math.abs(selisih - (-k.trxTarik)) < 500;
+  const matchTransfer = k.trxTransfer > 0 && Math.abs(selisih - k.trxTransfer) < 500;
+  const matchNetBRL   = Math.abs(selisih - netBRL) < 500;
 
-    // BRILink hint untuk selisih negatif
-    items.push({ icon:'💳', text:`Cek kolom Tarik Tunai — kalau ada tarik tunai yang belum diinput, cash di laci berkurang tapi sistem tidak tahu. Contoh: tartun Rp${(abs/1000).toFixed(0)}rb lupa diisi → selisih persis segini.` });
-    items.push({ icon:'💡', text:'Cek struk & catatan pengeluaran. Bandingkan input Tarik Tunai dengan transaksi BRILink hari ini.' });
+  if(selisih < 0){
+    // ── FISIK KURANG ──
+    if(matchTarik){
+      // Kemungkinan besar: tarik tunai tidak dihitung ke fisik manual
+      items.push({ icon:'💡', text:`Fisik kurang ${fmt(abs)} — angka ini cocok persis dengan Tarik Tunai hari ini (${fmt(k.trxTarik)}).` });
+      items.push({ icon:'💳', text:`Tarik Tunai artinya kamu keluarkan cash fisik ke customer. Itu wajar mengurangi laci kamu. Pastikan kamu sudah ikut hitung modal pagi (${fmt(k.cashPagi)}) saat hitung fisik manual tadi.` });
+      items.push({ icon:'🔍', text:`Cek ulang: waktu hitung fisik, sudah termasuk uang modal di brankas/laci? Kalau belum dihitung, coba hitung ulang dengan ikut sertakan uang modal.` });
+    } else if(matchNetBRL){
+      items.push({ icon:'💡', text:`Fisik kurang ${fmt(abs)} — angka ini cocok dengan net BRILink hari ini (Tarik ${fmt(k.trxTarik)} − Transfer ${fmt(k.trxTransfer)} = keluar ${fmt(Math.abs(netBRL))}).` });
+      items.push({ icon:'💳', text:`BRILink Tarik Tunai mengurangi cash laci, BRILink Transfer menambah cash laci. Ini normal. Kemungkinan hitung fisik belum memasukkan modal pagi.` });
+    } else if(abs <= 1000){
+      items.push({ icon:'🟡', text:`Selisih ${fmt(abs)} — bisa dari kembalian recehan atau nominal yang dibulatkan. Wajar terjadi.` });
+    } else if(abs <= 50000){
+      items.push({ icon:'🟠', text:`Kemungkinan ada pengeluaran kecil yang belum dicatat (makan, jajan, titipan customer), atau kembalian yang salah.` });
+      items.push({ icon:'💳', text:`Cek juga: ada tarik tunai BRILink yang lupa diinput? Tiap tarik tunai yang tidak diinput akan bikin laci "kelihatan" kurang.` });
+    } else {
+      items.push({ icon:'🔴', text:`Selisih ${fmt(abs)} — angka ini cukup besar. Ada kemungkinan: (1) hitung fisik belum ikut modal, (2) tarik tunai BRILink belum semua diinput, (3) ada pengeluaran yang tidak tercatat.` });
+      items.push({ icon:'💡', text:`Langkah: hitung ulang fisik, pastikan modal pagi ikut dihitung. Lalu cocokkan tarik tunai di riwayat BRILink app dengan input di sini.` });
+    }
+    if(k.trxTarik > 0 && !matchTarik && !matchNetBRL)
+      items.push({ icon:'💳', text:`Ingat: kamu sudah keluarkan cash ${fmt(k.trxTarik)} ke customer lewat Tarik Tunai — itu sudah diperhitungkan sistem. Kalau selisih masih ada, cek pengeluaran lain.` });
 
   } else {
-    // FISIK LEBIH — cash di laci lebih banyak dari ekspektasi sistem
-    if(abs <= 1000)
-      items.push({ icon:'🟡', text:'Kelebihan kecil — kemungkinan kembalian customer kurang / recehan tambah.' });
-    else if(abs <= 10000)
-      items.push({ icon:'🟠', text:'Kemungkinan ada penjualan yang tidak dicatat, atau input cash penjualan kurang dari aktual.' });
-    else
-      items.push({ icon:'🔴', text:'Kelebihan besar — wajib diselidiki. Ada uang masuk yang tidak tercatat di sistem.' });
-
-    // BRILink hint untuk selisih positif
-    items.push({ icon:'💳', text:`Cek kolom Transfer — kalau ada customer transfer tapi belum diinput, cash di laci bertambah tapi sistem tidak tahu. Contoh: TF Rp${(abs/1000).toFixed(0)}rb lupa diisi → selisih persis segini.` });
-    items.push({ icon:'💡', text:'Cek struk & catatan transaksi. Bandingkan input Transfer dengan riwayat BRILink hari ini.' });
+    // ── FISIK LEBIH ──
+    if(matchTransfer){
+      items.push({ icon:'💡', text:`Fisik lebih ${fmt(abs)} — angka ini cocok persis dengan Transfer BRILink hari ini (${fmt(k.trxTransfer)}).` });
+      items.push({ icon:'💳', text:`Transfer BRILink artinya customer kasih cash ke kamu, kamu yang transfer ke rekening mereka. Cash itu sudah masuk hitungan sistem. Kemungkinan ada double-count di hitung fisik.` });
+    } else if(abs <= 1000){
+      items.push({ icon:'🟡', text:`Lebih ${fmt(abs)} — sangat kecil, bisa dari kembalian atau recehan. Ini masih oke, boleh lanjut setor.` });
+    } else if(abs <= 50000){
+      items.push({ icon:'🟠', text:`Lebih ${fmt(abs)} — cek apakah ada transaksi penjualan yang belum diinput di Cash Penjualan, atau ada transfer BRILink yang double diinput.` });
+    } else {
+      items.push({ icon:'🔵', text:`Fisik lebih ${fmt(abs)} — ada uang di laci yang lebih dari yang tercatat sistem. Cek: apakah ada penjualan cash yang belum diinput? Atau transfer BRILink yang diinput dua kali?` });
+    }
+    if(k.trxTransfer > 0 && !matchTransfer)
+      items.push({ icon:'💳', text:`Kamu sudah menerima cash ${fmt(k.trxTransfer)} dari customer transfer — itu sudah masuk hitungan sistem. Kalau masih lebih, cek input penjualan.` });
   }
 
-  const level = abs === 0 ? 'ok' : abs <= 1000 ? 'warn' : abs <= 10000 ? 'caution' : 'danger';
+  const level = abs === 0 ? 'ok' : selisih < 0 ? (abs <= 1000 ? 'warn' : abs <= 50000 ? 'caution' : 'danger') : 'surplus';
   return { level, items };
 }
 
@@ -4938,6 +5104,10 @@ function _showRekonPopup(k, harusSetor, cashFisik, fisikManual, ekspektasi, seli
   s('rp_cash_penjualan', fmt(k.cashJual));
   s('rp_cash_transfer',  fmt(k.trxTransfer));
   s('rp_cust_transfer',  fmt(k.trxTarik));
+  // Tambahan pusat — tampilkan baris jika ada
+  const rowPusat = g('rp_row_tambahan_pusat');
+  if(rowPusat) rowPusat.style.display = k.tambahanPusat > 0 ? 'flex' : 'none';
+  s('rp_tambahan_pusat', fmt(k.tambahanPusat));
   s('rp_total_masuk',    fmt(cashFisik));
   s('rp_makan',          fmt(k.makan));
   s('rp_lain',           fmt(k.lain));
@@ -4960,8 +5130,8 @@ function _showRekonPopup(k, harusSetor, cashFisik, fisikManual, ekspektasi, seli
   const elAkar = g('rp_akar_selisih');
   if(elAkar){
     if(akar.items.length > 0){
-      const colorMap = { warn:'rgba(245,208,32,0.08)', caution:'rgba(245,166,35,0.09)', danger:'rgba(239,68,68,0.08)' };
-      const borderMap = { warn:'rgba(245,208,32,0.3)', caution:'rgba(245,166,35,0.3)', danger:'rgba(239,68,68,0.35)' };
+      const colorMap = { warn:'rgba(245,208,32,0.08)', caution:'rgba(245,166,35,0.09)', danger:'rgba(239,68,68,0.08)', surplus:'rgba(68,153,255,0.07)' };
+      const borderMap = { warn:'rgba(245,208,32,0.3)', caution:'rgba(245,166,35,0.3)', danger:'rgba(239,68,68,0.35)', surplus:'rgba(68,153,255,0.3)' };
       elAkar.style.background = colorMap[akar.level] || colorMap.warn;
       elAkar.style.borderColor = borderMap[akar.level] || borderMap.warn;
       elAkar.style.display = 'block';
@@ -4982,20 +5152,29 @@ function _showRekonPopup(k, harusSetor, cashFisik, fisikManual, ekspektasi, seli
     elSA.style.color = Math.abs(sisaAkhir) < 500 ? 'var(--green)' : 'var(--red)';
   }
 
+  // ── Klasifikasi: surplus boleh lanjut, deficit wajib diblok ──
+  const isDeficit = selisih < 0;
+  const isSurplus = selisih > 0;
+  const isBalance = selisih === 0;
+
   // Status balance utama
   const box = g('rp_balance_box'); const valEl = g('rp_status_val'); const subEl = g('rp_status_sub');
   if(box && valEl && subEl){
-    if(selisih === 0 && harusSetor > 0){
+    if(isBalance){
       box.style.background = 'rgba(62,207,142,0.08)'; box.style.borderColor = 'rgba(62,207,142,0.35)';
       valEl.textContent = '✅ BALANCE'; valEl.style.color = 'var(--green)';
-      subEl.textContent = `Fisik ${fmt(fisikManual)} = Modal ${fmt(k.modal)} + Setor ${fmt(Math.max(0,harusSetor))}`; subEl.style.color = 'var(--green)';
-    } else if(selisih !== 0){
-      const isMin = selisih < 0;
+      subEl.textContent = harusSetor > 0
+        ? `Fisik ${fmt(fisikManual)} = Modal ${fmt(k.modal)} + Setor ${fmt(Math.max(0,harusSetor))}`
+        : `Fisik ${fmt(fisikManual)} sesuai ekspektasi — tidak ada setoran hari ini`;
+      subEl.style.color = 'var(--green)';
+    } else if(isSurplus){
+      box.style.background = 'rgba(68,153,255,0.08)'; box.style.borderColor = 'rgba(68,153,255,0.3)';
+      valEl.textContent = `💰 FISIK LEBIH +${fmt(absSelisih)}`; valEl.style.color = 'var(--blue)';
+      subEl.textContent = `Fisik ${fmt(fisikManual)} > Ekspektasi ${fmt(ekspektasi)} — kelebihan dicatat, boleh lanjut setor`; subEl.style.color = 'var(--blue)';
+    } else if(isDeficit){
       box.style.background = 'rgba(239,68,68,0.08)'; box.style.borderColor = 'rgba(239,68,68,0.35)';
-      valEl.textContent = isMin ? '⚠️ FISIK KURANG' : '⚠️ FISIK LEBIH';
-      valEl.style.color = 'var(--red)';
-      subEl.textContent = `Fisik ${fmt(fisikManual)} vs Ekspektasi ${fmt(ekspektasi)} — selisih ${isMin?'-':'+'} ${fmt(absSelisih)}`;
-      subEl.style.color = 'var(--red)';
+      valEl.textContent = `⚠️ FISIK KURANG −${fmt(absSelisih)}`; valEl.style.color = 'var(--red)';
+      subEl.textContent = `Fisik ${fmt(fisikManual)} < Ekspektasi ${fmt(ekspektasi)} — selesaikan dulu sebelum setor`; subEl.style.color = 'var(--red)';
     } else {
       box.style.background = 'rgba(245,166,35,0.08)'; box.style.borderColor = 'rgba(245,166,35,0.3)';
       valEl.textContent = '⚠ Tidak Ada Setoran'; valEl.style.color = 'var(--orange)';
@@ -5008,27 +5187,32 @@ function _showRekonPopup(k, harusSetor, cashFisik, fisikManual, ekspektasi, seli
   if(cat){
     const notes = [];
     if(k.modal === 0) notes.push('⚠️ Modal brankas kembali belum diisi.');
-    if(selisih < 0)   notes.push(`⚠️ Fisik kurang ${fmt(absSelisih)} — wajib selesaikan sebelum bisa setor.`);
-    if(selisih > 0)   notes.push(`⚠️ Fisik lebih ${fmt(absSelisih)} — cek ulang, laporkan ke KC.`);
-    if(harusSetor <= 0 && selisih === 0) notes.push('⚠️ Tidak ada yang perlu disetor hari ini.');
+    if(isDeficit)     notes.push(`🔒 Fisik kurang ${fmt(absSelisih)} — wajib diselesaikan sebelum bisa setor. Cek akar selisih di atas.`);
+    if(isSurplus)     notes.push(`💰 Fisik lebih ${fmt(absSelisih)} — kelebihan tercatat & dilaporkan ke KC. Boleh lanjut setor.`);
+    if(harusSetor <= 0 && isBalance) notes.push('ℹ️ Tidak ada nominal yang perlu disetor hari ini.');
     if(notes.length === 0) notes.push('✅ Semua data lengkap & balance. Lanjutkan ke konfirmasi setoran.');
-    cat.style.color = notes.some(n=>n.startsWith('⚠')) ? 'var(--orange)' : 'var(--green)';
-    cat.style.background = notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.06)' : 'rgba(62,207,142,0.06)';
-    cat.style.borderColor = notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.25)' : 'rgba(62,207,142,0.25)';
+    const hasBlock = notes.some(n=>n.startsWith('🔒'));
+    cat.style.color     = hasBlock ? 'var(--red)' : notes.some(n=>n.startsWith('⚠')) ? 'var(--orange)' : 'var(--green)';
+    cat.style.background= hasBlock ? 'rgba(239,68,68,0.06)' : notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.06)' : 'rgba(62,207,142,0.06)';
+    cat.style.borderColor= hasBlock ? 'rgba(239,68,68,0.2)' : notes.some(n=>n.startsWith('⚠')) ? 'rgba(245,166,35,0.25)' : 'rgba(62,207,142,0.25)';
     cat.innerHTML = notes.join('<br>');
   }
 
   // Update balance box ringkas di main card
   const bxMain = g('setor_balance_box'); const selMain = g('setor_selisih'); const subMain = g('setor_balance_sub');
   if(bxMain && selMain && subMain){
-    if(selisih === 0 && harusSetor > 0){
+    if(isBalance){
       bxMain.style.background='rgba(62,207,142,0.08)'; bxMain.style.borderColor='rgba(62,207,142,0.35)';
       selMain.textContent='✅ BALANCE'; selMain.style.color='var(--green)';
-      subMain.textContent=`Disetor ${fmt(Math.max(0,harusSetor))} · Brankas ${fmt(k.modal)}`;
-    } else if(selisih !== 0){
+      subMain.textContent= harusSetor > 0 ? `Disetor ${fmt(Math.max(0,harusSetor))} · Brankas ${fmt(k.modal)}` : 'Tidak ada setoran hari ini';
+    } else if(isSurplus){
+      bxMain.style.background='rgba(68,153,255,0.07)'; bxMain.style.borderColor='rgba(68,153,255,0.28)';
+      selMain.textContent=`💰 Fisik Lebih +${fmt(absSelisih)}`; selMain.style.color='var(--blue)';
+      subMain.textContent='Kelebihan dicatat · Boleh lanjut setor';
+    } else if(isDeficit){
       bxMain.style.background='rgba(239,68,68,0.08)'; bxMain.style.borderColor='rgba(239,68,68,0.35)';
-      selMain.textContent=`⚠ Selisih ${selisih>0?'+':''}${fmt(absSelisih)}`; selMain.style.color='var(--red)';
-      subMain.textContent='Wajib koreksi sebelum bisa setor';
+      selMain.textContent=`🔒 Fisik Kurang −${fmt(absSelisih)}`; selMain.style.color='var(--red)';
+      subMain.textContent='Wajib koreksi atau laporkan KC sebelum setor';
     } else {
       bxMain.style.background='rgba(245,166,35,0.06)'; bxMain.style.borderColor='rgba(245,166,35,0.25)';
       selMain.textContent='⚠ Tidak Ada Setoran'; selMain.style.color='var(--orange)';
@@ -5042,20 +5226,19 @@ function _showRekonPopup(k, harusSetor, cashFisik, fisikManual, ekspektasi, seli
   const btnSub = g('setor_btn_sub'); if(btnSub && !_sudahSetor) btnSub.textContent = 'Tap untuk konfirmasi tujuan & bukti setor';
   const mainBtn = g('setor_nominal_btn'); if(mainBtn) mainBtn.style.background = harusSetor > 0 ? 'var(--accent)' : 'var(--s3)';
 
-  // Kontrol tombol di popup
+  // Kontrol tombol di popup — HANYA deficit yang diblok
   const btnBal = g('rp_btn_balance'); const btnSel = g('rp_btn_selisih');
-  if(selisih === 0){
+  const setoranBtn = g('setor_nominal_btn');
+  if(!isDeficit){
+    // Balance atau surplus → boleh lanjut
     if(btnBal) btnBal.style.display = 'grid';
     if(btnSel) btnSel.style.display = 'none';
     if(setoranBtn){ setoranBtn.style.pointerEvents = 'auto'; setoranBtn.style.opacity = '1'; }
   } else {
+    // Deficit → blok total
     if(btnBal) btnBal.style.display = 'none';
     if(btnSel) btnSel.style.display = 'block';
-    s('rp_blok_reason', selisih < 0
-      ? `Fisik kurang ${fmt(absSelisih)} dari ekspektasi. Koreksi data atau laporkan ke KC.`
-      : `Fisik lebih ${fmt(absSelisih)} dari ekspektasi. Cek & laporkan ke KC sebelum setor.`);
-    // Blok tombol setor di bawah
-    const setoranBtn = g('setor_nominal_btn');
+    s('rp_blok_reason', `Fisik kurang ${fmt(absSelisih)} dari ekspektasi sistem. Cek akar selisih di atas, koreksi data, atau laporkan ke KC.`);
     if(setoranBtn){ setoranBtn.style.pointerEvents = 'none'; setoranBtn.style.opacity = '0.35'; }
   }
 
@@ -5151,9 +5334,10 @@ function cl_konfirmasiSetor(){
   const fisikManual = parseRp(fisikManualVal) || 0;
   const ekspektasi  = k.modal + Math.max(0, k.harusSetor);
   const selisih     = fisikManual - ekspektasi;
-  if(selisih !== 0){
-    const arah = selisih < 0 ? `Fisik kurang ${fmt(Math.abs(selisih))}` : `Fisik lebih ${fmt(Math.abs(selisih))}`;
-    toast(`🔒 DIBLOK — ${arah} dari ekspektasi. Wajib koreksi dulu.`);
+  // Surplus (fisik lebih) → BOLEH LANJUT — dicatat tapi tidak diblok
+  // Deficit (fisik kurang) → DIBLOK — wajib koreksi dulu
+  if(selisih < 0){
+    toast(`🔒 DIBLOK — Fisik kurang ${fmt(Math.abs(selisih))}. Cek panduan hitungan atau laporkan ke KC.`);
     return;
   }
   // ═══ LOLOS GATE — lanjut ke panel setor ═══
@@ -7275,13 +7459,68 @@ function hrTabInit(tab){
 //  ABSENSI
 // ══════════════════════
 // Jadwal absen — beda untuk hari kerja (Senin–Jumat) & weekend (Sabtu–Minggu)
-const ABSEN_BUKA_MULAI       = '07:00'; // jam mulai bisa absen masuk (semua hari)
-const ABSEN_BATAS_MASUK      = '09:28'; // batas akhir absen masuk — weekday
-const ABSEN_BATAS_KELUAR     = '21:28'; // jam bebas pulang — weekday (waktu istirahat dimulai)
-const ABSEN_BATAS_MASUK_WE   = '08:55'; // batas akhir absen masuk — weekend (Sabtu/Minggu)
-const ABSEN_BATAS_KELUAR_WE  = '21:40'; // jam bebas pulang — weekend (waktu istirahat dimulai)
-// Alias lama (tetap dipertahankan agar bagian lain yg masih memakai ABSEN_BUKA_AKHIR tidak rusak)
-const ABSEN_BUKA_AKHIR        = ABSEN_BATAS_MASUK;
+// ══════ ABSEN SCHEDULE CONFIG ══════
+// Semua nilai dibaca dari localStorage (bisa diset via Kanit panel)
+// Fallback ke nilai default kalau belum pernah diset
+
+function getAbsenCfg(){
+  try {
+    const saved = JSON.parse(localStorage.getItem('sdc_absen_cfg') || '{}');
+    return {
+      bukaMulai:    saved.bukaMulai    || '07:30', // jam mulai bisa absen masuk
+      batasMasuk:   saved.batasMasuk   || '09:28', // batas akhir absen masuk (weekday)
+      batasMasukWE: saved.batasMasukWE || '09:28', // batas akhir absen masuk (weekend)
+      batasKeluar:  saved.batasKeluar  || '21:28', // jam absen keluar dibuka (weekday)
+      batasKeluarWE:saved.batasKeluarWE|| '21:28', // jam absen keluar dibuka (weekend)
+      lockKeluar:   saved.lockKeluar   || '02:00', // jam absen keluar DITUTUP (cross-midnight)
+    };
+  } catch(e){ return { bukaMulai:'07:30',batasMasuk:'09:28',batasMasukWE:'09:28',batasKeluar:'21:28',batasKeluarWE:'21:28',lockKeluar:'02:00'}; }
+}
+
+function saveAbsenCfg(patch){
+  const cur = getAbsenCfg();
+  localStorage.setItem('sdc_absen_cfg', JSON.stringify({ ...cur, ...patch }));
+}
+
+// Tetap pertahankan agar kode lama yang pakai konstanta ini tidak error
+// (nilai diambil dinamis dari cfg setiap tick)
+let ABSEN_BUKA_MULAI    = getAbsenCfg().bukaMulai;
+let ABSEN_BATAS_MASUK   = getAbsenCfg().batasMasuk;
+let ABSEN_BATAS_KELUAR  = getAbsenCfg().batasKeluar;
+let ABSEN_BATAS_MASUK_WE  = getAbsenCfg().batasMasukWE;
+let ABSEN_BATAS_KELUAR_WE = getAbsenCfg().batasKeluarWE;
+let ABSEN_BUKA_AKHIR    = ABSEN_BATAS_MASUK;
+let ABSEN_LOCK_KELUAR   = getAbsenCfg().lockKeluar;
+
+// ── Konversi HH:MM ke menit — untuk perbandingan yang benar (termasuk cross-midnight) ──
+function toMenit(hhmm){
+  if(!hhmm) return 0;
+  const [h, m] = hhmm.split(':').map(Number);
+  return (h || 0) * 60 + (m || 0);
+}
+
+// Cek apakah sebuah jam ada di dalam window (mendukung cross-midnight)
+// Contoh: window 21:28 → 02:00 → jam 01:00 = masuk window ✅
+function inTimeWindow(jamHM, start, end){
+  const t  = toMenit(jamHM);
+  const s  = toMenit(start);
+  const e  = toMenit(end);
+  if(s <= e) return t >= s && t < e;  // window normal (tidak lintas tengah malam)
+  return t >= s || t < e;              // window lintas tengah malam (e.g. 21:28 → 02:00)
+}
+
+// Helper: apakah jam masih dalam window keluar (21:28 s.d. lockKeluar, default 02:00)
+function isKeluarWindowOpen(jamHM, bKeluar, lockKeluar){
+  return inTimeWindow(jamHM, bKeluar, lockKeluar || '02:00');
+}
+
+// ── Tanggal lokal (bukan UTC) — fix timezone bug ──
+function todayLocalISO(d){
+  const now = d || new Date();
+  return now.getFullYear() + '-'
+    + String(now.getMonth()+1).padStart(2,'0') + '-'
+    + String(now.getDate()).padStart(2,'0');
+}
 
 function isHariWeekend(tanggal){
   // tanggal format 'YYYY-MM-DD'. Sabtu=6, Minggu=0
@@ -7299,21 +7538,70 @@ function batasKeluarAbsen(tanggal){
 function jamAbsenStatus(jam, tanggal){
   // Status untuk ABSEN MASUK saja. Kembalikan: 'tepat' | 'telat' | 'belum'
   if(!jam) return 'belum';
+  const cfg = getAbsenCfg();
   const batas = batasMasukAbsen(tanggal);
-  if(jam >= ABSEN_BUKA_MULAI && jam <= batas) return 'tepat';
-  if(jam > batas) return 'telat';
-  return 'belum'; // sebelum jam mulai absen
+  const tJam = toMenit(jam);
+  if(tJam >= toMenit(cfg.bukaMulai) && tJam <= toMenit(batas)) return 'tepat';
+  if(tJam > toMenit(batas)) return 'telat';
+  return 'belum';
 }
 
-// Cek apakah absen MASUK pada jam tertentu dianggap TELAT (lewat batas masuk hari itu)
+// Cek apakah absen MASUK dianggap TELAT
 function absenMasukTelat(jam, tanggal){
   if(!jam) return false;
-  return jam > batasMasukAbsen(tanggal);
+  return toMenit(jam) > toMenit(batasMasukAbsen(tanggal));
 }
-// Cek apakah absen KELUAR pada jam tertentu dianggap PULANG CEPAT (sebelum batas keluar hari itu)
+// Cek apakah absen KELUAR dianggap PULANG CEPAT (sebelum window keluar)
 function absenKeluarCepat(jam, tanggal){
   if(!jam) return false;
-  return jam < batasKeluarAbsen(tanggal);
+  return toMenit(jam) < toMenit(batasKeluarAbsen(tanggal));
+}
+
+function loadAbsenCfgUI(){
+  const cfg = getAbsenCfg();
+  const sv = (id, val) => { const el = g(id); if(el) el.value = val; };
+  sv('cfg-buka-mulai',   cfg.bukaMulai);
+  sv('cfg-batas-masuk',  cfg.batasMasuk);
+  sv('cfg-batas-keluar', cfg.batasKeluar);
+  sv('cfg-lock-keluar',  cfg.lockKeluar);
+  _previewAbsenCfg(cfg);
+}
+
+function _previewAbsenCfg(cfg){
+  const el = g('cfg-preview-jadwal');
+  if(!el) return;
+  el.innerHTML = `
+    <strong style="color:var(--text)">Preview Jadwal Aktif:</strong><br>
+    🟢 Absen masuk terbuka: ${cfg.bukaMulai} → <strong style="color:var(--yellow)">${cfg.batasMasuk}</strong> (lewat ini = telat & terkunci)<br>
+    🌙 Absen keluar terbuka: ${cfg.batasKeluar} → <strong style="color:var(--yellow)">${cfg.lockKeluar}</strong> (lewat ini = terkunci)
+  `;
+}
+
+function simpanAbsenCfg(){
+  const gv = id => g(id)?.value?.trim() || '';
+  const bukaMulai   = gv('cfg-buka-mulai');
+  const batasMasuk  = gv('cfg-batas-masuk');
+  const batasKeluar = gv('cfg-batas-keluar');
+  const lockKeluar  = gv('cfg-lock-keluar');
+  if(!bukaMulai || !batasMasuk || !batasKeluar || !lockKeluar){
+    toast('⚠️ Semua field jadwal wajib diisi'); return;
+  }
+  // Validasi: batas masuk harus lebih dari buka mulai
+  if(toMenit(batasMasuk) <= toMenit(bukaMulai)){
+    toast('⚠️ Batas masuk harus lebih dari jam buka'); return;
+  }
+  const cfg = { bukaMulai, batasMasuk, batasMasukWE:batasMasuk, batasKeluar, batasKeluarWE:batasKeluar, lockKeluar };
+  saveAbsenCfg(cfg);
+  // Update runtime variables langsung
+  ABSEN_BUKA_MULAI     = bukaMulai;
+  ABSEN_BATAS_MASUK    = batasMasuk;
+  ABSEN_BATAS_MASUK_WE = batasMasuk;
+  ABSEN_BATAS_KELUAR   = batasKeluar;
+  ABSEN_BATAS_KELUAR_WE= batasKeluar;
+  ABSEN_LOCK_KELUAR    = lockKeluar;
+  ABSEN_BUKA_AKHIR     = batasMasuk;
+  _previewAbsenCfg(cfg);
+  toast(`✅ Jadwal disimpan — Masuk ${bukaMulai}–${batasMasuk} · Keluar ${batasKeluar}–${lockKeluar}`);
 }
 
 function absenTestApply(){
@@ -7321,7 +7609,6 @@ function absenTestApply(){
   if(!val){ toast('⚠️ Isi jam dulu'); return; }
   window._absenTestJam = val;
   toast('🧪 Simulasi jam ' + val + ' aktif');
-  // restart tick agar langsung apply
   if(absenClockInterval) clearInterval(absenClockInterval);
   initAbsensi();
 }
@@ -7342,17 +7629,42 @@ function initAbsensi(){
       const [th, tm] = window._absenTestJam.split(':').map(Number);
       now = new Date(); now.setHours(th, tm, 0, 0);
     }
+    // Reload cfg setiap tick — agar langsung apply kalau Kanit ganti setting
+    const cfg = getAbsenCfg();
+    ABSEN_BUKA_MULAI     = cfg.bukaMulai;
+    ABSEN_BATAS_MASUK    = cfg.batasMasuk;
+    ABSEN_BATAS_MASUK_WE = cfg.batasMasukWE;
+    ABSEN_BATAS_KELUAR   = cfg.batasKeluar;
+    ABSEN_BATAS_KELUAR_WE= cfg.batasKeluarWE;
+    ABSEN_LOCK_KELUAR    = cfg.lockKeluar;
+    ABSEN_BUKA_AKHIR     = cfg.batasMasuk;
+
     const jam    = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
     // Gunakan getHours/getMinutes langsung — anti locale-bug, selalu HH:MM 24 jam
     const jamHM  = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
     const tglDisp= now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-    const tglISO = now.toISOString().split('T')[0];
+    const tglISO = todayLocalISO(now); // FIX: pakai tanggal lokal bukan UTC
     const weekend= isHariWeekend(tglISO);
     const bMasuk = batasMasukAbsen(tglISO);
     const bKeluar= batasKeluarAbsen(tglISO);
+    const lockKel= cfg.lockKeluar; // jam tutup window keluar
 
     s('absen-clock', jam);
     s('absen-date',  tglDisp + (weekend ? ' · 🟡 Weekend' : ''));
+
+    // ── Gerakkan jarum jam dinding analog ──
+    (function updateWallClock(){
+      const hh = now.getHours() % 12;
+      const mm = now.getMinutes();
+      const ss = now.getSeconds();
+      const degSec  = ss * 6;                          // 360/60
+      const degMin  = mm * 6 + ss * 0.1;                // gerak halus tiap detik
+      const degHour = hh * 30 + mm * 0.5;               // 360/12 + gerak halus tiap menit
+      const hEl = g('absen-hand-hour'), mEl = g('absen-hand-min'), sEl = g('absen-hand-sec');
+      if(hEl) hEl.style.transform = `rotate(${degHour}deg)`;
+      if(mEl) mEl.style.transform = `rotate(${degMin}deg)`;
+      if(sEl) sEl.style.transform = `rotate(${degSec}deg)`;
+    })();
 
     // Update label jadwal sesuai hari
     const lblEl = g('absen-jadwal-label');
@@ -7377,6 +7689,8 @@ function initAbsensi(){
     function hitungSisaDetik(){
       const [hK, mK] = bKeluar.split(':').map(Number);
       const target   = new Date(now); target.setHours(hK, mK, 0, 0);
+      // Jika target sudah lewat (cross-midnight), tambah 1 hari
+      if(target <= now) target.setDate(target.getDate() + 1);
       return Math.max(0, Math.floor((target - now) / 1000));
     }
     function formatCountdown(det){
@@ -7388,100 +7702,103 @@ function initAbsensi(){
 
     if(!sudahMasuk){
       // ── Belum absen masuk ──
-      const status = jamAbsenStatus(jamHM, tglISO);
-      const lewatBatas = jamHM > bMasuk;
-      const terlalupagi = jamHM < ABSEN_BUKA_MULAI;
+      const tMenit       = toMenit(jamHM);
+      const tBukaMulai   = toMenit(ABSEN_BUKA_MULAI);
+      const tBatasMasuk  = toMenit(bMasuk);
+      const lewatBatas   = tMenit > tBatasMasuk;
+      const terlalupagi  = tMenit < tBukaMulai;
+      const status       = jamAbsenStatus(jamHM, tglISO);
 
-      if(clockEl) clockEl.style.color = lewatBatas ? 'var(--red)' : status==='tepat' ? 'var(--green)' : 'var(--text)';
+      if(clockEl) clockEl.style.color = lewatBatas ? 'var(--red)' : terlalupagi ? 'var(--text)' : 'var(--green)';
 
-      // Lock masuk button kalau sudah lewat batas atau terlalu pagi
+      // ── Countdown ke batas masuk (selagi masih bisa) ──
+      if(!lewatBatas && !terlalupagi){
+        const detSisa = (tBatasMasuk - tMenit) * 60 - now.getSeconds();
+        if(cdWrap)  cdWrap.style.display = 'block';
+        if(cdTimer) cdTimer.textContent  = formatCountdown(Math.max(0, detSisa));
+        const cdLabel = g('cd-label-bot');
+        if(cdLabel) cdLabel.textContent  = `⏰ Sisa waktu absen masuk sebelum dikunci jam ${bMasuk}`;
+        const cdTop = g('cd-label-top');
+        if(cdTop) cdTop.textContent = '⏰ BATAS MASUK DALAM';
+      } else {
+        if(cdWrap) cdWrap.style.display = 'none';
+      }
+
       if(btnMasuk){
         if(lewatBatas){
-          btnMasuk.disabled    = true;
-          btnMasuk.style.background = 'var(--red)';
-          btnMasuk.style.color      = '#fff';
-          btnMasuk.style.opacity    = '0.65';
-          btnMasuk.style.cursor     = 'not-allowed';
-          btnMasuk.textContent      = '🔴 MASUK DITUTUP';
+          btnMasuk.disabled = true;
+          btnMasuk.style.cssText = 'background:var(--red);color:#fff;opacity:0.65;cursor:not-allowed;';
+          btnMasuk.textContent   = `🔒 MASUK DITUTUP — lewat ${bMasuk}`;
         } else if(terlalupagi){
-          btnMasuk.disabled    = true;
-          btnMasuk.style.background = 'var(--s3)';
-          btnMasuk.style.color      = 'var(--muted)';
-          btnMasuk.style.opacity    = '0.5';
-          btnMasuk.style.cursor     = 'not-allowed';
-          btnMasuk.textContent      = `⏳ Buka ${ABSEN_BUKA_MULAI}`;
+          btnMasuk.disabled = true;
+          btnMasuk.style.cssText = 'background:var(--s3);color:var(--muted);opacity:0.5;cursor:not-allowed;';
+          btnMasuk.textContent   = `⏳ Buka jam ${ABSEN_BUKA_MULAI}`;
         } else {
-          btnMasuk.disabled    = false;
-          btnMasuk.style.background = 'var(--green)';
-          btnMasuk.style.color      = '#000';
-          btnMasuk.style.opacity    = '1';
-          btnMasuk.style.cursor     = 'pointer';
-          btnMasuk.textContent      = '→ MASUK';
+          btnMasuk.disabled = false;
+          btnMasuk.style.cssText = 'background:var(--green);color:#000;opacity:1;cursor:pointer;';
+          btnMasuk.textContent   = '→ MASUK';
         }
       }
 
-      // Keluar belum relevan — sembunyikan countdown
-      if(cdWrap) cdWrap.style.display = 'none';
-
       if(banner){
         if(lewatBatas){
-          banner.style.display  = 'block';
-          banner.innerHTML      = `🔴 Waktu absen masuk sudah <b>ditutup</b> sejak ${bMasuk}${weekend?' (jadwal weekend)':''}. Hubungi manajemen jika ada kendala.`;
-          banner.style.background = 'var(--rs)'; banner.style.color = 'var(--red)'; banner.style.border = '1px solid rgba(224,48,80,0.35)';
-        } else if(status === 'tepat'){
-          banner.style.display  = 'block';
-          banner.innerHTML      = `✅ Selamat datang! Absen masuk buka ${ABSEN_BUKA_MULAI} – ${bMasuk}${weekend?' (jadwal weekend)':''}. Tap → MASUK untuk mulai.`;
-          banner.style.background = 'var(--gs)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.35)';
+          banner.style.display = 'block';
+          banner.innerHTML = `🔒 Absen masuk sudah <b>ditutup</b> sejak ${bMasuk}. Hubungi KC jika ada kendala.`;
+          banner.style.background='var(--rs)'; banner.style.color='var(--red)'; banner.style.border='1px solid rgba(224,48,80,0.35)';
+        } else if(terlalupagi){
+          banner.style.display = 'block';
+          banner.innerHTML = `⏳ Absen masuk buka jam <b>${ABSEN_BUKA_MULAI}</b>. Tunggu sebentar ya!`;
+          banner.style.background='rgba(68,153,255,0.07)'; banner.style.color='var(--blue)'; banner.style.border='1px solid rgba(68,153,255,0.25)';
         } else {
-          banner.style.display = 'none';
+          banner.style.display = 'block';
+          banner.innerHTML = `✅ Silakan absen masuk — batas jam <b>${bMasuk}</b>`;
+          banner.style.background='var(--gs)'; banner.style.color='var(--green)'; banner.style.border='1px solid rgba(62,207,142,0.35)';
         }
       }
 
     } else if(!sudahKeluar){
       // ── Sudah masuk, belum absen keluar ──
-      const belumBebas = jamHM < bKeluar;
+      // Logika bersih: inTimeWindow sudah handle cross-midnight dengan benar
+      // State: open (window buka) atau belumBebas (countdown ke bKeluar)
+      const keluarSudahBuka = inTimeWindow(jamHM, bKeluar, lockKel);
+      const belumBebas      = !keluarSudahBuka;
 
       if(clockEl) clockEl.style.color = belumBebas ? 'var(--orange)' : 'var(--green)';
 
-      // Lock / unlock tombol keluar
       if(btnKeluar){
         if(belumBebas){
-          btnKeluar.disabled         = true;
-          btnKeluar.style.background = 'var(--s3)';
-          btnKeluar.style.color      = 'var(--muted)';
-          btnKeluar.style.opacity    = '0.45';
-          btnKeluar.style.cursor     = 'not-allowed';
-          btnKeluar.style.border     = '1px solid var(--border)';
-          btnKeluar.textContent      = '🔒 BELUM TERBUKA';
+          btnKeluar.disabled = true;
+          btnKeluar.style.cssText = 'background:var(--s3);color:var(--muted);opacity:0.45;cursor:not-allowed;border:1px solid var(--border);';
+          btnKeluar.textContent   = `🔒 Buka jam ${bKeluar}`;
         } else {
-          btnKeluar.disabled         = false;
-          btnKeluar.style.background = 'var(--orange)';
-          btnKeluar.style.color      = '#000';
-          btnKeluar.style.opacity    = '1';
-          btnKeluar.style.cursor     = 'pointer';
-          btnKeluar.style.border     = 'none';
-          btnKeluar.textContent      = '← KELUAR';
+          btnKeluar.disabled = false;
+          btnKeluar.style.cssText = 'background:var(--orange);color:#000;opacity:1;cursor:pointer;border:none;';
+          btnKeluar.textContent   = '← KELUAR';
         }
       }
 
-      // Tampilkan / update countdown
+      // Countdown ke jam keluar
       if(belumBebas){
         const sisa = hitungSisaDetik();
-        if(cdWrap)  cdWrap.style.display  = 'block';
-        if(cdTimer) cdTimer.textContent   = formatCountdown(sisa);
+        if(cdWrap)  cdWrap.style.display = 'block';
+        if(cdTimer) cdTimer.textContent  = formatCountdown(sisa);
+        const cdLabel = g('cd-label-bot');
+        if(cdLabel) cdLabel.textContent  = `🌙 Absen pulang terbuka otomatis jam ${bKeluar}`;
+        const cdTop = g('cd-label-top');
+        if(cdTop) cdTop.textContent = '☕ WAKTU BEBAS DIMULAI DALAM';
       } else {
         if(cdWrap) cdWrap.style.display = 'none';
       }
 
       if(banner){
         if(belumBebas){
-          banner.style.display  = 'block';
-          banner.innerHTML      = `🌿 Kamu bebas istirahat kapan saja hari ini — absen pulang terbuka otomatis jam <b>${bKeluar}</b>${weekend?' (jadwal weekend)':''}. Nikmati dulu! ☕`;
-          banner.style.background = 'rgba(62,207,142,0.06)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.25)';
+          banner.style.display = 'block';
+          banner.innerHTML = `🌿 Kamu bebas istirahat kapan saja — absen pulang terbuka jam <b>${bKeluar}</b>. Nikmati! ☕`;
+          banner.style.background='rgba(62,207,142,0.06)'; banner.style.color='var(--green)'; banner.style.border='1px solid rgba(62,207,142,0.25)';
         } else {
-          banner.style.display  = 'block';
-          banner.innerHTML      = `🎉 Waktu bebas sudah dimulai! Silakan absen pulang — sampai jumpa besok, istirahat yang baik 🌙`;
-          banner.style.background = 'var(--gs)'; banner.style.color = 'var(--green)'; banner.style.border = '1px solid rgba(62,207,142,0.35)';
+          banner.style.display = 'block';
+          banner.innerHTML = `🎉 Waktu bebas! Silakan absen pulang sebelum jam <b>${lockKel}</b> 🌙`;
+          banner.style.background='var(--gs)'; banner.style.color='var(--green)'; banner.style.border='1px solid rgba(62,207,142,0.35)';
         }
       }
 
@@ -7520,7 +7837,7 @@ function renderPoinAbsensi(){
 
 
 function getAbsenHariIni(){
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayLocalISO(); // FIX: pakai tanggal lokal, bukan UTC
   const nama  = staffInfo?.nama || '';
   return hrAbsensi.filter(x => x.tanggal===today && x.nama===nama);
 }
@@ -7670,33 +7987,38 @@ function tutupKameraAbsen(){
 function simpanAbsensi(){
   const nama     = staffInfo?.nama || vs('si-nama') || 'Staff';
   const now      = new Date();
-  const tanggal  = now.toISOString().split('T')[0];
-  const jam      = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+  const tanggal  = todayLocalISO(now); // FIX: local date, bukan UTC
+  const jam      = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
   const ket      = vs('absen-ket');
   const statusEl = g('absen-status');
   const bMasuk   = batasMasukAbsen(tanggal);
   const bKeluar  = batasKeluarAbsen(tanggal);
+  const lockKel  = getAbsenCfg().lockKeluar;
+  const tJam     = toMenit(jam);
 
-  // ── Guard: cek apakah action saat ini diperbolehkan ──
+  // ── Guard: cek apakah action saat ini diperbolehkan (pakai menit, bukan string) ──
   if(absenTipe === 'masuk'){
-    const jamHM = jam;
-    if(jamHM < ABSEN_BUKA_MULAI){
+    if(tJam < toMenit(ABSEN_BUKA_MULAI)){
       toast(`⏳ Absen masuk belum dibuka — buka jam ${ABSEN_BUKA_MULAI}`);
       return;
     }
-    if(jamHM > bMasuk){
+    if(tJam > toMenit(bMasuk)){
       toast(`🔴 Waktu absen masuk sudah ditutup sejak ${bMasuk}`);
       return;
     }
   }
   if(absenTipe === 'keluar'){
-    const jamHM = jam;
-    if(jamHM < bKeluar){
-      const [hK, mK] = bKeluar.split(':').map(Number);
-      const target   = new Date(now); target.setHours(hK, mK, 0, 0);
-      const sisa     = Math.max(0, Math.floor((target - now) / 1000));
-      const h = Math.floor(sisa/3600), m = Math.floor((sisa%3600)/60), s = sisa%60;
-      toast(`🔒 Absen pulang terbuka dalam ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`);
+    if(!inTimeWindow(jam, bKeluar, lockKel)){
+      if(tJam >= toMenit(lockKel) && tJam < toMenit(bKeluar)){
+        toast(`🔒 Absen pulang sudah ditutup (lewat ${lockKel}). Hubungi manajemen.`);
+      } else {
+        const [hK, mK] = bKeluar.split(':').map(Number);
+        const target   = new Date(now); target.setHours(hK, mK, 0, 0);
+        if(target <= now) target.setDate(target.getDate() + 1);
+        const sisa = Math.max(0, Math.floor((target - now) / 1000));
+        const h = Math.floor(sisa/3600), m = Math.floor((sisa%3600)/60), s = sisa%60;
+        toast(`🔒 Absen pulang terbuka dalam ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`);
+      }
       return;
     }
   }
