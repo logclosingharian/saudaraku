@@ -1982,14 +1982,30 @@ function roboHideBubble(e){
 
     <div class="stit">1️⃣ Cash</div>
     <div class="card">
+      <!-- TUTORIAL SUPER SIMPEL — 3 LANGKAH -->
+      <div style="background:linear-gradient(135deg,rgba(68,153,255,0.09),rgba(68,153,255,0.02));border:1px solid rgba(68,153,255,0.25);border-radius:12px;padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:800;color:var(--blue);margin-bottom:8px">📖 Cara Isi Cash — 3 Langkah Gampang</div>
+        <div style="font-size:11px;color:var(--text);line-height:1.9;font-family:var(--mono)">
+          <b style="color:var(--blue)">1.</b> Hitung uang <b>hasil JUALAN PRODUK saja</b> hari ini: HP, pulsa, data, aksesoris, perdana.<br>
+          <b style="color:var(--blue)">2.</b> Masukkan angka itu ke kolom <b>"Cash Penjualan Closing"</b> di bawah.<br>
+          <b style="color:var(--blue)">3.</b> Selesai. TF BRILink & Tarik Tunai <b>JANGAN</b> ikut dimasukkan di sini — sistem sudah otomatis hitung sendiri dari kolom Transaksi.
+        </div>
+        <div style="margin-top:8px;font-size:10px;color:var(--muted2);font-family:var(--mono)">
+          💡 Nanti pas closing, tinggal hitung fisik total uang di laci 1x — sistem yang cocokkan otomatis.
+        </div>
+      </div>
       <div style="background:var(--s3);border-radius:10px;padding:12px;margin-bottom:10px">
         <div style="font-size:11px;color:var(--muted2);margin-bottom:6px">💵 Cash Pagi <span style="font-size:9px;background:var(--bs);color:var(--blue);padding:1px 6px;border-radius:8px">modal brankas (termasuk recehan)</span></div>
         <input type="text" inputmode="decimal" class="finp" id="p_cash_pagi" placeholder="Contoh: 3.150.000" oninput="fmtInput(this);cl_calc()"><div id="p_cash_pagi_tb" style="font-size:10px;color:var(--blue);font-family:var(--mono);margin-top:4px;min-height:14px"></div>
         <div style="font-size:10px;color:var(--muted2);font-family:var(--mono);margin-top:6px">⚠️ Termasuk recehan Rp 150rb yang selalu ada di brankas</div>
       </div>
       <div style="background:var(--s3);border-radius:10px;padding:12px">
-        <div style="font-size:11px;color:var(--muted2);margin-bottom:6px">💰 Cash Penjualan Closing <span style="font-size:9px;background:var(--gs);color:var(--green);padding:1px 6px;border-radius:8px">uang hasil jual</span></div>
+        <div style="font-size:11px;color:var(--muted2);margin-bottom:6px">💰 Cash Penjualan Closing <span style="font-size:9px;background:var(--gs);color:var(--green);padding:1px 6px;border-radius:8px">HANYA penjualan produk</span></div>
         <input type="text" inputmode="decimal" class="finp" id="p_cash" placeholder="Contoh: 1.500.000" oninput="fmtInput(this);cl_calc()"><div id="p_cash_tb" style="font-size:10px;color:var(--blue);font-family:var(--mono);margin-top:4px;min-height:14px"></div>
+        <div style="font-size:10px;color:var(--muted2);font-family:var(--mono);margin-top:6px;line-height:1.6">
+          ⚠️ Isi <b style="color:var(--text)">HANYA hasil jual produk</b>: HP, pulsa, data, aksesoris, perdana.<br>
+          <b style="color:#ef4444">JANGAN</b> isi total uang laci, dan <b style="color:#ef4444">JANGAN</b> masukkan Transfer BRILink / Tarik Tunai ke angka ini — keduanya sudah dihitung OTOMATIS & TERPISAH oleh sistem dari kolom Transaksi di bawah. Total uang fisik laci (all-in) nanti dihitung di field <b style="color:var(--text)">"🪙 Hitung Fisik Aktual"</b> pas closing, sebagai pengecekan silang.
+        </div>
       </div>
       <div class="field" style="margin-top:10px"><label>Ambil dari Bank (jika ada)</label>
         <input type="text" inputmode="decimal" class="finp" id="p_tambah_kasmod" placeholder="Contoh: 0" oninput="fmtInput(this);cl_calc()">
@@ -2011,15 +2027,31 @@ function roboHideBubble(e){
         <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">Nominal (Rp)</div>
         <div style="font-size:10px;color:var(--muted2);font-family:var(--mono)">Jml</div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:8px;align-items:center">
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:4px;align-items:center">
         <div style="font-size:12px;font-weight:600">💸 Tarik Tunai</div>
         <input type="text" inputmode="decimal" id="p_trx_tarik" placeholder="0" oninput="fmtInput(this);cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
         <input type="text" inputmode="decimal" id="p_trx_tarik_n" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:8px;align-items:center">
+      <div style="background:var(--s3);border:1px dashed var(--border2);border-radius:8px;padding:8px;margin-bottom:10px">
+        <div style="display:flex;gap:6px;align-items:center">
+          <input type="text" inputmode="decimal" id="tlog_tarik_input" placeholder="Nominal tarik tunai ini" oninput="fmtInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();trxLogAdd('tarik');}" style="flex:1;background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+          <button onclick="trxLogAdd('tarik')" style="background:var(--accent);border:none;border-radius:8px;padding:8px 12px;color:#fff;font-weight:700;font-size:11px;cursor:pointer;white-space:nowrap">+ Catat</button>
+        </div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">📝 Catat SETIAP kali ada tarik tunai, saat itu juga. Total &amp; jumlah di atas otomatis terisi &amp; terkunci dari catatan ini.</div>
+        <div id="tlog_tarik_list" style="margin-top:6px"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:4px;align-items:center">
         <div style="font-size:12px;font-weight:600">📲 Transfer</div>
         <input type="text" inputmode="decimal" id="p_trx_transfer" placeholder="0" oninput="fmtInput(this);cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
         <input type="text" inputmode="decimal" id="p_trx_transfer_n" placeholder="0" oninput="cl_hitungTrx()" style="background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;width:100%">
+      </div>
+      <div style="background:var(--s3);border:1px dashed var(--border2);border-radius:8px;padding:8px;margin-bottom:10px">
+        <div style="display:flex;gap:6px;align-items:center">
+          <input type="text" inputmode="decimal" id="tlog_transfer_input" placeholder="Nominal transfer ini" oninput="fmtInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();trxLogAdd('transfer');}" style="flex:1;background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none">
+          <button onclick="trxLogAdd('transfer')" style="background:var(--accent);border:none;border-radius:8px;padding:8px 12px;color:#fff;font-weight:700;font-size:11px;cursor:pointer;white-space:nowrap">+ Catat</button>
+        </div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">📝 Catat SETIAP kali ada transfer masuk, saat itu juga. Total &amp; jumlah di atas otomatis terisi &amp; terkunci dari catatan ini.</div>
+        <div id="tlog_transfer_list" style="margin-top:6px"></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 60px;gap:6px;margin-bottom:8px;align-items:center">
         <div style="font-size:12px;font-weight:600">📱 Pulsa & Token</div>
@@ -2155,7 +2187,7 @@ function roboHideBubble(e){
         <span style="color:var(--accent2)">Perdana</span>: Nominal = harga jual kartu. Jumlah = jumlah kartu terjual<br>
         <span style="color:var(--orange)">Acc HP</span>: Nominal/pcs × Jumlah = Subtotal<br>
         <span style="color:var(--yellow)">Total Nominal</span> = semua nominal dijumlahkan<br>
-        <span style="color:var(--muted2)">Double check: Total Nominal ≈ Cash Penjualan Closing</span>
+        <span style="color:var(--muted2)">Double check: Total Nominal Produk ≈ Cash Penjualan (TF/Tarik tidak dihitung di sini)</span>
       </div>
 
       <!-- Double check vs cash penjualan -->
@@ -2312,7 +2344,7 @@ function roboHideBubble(e){
           </div>
           <div style="font-size:11px;font-family:var(--mono);line-height:2.2">
             <div style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">💰 Modal pagi (brankas awal)</span><span id="pand_modal" style="color:var(--yellow)">—</span></div>
-            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">🛍️ Cash penjualan produk</span><span id="pand_jual" style="color:var(--green)">—</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">🛍️ Cash Penjualan <span style="font-size:9px">(HANYA produk: HP/pulsa/aksesoris/perdana)</span></span><span id="pand_jual" style="color:var(--green)">—</span></div>
             <div id="pand_row_tf" style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">📲 Transfer BRILink masuk <span style="font-size:9px">(customer kasih cash ke kamu)</span></span><span id="pand_tf" style="color:var(--green)">—</span></div>
             <div id="pand_row_tk" style="display:flex;justify-content:space-between"><span style="color:var(--muted2)">🏧 Tarik Tunai keluar <span style="font-size:9px">(kamu kasih cash ke customer)</span></span><span id="pand_tk" style="color:var(--red)">—</span></div>
             <div id="pand_row_pusat" style="display:flex;justify-content:space-between;display:none"><span style="color:var(--muted2)">🏠 Tambahan dari Pusat</span><span id="pand_pusat" style="color:var(--blue)">—</span></div>
@@ -2324,10 +2356,33 @@ function roboHideBubble(e){
             </div>
           </div>
           <div style="margin-top:10px;background:rgba(245,208,32,0.06);border-radius:8px;padding:8px 10px;font-size:10px;color:var(--muted2);font-family:var(--mono);line-height:1.7">
-            ⚠️ <strong style="color:var(--yellow)">Jangan hanya hitung uang dari jualan.</strong><br>
+            ⚠️ <strong style="color:var(--yellow)">Jangan hanya hitung uang dari jualan produk.</strong><br>
+            Baris-baris di atas semuanya KOMPONEN TERPISAH yang saling ditambah/dikurang — bukan bagian yang sudah nyatu satu sama lain.<br>
             Uang modal pagi yang tidak dipakai tarik tunai = masih ada di laci.<br>
             Uang dari Transfer BRILink = masuk ke laci (customer kasih ke kamu).<br>
             Uang Tarik Tunai = sudah keluar dari laci (kamu kasih ke customer).
+          </div>
+
+          <!-- CONTOH PERHITUNGAN YANG BENAR & BALANCE -->
+          <div style="margin-top:12px;background:rgba(62,207,142,0.06);border:1px solid rgba(62,207,142,0.25);border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:800;color:var(--green);letter-spacing:0.5px;margin-bottom:8px">✅ CONTOH ISI YANG BENAR (BALANCE)</div>
+            <div style="font-size:10px;font-family:var(--mono);color:var(--muted2);line-height:2">
+              <div style="display:flex;justify-content:space-between"><span>💰 Cash Pagi (modal brankas)</span><span style="color:var(--text)">Rp 3.150.000</span></div>
+              <div style="display:flex;justify-content:space-between"><span>🛍️ Cash Penjualan <span style="font-size:9px">(produk saja — isi di field ini)</span></span><span style="color:var(--text)">Rp 800.000</span></div>
+              <div style="display:flex;justify-content:space-between"><span>📲 Transfer BRILink masuk</span><span style="color:var(--text)">+ Rp 1.200.000</span></div>
+              <div style="display:flex;justify-content:space-between"><span>🏧 Tarik Tunai keluar</span><span style="color:var(--text)">− Rp 500.000</span></div>
+              <div style="display:flex;justify-content:space-between"><span>💸 Pengeluaran (makan+lain)</span><span style="color:var(--text)">− Rp 50.000</span></div>
+              <div style="height:1px;background:var(--border2);margin:6px 0"></div>
+              <div style="display:flex;justify-content:space-between;font-weight:700"><span>= Total wajib ada di laci</span><span style="color:var(--text)">Rp 4.600.000</span></div>
+              <div style="display:flex;justify-content:space-between"><span>Modal Brankas Kembali (buat besok)</span><span style="color:var(--text)">Rp 3.150.000</span></div>
+              <div style="display:flex;justify-content:space-between"><span>Harus Setor</span><span style="color:var(--text)">Rp 1.450.000</span></div>
+              <div style="height:1px;background:var(--border2);margin:6px 0"></div>
+              <div style="display:flex;justify-content:space-between;font-weight:800;color:var(--green)"><span>🪙 Hitung Fisik Aktual (uang dihitung langsung dari laci)</span><span>Rp 4.600.000</span></div>
+              <div style="display:flex;justify-content:space-between;font-weight:800"><span>⚖️ Selisih</span><span style="color:var(--green)">Rp 0 — ✅ BALANCE</span></div>
+            </div>
+            <div style="margin-top:8px;font-size:9px;color:var(--muted2);line-height:1.6">
+              Catatan: field "Cash Penjualan" cukup diisi <b style="color:var(--text)">Rp 800.000</b> (produk saja). Sistem otomatis menambah Transfer, mengurangi Tarik Tunai, lalu membandingkan totalnya dengan "Hitung Fisik Aktual" yang kamu hitung manual dari laci.
+            </div>
           </div>
         </div>
         <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:8px" id="pand_ekspektasi_mini">
@@ -2408,7 +2463,7 @@ function roboHideBubble(e){
       <div style="background:linear-gradient(135deg,rgba(245,208,32,0.1),rgba(245,208,32,0.03));border:1px solid rgba(245,208,32,0.3);border-radius:12px;padding:12px 14px;margin-bottom:8px">
         <div style="font-size:9px;font-weight:700;color:var(--yellow);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">💵 Total Cash Fisik di Tangan</div>
         <div style="font-size:26px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="setor_cash_fisik_alert">Rp 0</div>
-        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">Cash Pagi + Cash Penjualan</div>
+        <div style="font-size:9px;color:var(--muted2);font-family:var(--mono);margin-top:5px">Cash Pagi + Penjualan + Transfer − Tarik Tunai + Ambil Bank</div>
       </div>
 
       <!-- C: BREAKDOWN SETORAN -->
@@ -2530,7 +2585,7 @@ function roboHideBubble(e){
               <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_pagi_val">—</span>
             </div>
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--muted2)">Cash Penjualan Produk</span>
+              <span style="color:var(--muted2)">Cash Penjualan Produk <span style="font-size:9px">(HP/pulsa/aksesoris/perdana saja)</span></span>
               <span style="font-family:var(--mono);font-weight:600;color:var(--green)" id="rp_cash_penjualan">—</span>
             </div>
             <div id="rp_row_transfer" style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
@@ -4797,27 +4852,106 @@ function cl_hitungTrx(){
   _omsetTrx = totNom; // simpan ke global → dipakai preview omset
   cl_updatePreviewOmset();
 
-  // Double check: bandingkan dengan cash penjualan
+  // Double check: bandingkan dengan cash penjualan (PRODUK SAJA — exclude TF & Tarik Tunai)
   const cashPenjualan = parseRp(g('p_cash')?.value) || 0;
+  const trxTarikNom    = parseRp(g('p_trx_tarik')?.value)    || 0;
+  const trxTransferNom = parseRp(g('p_trx_transfer')?.value) || 0;
+  const totNomProduk   = totNom - trxTarikNom - trxTransferNom; // exclude BRILink cash movement, sisakan produk saja
   const pos2Total     = parseFloat(g('p_dig_tot')?.textContent?.replace(/[^0-9]/g,'')) || 0;
   // omset transaksi = transaksi digital (pos2) + penjualan fisik (acc hp)
   // alert hanya jika keduanya sudah diisi
   const alertEl = g('p_trx_doublecheck');
-  if(alertEl && cashPenjualan > 0 && totNom > 0){
-    const selisih = Math.abs(cashPenjualan - totNom);
-    const pct     = totNom > 0 ? (selisih / totNom * 100).toFixed(1) : 0;
+  if(alertEl && cashPenjualan > 0 && totNomProduk > 0){
+    const selisih = Math.abs(cashPenjualan - totNomProduk);
+    const pct     = totNomProduk > 0 ? (selisih / totNomProduk * 100).toFixed(1) : 0;
     const ok      = selisih < 5000;
     alertEl.style.display = 'block';
     alertEl.style.background = ok ? 'var(--gs)' : 'var(--os)';
     alertEl.style.border     = ok ? '1px solid rgba(62,207,142,0.35)' : '1px solid rgba(245,166,35,0.35)';
     alertEl.style.color      = ok ? 'var(--green)' : 'var(--orange)';
     alertEl.innerHTML        = ok
-      ? `✅ Nominal OK — Total trx ${fmt(totNom)} ≈ cash penjualan ${fmt(cashPenjualan)}`
-      : `⚠️ Selisih ${fmt(selisih)} (${pct}%) — trx ${fmt(totNom)} vs cash ${fmt(cashPenjualan)} — cek ulang!`;
+      ? `✅ Nominal OK — Total trx produk ${fmt(totNomProduk)} ≈ cash penjualan ${fmt(cashPenjualan)}`
+      : `⚠️ Selisih ${fmt(selisih)} (${pct}%) — trx produk ${fmt(totNomProduk)} vs cash ${fmt(cashPenjualan)} — cek ulang! (TF/Tarik Tunai sudah dikeluarkan dari perbandingan ini)`;
   } else if(alertEl){
     alertEl.style.display = 'none';
   }
   cl_calc_setor();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// CATATAN TRANSAKSI REAL-TIME — Tarik Tunai & Transfer
+// Prinsip: yang dipisah itu DATANYA (dicatat saat kejadian), bukan uangnya.
+// Uang di laci tetap campur — itu wajar. Total & jumlah di field p_trx_tarik /
+// p_trx_transfer dikunci & otomatis dijumlahkan dari catatan per-transaksi ini,
+// supaya tidak ada lagi "kira-kira di akhir hari".
+// ══════════════════════════════════════════════════════════════════
+function _trxLogArea(){ return (typeof staffInfo !== 'undefined' && staffInfo?.area) ? staffInfo.area : APP_AREA; }
+function _trxLogKey(jenis){ return 'trxlog_' + _trxLogArea() + '_' + jenis + '_' + new Date().toISOString().slice(0,10); }
+
+function trxLogLoad(jenis){
+  try { return JSON.parse(localStorage.getItem(_trxLogKey(jenis)) || '[]'); } catch(e){ return []; }
+}
+function trxLogSave(jenis, arr){
+  try { localStorage.setItem(_trxLogKey(jenis), JSON.stringify(arr)); } catch(e){}
+}
+
+function trxLogAdd(jenis){
+  const inp = g('tlog_' + jenis + '_input');
+  const nom = parseRp(inp?.value);
+  if(!nom || nom <= 0){ toast('⚠️ Isi nominal dulu'); return; }
+  const staffNama = (typeof staffInfo !== 'undefined' && staffInfo?.nama) ? staffInfo.nama : '—';
+  const arr = trxLogLoad(jenis);
+  arr.push({ ts: Date.now(), nominal: nom, staff: staffNama });
+  trxLogSave(jenis, arr);
+  if(inp) inp.value = '';
+  trxLogRender(jenis);
+  toast('✅ Tercatat: ' + fmt(nom));
+}
+
+function trxLogDelete(jenis, idx){
+  if(!confirm('Hapus catatan transaksi ini?')) return;
+  const arr = trxLogLoad(jenis);
+  arr.splice(idx, 1);
+  trxLogSave(jenis, arr);
+  trxLogRender(jenis);
+}
+
+function trxLogRender(jenis){
+  const arr   = trxLogLoad(jenis);
+  const total = arr.reduce((s, x) => s + (x.nominal || 0), 0);
+
+  // Field total & jumlah dikunci — sumber kebenarannya adalah catatan ini
+  const totalField = g('p_trx_' + jenis);
+  const countField  = g('p_trx_' + jenis + '_n');
+  if(totalField){
+    totalField.value = total.toLocaleString('id-ID');
+    totalField.readOnly = true;
+    totalField.style.opacity = '0.75';
+    totalField.style.cursor = 'not-allowed';
+  }
+  if(countField){
+    countField.value = arr.length;
+    countField.readOnly = true;
+    countField.style.opacity = '0.75';
+    countField.style.cursor = 'not-allowed';
+  }
+
+  const listEl = g('tlog_' + jenis + '_list');
+  if(listEl){
+    if(!arr.length){
+      listEl.innerHTML = `<div style="font-size:9px;color:var(--muted);font-family:var(--mono);padding:4px 0">Belum ada transaksi dicatat hari ini</div>`;
+    } else {
+      listEl.innerHTML = arr.map((x, i) => {
+        const jam = new Date(x.ts).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+        return `<div style="display:flex;justify-content:space-between;align-items:center;background:var(--s1);border-radius:6px;padding:5px 8px;margin-bottom:3px;font-size:10px;font-family:var(--mono)">
+          <span style="color:var(--muted2)">${jam}</span>
+          <span style="color:var(--text);font-weight:600">${fmt(x.nominal)}</span>
+          <span onclick="trxLogDelete('${jenis}',${i})" style="color:var(--red);cursor:pointer;padding:0 4px">✕</span>
+        </div>`;
+      }).join('');
+    }
+  }
+  cl_hitungTrx(); // rekalkulasi total keseluruhan & double-check nominal
 }
 
 // ===== SETORAN & REKONSILIASI =====
@@ -4826,20 +4960,34 @@ let _omsetTrx   = 0; // total nominal transaksi harian — sumber omset
 
 // Helper: update komponen otomatis (dipanggil dari cl_calc)
 // ══════════════════════════════════════════════════════════════════
-// SATU RUMUS TERPUSAT — semua fungsi pakai ini
+// SATU RUMUS TERPUSAT — semua fungsi pakai ini  (OPSI A — verifikasi berlapis)
 //
-// Cash Fisik Sistem  = Cash Pagi
-//                    + Cash Penjualan Produk (HP, pulsa, aksesoris, perdana)
-//                    + Transfer Diterima (customer kasih cash → saldo BRILink berkurang)
-//                    − Tarik Tunai Diberikan (counter kasih cash → saldo BRILink bertambah)
+// 💡 KUNCI: "Cash Penjualan Closing" (p_cash) = HANYA penjualan produk
+// (HP, pulsa, aksesoris, perdana). JANGAN isi total uang laci di sini,
+// dan JANGAN masukkan efek TF/Tarik Tunai ke angka ini — keduanya sudah
+// dihitung OTOMATIS & TERPISAH oleh sistem lewat kolom Transaksi TF /
+// Tarik Tunai. Kalau p_cash diisi "total laci" maka TF/Tarik akan
+// KEHITUNG DUA KALI (double count) → closing kelihatan minus padahal
+// uangnya utuh.
+//
+// Uang FISIK total di laci (all-in, termasuk sisa modal & net BRILink)
+// dihitung TERPISAH di field "🪙 Hitung Fisik Aktual" (p_cash_fisik_manual)
+// di section Setoran — itu dibandingkan dengan Ekspektasi Sistem di bawah
+// sebagai verifikasi berlapis (2 cara hitung, harus ketemu di angka sama).
+//
+// Cash Fisik Sistem (ekspektasi)  = Cash Pagi
+//                    + Cash Penjualan Closing (PRODUK SAJA — HP/pulsa/aksesoris/perdana)
+//                    + Transfer BRILink Diterima  (customer kasih cash → +)
+//                    − Tarik Tunai Diberikan      (kasir kasih cash → −)
 //                    + Ambil dari Bank
+//                    + Tambahan dari Pusat
 //
 // Harus Setor = Cash Fisik − Setor Tunai ke Bank − Modal Brankas − Pengeluaran
 //
 // ⚠️ PENTING:
+// • Cash Penjualan Closing = HANYA nilai jual produk (bukan total laci, bukan termasuk TF/Tarik)
 // • Transfer Bank   → CASH MASUK ke laci (+), saldo BRILink berkurang
 // • Tarik Tunai     → CASH KELUAR dari laci (−), saldo BRILink bertambah
-// • Penjualan Produk= hanya penjualan HP, pulsa, aksesoris, perdana (p_cash)
 // • Ambil dari Bank = cash fisik yang diambil dari rekening masuk ke laci hari ini
 // • Setor Tunai ke Bank = cash yang keluar dari laci ke bank (opsional)
 // ══════════════════════════════════════════════════════════════════
@@ -4851,7 +4999,7 @@ function hitungKas(){
   const modal          = parseRp(g('p_modal_brankas_kembali')?.value) || 0;
   const makan          = parseRp(g('p_makan')?.value)                 || 0;
   const lain           = parseRp(g('p_lainlain')?.value)              || 0;
-  // BRILink — efek langsung ke cash fisik di laci:
+  // BRILink — efek langsung ke cash fisik di laci (dihitung TERPISAH dari cashJual):
   // Transfer: customer kasih cash ke kita → cash MASUK (+)
   // Tarik Tunai: kita kasih cash ke customer → cash KELUAR (−)
   const trxTransfer    = parseRp(g('p_trx_transfer')?.value)          || 0;
@@ -4862,7 +5010,7 @@ function hitungKas(){
 
   const pengeluaran = makan + lain;
   // Ekspektasi total uang di laci akhir hari (sebelum setor):
-  // Modal awal + penjualan + transfer masuk - tarik keluar + ambil bank + tambahan pusat - pengeluaran
+  // Modal awal + penjualan produk + transfer masuk − tarik keluar + ambil bank + tambahan pusat
   const cashFisik   = cashPagi + cashJual + trxTransfer - trxTarik + ambilBank + tambahanPusat;
   const harusSetor  = cashFisik - setorBank - modal - pengeluaran;
   return { cashPagi, cashJual, ambilBank, setorBank, modal, pengeluaran, makan, lain,
@@ -4880,15 +5028,14 @@ function togglePanduan(){
 
 function _updatePanduan(){
   const k = hitungKas();
-  const ekspektasi = k.modal > 0
-    ? k.cashPagi + k.cashJual + k.trxTransfer - k.trxTarik + k.ambilBank + k.tambahanPusat - k.pengeluaran
-    : k.cashFisik - k.pengeluaran;
+  // Ekspektasi = Cash Pagi + Cash Penjualan Produk + Transfer masuk − Tarik Tunai keluar + Ambil Bank + Tambahan Pusat − Pengeluaran
+  const ekspektasi = k.cashFisik - k.pengeluaran;
 
   const sv = (n, plus=false) => (plus && n > 0 ? '+' : n < 0 ? '−' : '') + fmt(Math.abs(n));
 
   _s('pand_modal', sv(k.cashPagi));
   _s('pand_jual',  sv(k.cashJual, true));
-  // Transfer & Tarik — hanya tampilkan baris jika ada nilai
+  // Transfer & Tarik — komponen TERPISAH, ikut dijumlah ke total (bukan bagian dari cash penjualan produk)
   const rowTf = g('pand_row_tf'); if(rowTf) rowTf.style.display = k.trxTransfer > 0 ? 'flex' : 'none';
   const rowTk = g('pand_row_tk'); if(rowTk) rowTk.style.display = k.trxTarik > 0    ? 'flex' : 'none';
   _s('pand_tf', '+' + fmt(k.trxTransfer));
@@ -9229,11 +9376,22 @@ function exportPDF(type){
       ['🟠 Rembo',     fv('p_rembo_awal'), fv('p_rembo_close'),   rv('p_rembo_pakai')],
     ].filter(x=>x[1]||x[2]);
 
+    // Kotak penjelasan singkat cara hitung — supaya siapapun yang baca PDF (staff/kanit/owner) tidak bingung
+    const caraHitungBox = `
+      <div style="background:#fff7e6;border:1px solid #f0c96b;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:10.5px;color:#6b5a1e;line-height:1.6">
+        <div style="font-weight:800;color:#a8760c;margin-bottom:4px">📖 Cara Baca Laporan Ini</div>
+        Uang di laci <b>tidak dipisah fisik</b> per jenis transaksi — itu wajar &amp; memang tidak perlu.
+        Yang dipisah adalah <b>datanya</b>: Transfer &amp; Tarik Tunai dicatat real-time saat terjadi (bukan dihitung dari fisik),
+        lalu Hitung Fisik Aktual di laci dilakukan <b>1x saja</b> saat closing.
+        <br>Rumus: <b>Cash Penjualan (produk) = Hitung Fisik Laci − Cash Pagi − Total Transfer + Total Tarik Tunai</b>.
+      </div>`;
+
     body = `
+      ${caraHitungBox}
       ${tbl(
         sec('💵 Cash') +
         row('Cash Pagi (Modal Brankas)', fv('p_cash_pagi')||'—') +
-        row('Cash Penjualan Closing',    fv('p_cash')||'—') +
+        row('Cash Penjualan (Produk saja)', fv('p_cash')||'—') +
         row('Ambil dari Bank',           fv('p_tambah_kasmod')||'0') +
         row('Pinjam Saldo Bank',         fv('p_pinjam_bank')||'0')
       )}
@@ -9254,9 +9412,22 @@ function exportPDF(type){
         row('ByU',       (fv('p_trx_pbyu')||'0')   + (fv('p_trx_pbyu_n')  ? ' ('+fv('p_trx_pbyu_n')+'x)'  : '')) +
         row('Smartfren', (fv('p_trx_psfren')||'0') + (fv('p_trx_psfren_n')? ' ('+fv('p_trx_psfren_n')+'x)': '')) +
         row('Indosat',   (fv('p_trx_pindo')||'0')  + (fv('p_trx_pindo_n') ? ' ('+fv('p_trx_pindo_n')+'x)' : '')) +
-        sec('Total') +
+        sec('Total (SEMUA jenis transaksi digabung)') +
         row('Total Nominal Transaksi', rv('p_trx_total'), '#22c55e') +
-        row('Total Jumlah Transaksi',  rv('p_trx_total_n'))
+        row('Total Jumlah Transaksi',  rv('p_trx_total_n')) +
+        (() => {
+          // Jejak audit: rincian jam per transaksi Tarik Tunai & Transfer, dari catatan real-time
+          const rincian = (jenis, label) => {
+            const arr = (typeof trxLogLoad === 'function') ? trxLogLoad(jenis) : [];
+            if(!arr.length) return '';
+            const lines = arr.map(x => {
+              const jam = new Date(x.ts).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+              return row(`&nbsp;&nbsp;${jam}`, fmt(x.nominal));
+            }).join('');
+            return sec(`🧾 Rincian ${label} (${arr.length} transaksi, tercatat real-time)`) + lines;
+          };
+          return rincian('tarik','Tarik Tunai') + rincian('transfer','Transfer');
+        })()
       )}
       ${banks.length ? tbl(
         sec('🏦 Pos 1 — Saldo Bank') +
@@ -9271,24 +9442,35 @@ function exportPDF(type){
       ${tbl(
         sec('🛍️ Acc HP & 🔧 Service HP') +
         (() => {
-          // Kumpul item acc HP dari rows
+          // Kumpul item acc HP — struktur asli: div[data-mode] berisi .acc-nom (harga/pcs) & .acc-jml (qty)
+          // nama: master → teks biasa di dalam identHtml; manual → input .acc-nama
           const accRows = document.getElementById('p_trx_acc_rows');
           let accLines = '';
+          let accTotal = 0;
           if(accRows){
-            accRows.querySelectorAll('[data-acc-nama]').forEach(el => {
-              const nama  = el.getAttribute('data-acc-nama') || '—';
-              const qty   = el.getAttribute('data-acc-qty')  || '1';
-              const sub   = el.getAttribute('data-acc-sub')  || el.querySelector?.('.ci-total')?.textContent || '—';
-              accLines += row(`📦 ${nama} (${qty}x)`, sub, '#f97316');
+            accRows.querySelectorAll('div[data-mode]').forEach(rowEl => {
+              const nomInput = rowEl.querySelector('.acc-nom');
+              const jmlInput = rowEl.querySelector('.acc-jml');
+              // FIX BUG: dulu pakai parseFloat + regex yang membolehkan titik (.) lolos.
+              // Input di sini diformat gaya Indonesia (titik = pemisah ribuan, mis. "15.000" = 15 ribu),
+              // tapi parseFloat baca titik sebagai desimal → "15.000" kebaca 15 (bukan 15000).
+              // Akibatnya nominal acc di PDF closing sering salah/menyusut kalau harganya ≥ Rp1.000.
+              // Sekarang pakai parseFmt (sama seperti perhitungan Total Nominal Transaksi di cl_hitungTrx)
+              // yang membuang semua karakter non-digit, jadi "15.000" tetap terbaca 15000.
+              const nom = parseFmt(nomInput?.value) || 0;
+              const jml = parseFmt(jmlInput?.value) || 1;
+              if(nom <= 0) return; // baris kosong dilewati, tidak ikut total
+              const sub = nom * jml;
+              accTotal += sub;
+              let nama = rowEl.querySelector('.acc-nama')?.value?.trim();
+              if(!nama){
+                // master: nama ada di div teks biasa (bukan input) — ambil teks non-tombol pertama yg bukan angka
+                const kodeEl = rowEl.querySelector('span[style*="font-family:var(--mono)"]');
+                const nameDiv = rowEl.querySelector('div[style*="background:var(--s2)"]');
+                nama = nameDiv?.textContent?.trim() || kodeEl?.textContent?.trim() || 'Barang';
+              }
+              accLines += row(`📦 ${nama} (${jml}x @ ${fmt(nom)})`, fmt(sub), '#f97316');
             });
-            // fallback: ambil semua ci-name + ci-total kalau attribute tidak ada
-            if(!accLines){
-              accRows.querySelectorAll('.cart-item, .acc-row').forEach(el => {
-                const nama = el.querySelector?.('.ci-name, .acc-nama')?.textContent?.trim() || '';
-                const sub  = el.querySelector?.('.ci-total, .acc-sub')?.textContent?.trim() || '';
-                if(nama) accLines += row(`📦 ${nama}`, sub||'—', '#f97316');
-              });
-            }
           }
           // Kumpul item service HP
           const svcRows = document.getElementById('p_service_rows');
@@ -9311,7 +9493,7 @@ function exportPDF(type){
             }
           }
           return (accLines||row('Acc HP','Tidak ada data','#888')) +
-                 row('Total Acc HP', rv('p_trx_total')||'—', '#f97316') +
+                 row('Total Acc HP', fmt(accTotal), '#f97316') +
                  sec('') +
                  (svcLines||row('Service HP','Tidak ada data','#888')) +
                  row('Total Jasa Service', rv('p_service_total')||'Rp 0', '#3b82f6');
@@ -10216,6 +10398,7 @@ function initStaff(){
   hitungAudit();
   renderCart();
   cl_calc();
+  ['tarik','transfer'].forEach(j => { if(g('tlog_'+j+'_list')) trxLogRender(j); });
   auditVPSubTab = 'voucher';
   renderAuditVP();
   renderAuditAcc();
