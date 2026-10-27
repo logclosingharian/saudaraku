@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Closing Kas Konter</title>
+<title>Saudara Cell</title>
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--tx:#14181f;--mut:#667085;--bd:#e3e6eb;--pr:#0b5ed7;--ok:#168a45;--no:#c8312b;--wa:#b26a00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1318;--card:#181e26;--tx:#eef1f5;--mut:#98a2b3;--bd:#2a323d;--pr:#5b9bff;--ok:#4cc27f;--no:#ff7a72;--wa:#f0a73a;color-scheme:dark}}
+:root{--bg:#fffbea;--card:#fff;--tx:#241c00;--mut:#7a6a3a;--bd:#f0e2a8;--pr:#f5b800;--pt:#241c00;--lk:#8a5a00;--ok:#168a45;--no:#c8312b;--wa:#b26a00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15120a;--card:#211c0e;--tx:#f7f0d8;--mut:#b8aa7c;--bd:#3b3320;--pr:#ffc926;--pt:#241c00;--lk:#ffd45e;--ok:#4cc27f;--no:#ff7a72;--wa:#f0a73a;color-scheme:dark}}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;max-width:560px;margin:auto;padding:12px 12px 80px}
-h1{font-size:18px;margin:4px 0}h2{font-size:15px;margin:0 0 8px}
+h1{font-size:18px;margin:4px 0 8px;background:var(--pr);color:var(--pt);padding:10px 12px;border-radius:12px}h2{font-size:15px;margin:0 0 8px}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:10px 0}
 .tabs{display:flex;gap:6px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0;z-index:5}
 .tabs button,.seg button{flex:1;padding:9px 4px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:9px;font-size:14px}
-.tabs .on,.seg .on{background:var(--pr);color:#fff;border-color:var(--pr)}
+.tabs .on,.seg .on{background:var(--pr);color:var(--pt);border-color:var(--pr)}
 .seg{display:flex;gap:6px;margin-bottom:8px}
 label{display:block;font-size:12px;color:var(--mut);margin:8px 0 3px}
 input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:9px;background:var(--bg);color:var(--tx);font-size:16px}
-.btn{width:100%;padding:12px;border:0;border-radius:10px;background:var(--pr);color:#fff;font-size:15px;font-weight:600;margin-top:10px}
+.btn{width:100%;padding:12px;border:0;border-radius:10px;background:var(--pr);color:var(--pt);font-size:15px;font-weight:600;margin-top:10px}
 .btn.g{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
 .row{display:flex;justify-content:space-between;gap:8px;padding:5px 0}.row.b{font-weight:700;border-top:1px solid var(--bd);margin-top:4px;padding-top:8px}
 .m{color:var(--mut)}.ok{color:var(--ok)}.no{color:var(--no)}.wa{color:var(--wa)}
@@ -26,32 +26,64 @@ input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:9p
 .x{background:none;border:0;color:var(--no);font-size:18px}img.th{width:44px;height:44px;object-fit:cover;border-radius:6px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 </style></head><body>
-<h1>💰 Closing Kas Konter</h1><div id="who" class="m" style="font-size:12px"></div>
+<h1>Saudara Cell <span style="font-weight:400;font-size:13px">· Closing harian</span></h1><div id="who" class="m" style="font-size:12px"></div>
 <input type="date" id="dt" style="margin-bottom:4px">
 <div class="tabs"><button data-t="tx" class="on">Transaksi</button><button data-t="cl">Closing</button><button data-t="st">Stok</button><button data-t="rw">Riwayat</button></div>
 <div id="v"></div>
 <script>
-const PJ="Pinjam Ibu/Tigaraksa",isIbu=x=>x.k==="transfer"&&(x.r==="ibu"||x.s===PJ);
+const PJ="Pinjam Ibu/Tigaraksa",isIbu=x=>x.k==="transfer"&&(x.r==="ibu"||x.s===PJ),isPusat=x=>x.k==="transfer"&&x.r==="pusat",isKas=x=>x.k==="transfer"&&x.r==="kas",isRb=x=>x.k==="transfer"&&!isIbu(x)&&!isPusat(x)&&!isKas(x);
 const R=n=>(n<0?"-":"")+"Rp"+Math.abs(Math.round(n)).toLocaleString("id-ID"),$=s=>document.querySelector(s);
 const num=s=>parseInt(String(s||"").replace(/\D/g,""))||0;
 const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 let S={tx:[],open:{},close:{},stok:{}},draft=null,scanMsg="",tab="tx",kind="transfer",photo="",editId=null,fill=false;
-let user=null;try{user=localStorage.getItem("konter_user")}catch(e){}
+let user=null,bioOK=false;try{user=sessionStorage.getItem("konter_user");bioOK=sessionStorage.getItem("konter_bio")==="1"}catch(e){}
 function toast(m){const t=document.createElement("div");t.textContent=m;t.style.cssText="position:fixed;left:12px;right:12px;bottom:calc(20px + env(safe-area-inset-bottom,0px));max-width:536px;margin:auto;background:var(--tx);color:var(--bg);padding:12px;border-radius:10px;z-index:99;text-align:center";document.body.appendChild(t);setTimeout(()=>t.remove(),3200)}
 function ask(m,yes){const o=document.createElement("div");o.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:98;display:flex;align-items:center;justify-content:center;padding:20px";o.innerHTML='<div class="card" style="max-width:360px;width:100%"><p style="margin:0 0 4px"></p><div class="two"><button class="btn g" id="aN">Batal</button><button class="btn" id="aY">Ya, lanjut</button></div></div>';o.querySelector("p").textContent=m;document.body.appendChild(o);o.querySelector("#aN").onclick=()=>o.remove();o.querySelector("#aY").onclick=()=>{o.remove();yes()}}
-function who(){const w=$("#who");w.textContent="👤 "+user+" ";const b=document.createElement("button");b.textContent="Keluar";b.className="x";b.style.cssText="font-size:12px;color:var(--pr)";b.onclick=()=>{user=null;try{localStorage.removeItem("konter_user")}catch(e){}draw()};w.appendChild(b)}
+const u8=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)),b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b)));
+function credMap(){try{return JSON.parse(localStorage.getItem("konter_cred")||"{}")}catch(e){return{}}}
+async function bio(n){if(!window.PublicKeyCredential||!navigator.credentials)throw{code:"browser ini tidak mendukung"};
+await navigator.credentials.create({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),rp:{name:"Saudara Cell"},user:{id:crypto.getRandomValues(new Uint8Array(16)),name:n,displayName:n},pubKeyCredParams:[{type:"public-key",alg:-7},{type:"public-key",alg:-257}],authenticatorSelection:{authenticatorAttachment:"platform",userVerification:"required",residentKey:"discouraged"},timeout:60000}});return"masuk"}
+const QT=["Orang yang teliti menghitung uang orang lain adalah orang yang sedang dipercaya. Kamu salah satunya.", "Hari ini kamu bukan sekadar menjaga kas. Kamu menjaga nama baik Saudara Cell.", "Setiap angka yang kamu cek hari ini membuat besok terasa lebih ringan.", "Orang hebat tidak selalu yang paling cepat, tapi yang paling konsisten. Kamu sedang membuktikannya.", "Kamu sudah melewati hari ini sampai selesai. Itu bukti kamu lebih kuat dari yang kamu kira.", "Kejujuran kecil yang kamu lakukan malam ini adalah alasan pelanggan kembali besok.", "Setiap hari kamu makin terlatih. Yang dulu terasa sulit, sekarang sudah jadi kebiasaanmu.", "Yang paling dicari bukan orang yang paling pintar, tapi yang paling bisa diandalkan. Itu kamu.", "Kerapianmu tidak terlihat pelanggan, tapi mereka merasakannya sebagai rasa aman.", "Konter ini berjalan karena ada orang seperti kamu yang peduli sampai hal terkecil.", "Selisih bukan kegagalan. Menemukannya adalah tanda kamu memperhatikan.", "Hari yang melelahkan sering jadi hari yang membentuk orang paling tangguh.", "Kamu tidak hanya bekerja untuk hari ini. Kamu membangun keahlian yang akan selalu ikut denganmu.", "Satu closing yang rapi hari ini, satu bukti lagi bahwa kamu bisa dipercaya.", "Pelan-pelan pun maju. Dan kamu sudah jauh lebih maju dari kemarin.", "Orang yang mau mengecek dua kali adalah orang yang jarang menyesal.", "Senyummu di depan pelanggan tadi mungkin jadi hal terbaik yang mereka alami hari ini.", "Kamu punya kemampuan membuat hal rumit jadi rapi. Kemampuan itu langka.", "Percaya diri bukan soal tidak pernah salah, tapi berani memperbaiki. Kamu sudah melakukannya.", "Ada tim di belakangmu. Kamu tidak sendirian menjaga toko ini.", "Hari ini ada pelanggan yang terbantu karena kamu hadir. Itu nyata dan itu berarti.", "Disiplin kecil tiap malam mengubahmu jadi orang yang dipercaya untuk hal yang lebih besar.", "Kamu tidak harus sempurna. Kamu hanya perlu terus melangkah, dan kamu melakukannya.", "Orang sukses punya satu kebiasaan sederhana: menuntaskan apa yang dimulai. Malam ini kamu menuntaskannya.", "Rasa tenang saat angka sudah pas adalah hasil kerjamu sendiri. Nikmati.", "Kamu belajar sesuatu hari ini, sadar atau tidak. Begitulah orang bertumbuh.", "Dipercaya memegang uang adalah penghargaan yang nyata. Kamu layak mendapatkannya.", "Toko ini lebih baik karena kamu ada di dalamnya.", "Istirahatlah dengan bangga. Kerjamu hari ini sudah baik, dan kamu juga.", "Besok kamu mulai dari titik yang lebih tinggi daripada hari ini.", "Terima kasih sudah peduli. Kepedulian seperti itu tidak bisa dibeli dan tidak mudah ditiru."];
+function showQuote(nama,n,sl,d){const q=QT[Math.floor(new Date(d)/864e5)%QT.length],o=document.createElement("div");o.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:98;display:flex;align-items:center;justify-content:center;padding:20px";
+o.innerHTML='<div class="card" style="max-width:360px;width:100%;text-align:center;border-color:var(--pr)"><div style="font-size:34px">🌟</div><h2 style="font-size:17px;margin:4px 0"></h2><p class="m" style="margin:0 0 10px" id="qm"></p><div style="background:var(--pr);color:var(--pt);border-radius:10px;padding:12px;font-weight:600" id="qq"></div><p class="m" style="font-size:12px;margin:10px 0 0">Quote of the day</p><button class="btn" id="qo">Terima kasih</button></div>';
+o.querySelector("h2").textContent="Closing selesai, "+nama+"!";
+o.querySelector("#qm").textContent=(sl===0?"Kas hari ini PAS. Kerja bagus! ":"Terima kasih sudah jujur melaporkan selisih. ")+"Kamu mencatat "+n+" transaksi hari ini. Kerja rapimu sangat berarti buat Saudara Cell.";
+o.querySelector("#qq").textContent="“"+q+"”";document.body.appendChild(o);o.querySelector("#qo").onclick=()=>o.remove()}
+function sget(){try{return JSON.parse(localStorage.getItem("konter_sync")||"{}")}catch(e){return{}}}
+function saveSync(){try{localStorage.setItem("konter_sync",JSON.stringify({url:$("#syu").value.trim(),key:$("#syk").value.trim()}))}catch(e){}}
+function syncCard(){const s=sget();return`<div class="card"><h2>Sinkron ke Google Sheets</h2><label>Alamat Web App</label><input id="syu" value="${esc(s.url||"")}" placeholder="https://script.google.com/macros/s/.../exec"><label>Kode rahasia</label><input id="syk" type="password" value="${esc(s.key||"")}"><button class="btn" id="sys">Simpan</button><button class="btn g" id="syt">Tes kirim</button><p class="m" style="font-size:12px">Closing dan stok terkirim otomatis saat disimpan.</p></div>`}
+async function post(body){const s=sget();if(!s.url)return"nourl";const data=JSON.stringify(Object.assign({secret:s.key||""},body));
+try{const r=await fetch(s.url,{method:"POST",body:data});const j=await r.json();if(!j.ok)throw new Error(j.error||"ditolak");return"ok"}
+catch(e){if(e instanceof TypeError){await fetch(s.url,{method:"POST",mode:"no-cors",body:data});return"sent"}throw e}}
+function lbl(x){return x.k==="tarik"?"Tarik tunai":x.k==="jual"?"Penjualan "+x.c+" ("+(x.m==="cash"?"cash":"TF/QRIS")+")":isPusat(x)?"Tambah saldo Rainbow dari pusat":isKas(x)?"Tambah cash":isIbu(x)?"TF dari Ibu/Tigaraksa ("+(x.s&&x.s!==PJ?x.s:"TF Bank")+")":"Transfer Rainbow ("+(x.s||"TF Bank")+")"}
+async function syncClosing(d,manual){const cl=S.close[d];if(!cl)return;const c=calc(d);
+const head=["Tanggal","Kasir","Uang modal","TF Rainbow","TF Ibu/Tigaraksa","Tambah cash","Penjualan cash","Penjualan TF/QRIS","Tarik tunai","Kas seharusnya","Kas fisik","Selisih kas","Saldo Rainbow awal","Tambah saldo pusat","Saldo Rainbow seharusnya","Saldo Rainbow aktual","Selisih saldo","Modal besok","Cash disetor","Total setoran","Disimpan"];
+const row=[d,cl.by||"",c.o.kas,c.tf,c.pinjam,c.tc,c.cs,c.ns,c.tk,cl.kasExp,cl.fisik,cl.sel,c.o.saldo,c.pus,cl.saldoExp,cl.saldoAkhir||"",cl.saldoAkhir?cl.saldoAkhir-cl.saldoExp:"",cl.besok,cl.setor,cl.setor+c.tk,new Date().toLocaleString("id-ID")];
+const tx=c.t.map(x=>[d,x.t,x.by||"",lbl(x),x.n,x.j||1,x.ct||"",x.p?"ada foto":""]);
+try{const r=await post({tgl:d,sheets:[{name:"Closing",head,rows:[row]},{name:"Transaksi",head:["Tanggal","Jam","Kasir","Jenis","Nominal","Jumlah","Catatan","Bukti"],rows:tx}]});if(r==="nourl"){if(manual)toast("Isi alamat Web App dulu");return}toast("Terkirim ke Google Sheets ✓")}catch(e){toast("Gagal kirim ke Sheets. Tekan Kirim ulang di Riwayat.")}}
+async function syncStok(d){const s=S.stok[d];if(!s||!s.k)return;
+const kr=KT.map(n=>{const r=s.k[n];return[d,s.by||"",n,r[0],r[1],r[2],r[3],Math.max(0,r[0]+r[1]-r[3])]});
+const pr=[];Object.keys(PK).forEach(o=>PK[o].forEach(p=>{const j=s.p[pkey(o,p)]||0;if(j)pr.push([d,s.by||"",o,p[0],p[1],j,j*p[1]])}));
+try{const r=await post({tgl:d,sheets:[{name:"Stok kartu",head:["Tanggal","Kasir","Item","Awal","Tambah","Tjl","Akhir","Terjual"],rows:kr},{name:"Paket data",head:["Tanggal","Kasir","Operator","Paket","Harga","Jumlah","Total"],rows:pr},{name:"Uang dan saldo",head:["Tanggal","Kasir"].concat(UK.map(x=>x[1])),rows:[[d,s.by||""].concat(UK.map(x=>s.u[x[0]]||0))]}]});if(r!=="nourl")toast("Stok terkirim ke Google Sheets ✓")}catch(e){toast("Stok gagal dikirim ke Sheets")}}
+function who(){const w=$("#who");w.textContent="👤 "+user+" ";const b=document.createElement("button");b.textContent="Keluar";b.className="x";b.style.cssText="font-size:12px;color:var(--lk)";b.onclick=()=>{user=null;try{sessionStorage.removeItem("konter_user");sessionStorage.removeItem("konter_bio")}catch(e){}draw()};w.appendChild(b)}
 try{S=Object.assign(S,JSON.parse(localStorage.getItem("konter")||"{}"))}catch(e){}
 const save=()=>{try{localStorage.setItem("konter",JSON.stringify(S))}catch(e){toast("Penyimpanan penuh/tidak tersedia. Hapus foto lama.")}};
 const D=()=>$("#dt").value;$("#dt").value=today();$("#dt").onchange=()=>{draft=null;scanMsg="";draw()};
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));draw()});
 
-function calc(d){const t=S.tx.filter(x=>x.d===d),o=S.open[d]||{kas:0,saldo:0};let pj=0,ci=0,co=0,sd=0,ns=0,cs=0,tf=0,tk=0,nofoto=0,fee=0;
-t.forEach(x=>{if(isIbu(x)){ci+=x.n+x.f;pj+=x.n}else if(x.k==="transfer"){ci+=x.n+x.f;sd-=x.n;tf+=x.n;fee+=x.f}
+function calc(d){const t=S.tx.filter(x=>x.d===d),o=S.open[d]||{kas:0,saldo:0};let tc=0,pus=0,pj=0,ci=0,co=0,sd=0,ns=0,cs=0,tf=0,tk=0,nofoto=0,fee=0;
+t.forEach(x=>{if(isPusat(x)){sd+=x.n;pus+=x.n}else if(isKas(x)){ci+=x.n;tc+=x.n}else if(isIbu(x)){ci+=x.n+x.f;pj+=x.n}else if(x.k==="transfer"){ci+=x.n+x.f;sd-=x.n;tf+=x.n;fee+=x.f}
 else if(x.k==="tarik"){co+=x.n;tk+=x.n;fee+=x.f;if(!x.p)nofoto++}
 else if(x.m==="cash"){ci+=x.n;cs+=x.n}else{ns+=x.n}});
-return{t,o,ci,co,sd,ns,cs,tf,tk,nofoto,fee,kas:o.kas+ci-co,pinjam:pj,saldo:o.saldo+sd}}
+return{t,o,ci,co,sd,ns,cs,tf,tk,nofoto,fee,kas:o.kas+ci-co,pinjam:pj,pus,tc,saldo:o.saldo+sd}}
 
-function draw(){if(!user){$("#who").textContent="";$("#v").innerHTML='<div class="card"><h2>Masuk karyawan</h2><label>Nama</label><input id="un" placeholder="Nama kamu"><label>PIN</label><input id="up" type="password" inputmode="numeric" placeholder="PIN"><button class="btn" id="lg">Masuk</button></div>';$("#lg").onclick=()=>{const n=$("#un").value.trim();if(!n)return toast("Isi nama dulu");if($("#up").value!=="1234")return toast("PIN salah");user=n;try{localStorage.setItem("konter_user",n)}catch(e){}draw()};return}
+function draw(){if(!user){$("#who").textContent="";let last="";try{last=localStorage.getItem("konter_last")||""}catch(e){}
+$("#v").innerHTML='<div class="card"><h2>Masuk karyawan</h2><label>Nama</label><input id="un" placeholder="Nama kamu" value="'+esc(last)+'"><button class="btn" id="lg">👆 Tap sidik jari untuk masuk</button><div class="m" style="font-size:12px;margin:14px 0 4px">Kalau sidik jari tidak bisa, masuk pakai PIN:</div><input id="up" type="password" inputmode="numeric" placeholder="PIN"><button class="btn g" id="lp">Masuk dengan PIN</button><div id="le" style="margin-top:8px"></div></div>';
+const go=(n,b)=>{user=n;bioOK=b;try{sessionStorage.setItem("konter_user",n);sessionStorage.setItem("konter_bio",b?"1":"0");localStorage.setItem("konter_last",n)}catch(e){}draw()};
+$("#lg").onclick=async()=>{const n=$("#un").value.trim();if(!n)return toast("Isi nama dulu");
+try{const r=await bio(n);toast("Berhasil masuk ✓");go(n,true)}
+catch(e){$("#le").innerHTML='<div class="wa" style="font-size:13px">'+esc(window.top!==window?"Halaman ini dibuka di dalam aplikasi, jadi kunci HP diblokir oleh aplikasinya. Buka lewat link GitHub di Chrome atau Safari.":e.name==="NotAllowedError"?"Verifikasi dibatalkan atau waktunya habis. Tap lagi, lalu selesaikan sidik jari atau PIN layar.":"Kunci HP tidak bisa dipakai ("+(e.name||e.code||"error")+").")+' Atau masuk pakai PIN di bawah.</div>'}};
+$("#lp").onclick=()=>{const n=$("#un").value.trim();if(!n)return toast("Isi nama dulu");if($("#up").value!=="1234")return toast("PIN salah");go(n,false)};return}
 const d=D();$("#v").innerHTML=tab==="tx"?vTx(d):tab==="cl"?vCl(d):tab==="st"?vSt(d):vRw();who();bind()}
 
 function vOpen(d){if(S.open[d])return"";const ks=Object.keys(S.close).sort().filter(k=>k<d).pop(),c=ks?S.close[ks]:{};
@@ -62,23 +94,24 @@ const jual=kind==="jual";
 return`<div class="card"><div class="seg"><button data-k="transfer" class="${kind==="transfer"?"on":""}">Transfer</button><button data-k="tarik" class="${kind==="tarik"?"on":""}">Tarik Tunai</button><button data-k="jual" class="${jual?"on":""}">Penjualan</button></div>
 <p class="m" style="margin:0;font-size:12px">${kind==="transfer"?"Customer kasih cash, kita transfer dari saldo. Kas bertambah, saldo berkurang.":kind==="tarik"?"Customer transfer ke rekening toko, kita kasih cash. Wajib foto bukti.":"Pulsa, data, aksesoris, service HP. Bayar cash atau TF/QRIS."}</p>
 ${jual?"":`<div class="card" style="margin:8px 0;padding:8px;font-size:12px">📌 Isi transaksi = <b>akumulasi total sehari</b>. Contoh: hari ini 5 TF bank total Rp3.000.000 (sudah termasuk admin) → isi Jumlah 5, Total nominal 3.000.000. Boleh juga isi satuan (Jumlah 1).</div>`}
-${kind==="transfer"?`<label>Sumber saldo</label><select id="sr"><option value="rainbow">Rainbow</option><option value="ibu">TF dari Ibu/Tigaraksa</option></select><div class="m" style="font-size:12px;margin-top:4px">📌 TF dari Ibu/Tigaraksa: lihat di WA</div><label>Jenis</label><select id="sb"><option>TF Bank</option><option>Top up DANA</option><option>Token listrik</option></select>`:""}
+${kind==="transfer"?`<label>Sumber saldo</label><select id="sr"><option value="rainbow">Rainbow</option><option value="ibu">TF dari Ibu/Tigaraksa</option><option value="pusat">Tambah saldo Rainbow dari pusat</option><option value="kas">Tambah cash (untuk tarik tunai)</option></select><div class="m" style="font-size:12px;margin-top:4px">📌 TF dari Ibu/Tigaraksa: lihat di WA</div><div id="jw"><label>Jenis</label><select id="sb"><option>TF Bank</option><option>Top up DANA</option><option>Token listrik</option></select></div>`:""}
 ${jual?"":`<label>Jumlah transaksi</label><input id="j" class="rp" inputmode="numeric" value="1">`}
 ${jual?`<label>Kategori</label><select id="cat"><option>Pulsa</option><option>Paket Data</option><option>Aksesoris HP</option><option>Service HP</option><option>Lainnya</option></select><label>Pembayaran</label><select id="mt"><option value="cash">Cash</option><option value="tf">TF / QRIS (masuk rekening toko)</option></select>`:""}
 <label>${kind==="tarik"?"Total nominal tarik tunai (sudah termasuk admin)":jual?"Nominal":"Total nominal transfer (sudah termasuk admin)"}</label><input id="n" class="rp" inputmode="numeric" placeholder="0">
 <label>Catatan (nama / no. tujuan)</label><input id="ct" placeholder="opsional">
 ${kind==="tarik"?`<label>Foto bukti transfer masuk</label><input type="file" id="ph" accept="image/*" capture="environment">${photo?`<img class="th" src="${photo}" style="margin-top:6px">`:""}`:""}
 <button class="btn" id="add">${editId?"Simpan perubahan":"Simpan transaksi"}</button>${editId?'<button class="btn g" id="cn">Batal edit</button>':""}</div>
-<div class="card"><h2>Hari ini (${c.t.length})</h2>${c.t.length?c.t.slice().reverse().map(x=>`<div class="tx"><div><b>${x.k==="transfer"?"Transfer"+(x.s&&x.s!==PJ?" · "+x.s:"")+(isIbu(x)?" · via Ibu/Tigaraksa":""):x.k==="tarik"?"Tarik Tunai":x.c}</b> <span class="tag">${x.k==="jual"?(x.m==="cash"?"cash":"TF/QRIS"):x.k==="tarik"?(x.p?"📷 ada bukti":"⚠️ tanpa bukti"):(isIbu(x)?"cash, saldo Ibu":"cash")}</span><div class="m" style="font-size:12px">${x.t}${x.by?" · "+x.by:""} ${x.ct||""}${x.j>1?" · "+x.j+" trx":""}${x.f?" · fee "+R(x.f):""}</div></div><div style="text-align:right">${x.p?`<img class="th" src="${x.p}"><br>`:""}<b>${R(x.n)}</b><br><button class="x" data-ed="${x.id}" style="color:var(--pr)">✎</button> <button class="x" data-del="${x.id}">✕</button></div></div>`).join(""):'<p class="m">Belum ada transaksi.</p>'}</div>`}
+<div class="card"><h2>Hari ini (${c.t.length})</h2>${c.t.length?c.t.slice().reverse().map(x=>`<div class="tx"><div><b>${x.k==="transfer"?"Transfer"+(x.s&&x.s!==PJ?" · "+x.s:"")+(isIbu(x)?" · via Ibu/Tigaraksa":"")+(x.r==="pusat"?" · tambah saldo dari pusat":"")+(x.r==="kas"?" · tambah cash":""):x.k==="tarik"?"Tarik Tunai":x.c}</b> <span class="tag">${x.k==="jual"?(x.m==="cash"?"cash":"TF/QRIS"):x.k==="tarik"?(x.p?"📷 ada bukti":"⚠️ tanpa bukti"):(isIbu(x)?"cash, saldo Ibu":x.r==="pusat"?"saldo masuk":"cash")}</span><div class="m" style="font-size:12px">${x.t}${x.by?" · "+x.by:""} ${x.ct||""}${x.j>1?" · "+x.j+" trx":""}${x.f?" · fee "+R(x.f):""}</div></div><div style="text-align:right">${x.p?`<img class="th" src="${x.p}"><br>`:""}<b>${R(x.n)}</b><br><button class="x" data-ed="${x.id}" style="color:var(--lk)">✎</button> <button class="x" data-del="${x.id}">✕</button></div></div>`).join(""):'<p class="m">Belum ada transaksi.</p>'}</div>`}
 
 function vCl(d){const c=calc(d);if(!S.open[d])return vOpen(d);const cl=S.close[d]||{};
 const rk=f=>{const a=c.t.filter(f);return{n:a.reduce((s,x)=>s+(x.j||1),0),t:a.reduce((s,x)=>s+x.n,0),f:a.reduce((s,x)=>s+x.f,0)}};
 const rw=(l,r)=>`<div class="row"><span>${l}<br><span class="m" style="font-size:12px">${r.n} transaksi${r.f?" · fee "+R(r.f):""}</span></span><b>${R(r.t)}</b></div>`;
 const dens=[100000,50000,20000,10000,5000,2000,1000],cnt=cl.cnt||{};
-return`<div class="card"><h2>Rekap transaksi hari ini</h2>${rw("Transfer",rk(x=>x.k==="transfer"&&!isIbu(x)))}${["TF Bank","Top up DANA","Token listrik"].map(s=>{const r=rk(x=>x.k==="transfer"&&!isIbu(x)&&(x.s||"TF Bank")===s);return r.n?rw("&nbsp;&nbsp;↳ "+s,r):""}).join("")}${(()=>{const r=rk(isIbu);return r.n?rw("TF via saldo Ibu/Tigaraksa (cash disetor ke Ibu, lihat di WA)",r):""})()}${rw("Tarik tunai",rk(x=>x.k==="tarik"))}${rw("Penjualan cash",rk(x=>x.k==="jual"&&x.m==="cash"))}${rw("Penjualan TF/QRIS",rk(x=>x.k==="jual"&&x.m!=="cash"))}</div>
+return`<div class="card"><h2>Rekap transaksi hari ini</h2>${rw("Transfer",rk(x=>isRb(x)))}${["TF Bank","Top up DANA","Token listrik"].map(s=>{const r=rk(x=>isRb(x)&&(x.s||"TF Bank")===s);return r.n?rw("&nbsp;&nbsp;↳ "+s,r):""}).join("")}${(()=>{const r=rk(isIbu);return r.n?rw("TF via saldo Ibu/Tigaraksa (cash disetor ke Ibu, lihat di WA)",r):""})()}${(()=>{const r=rk(isPusat);return r.n?rw("Tambah saldo Rainbow dari pusat",r):""})()}${(()=>{const r=rk(isKas);return r.n?rw("Tambah cash (untuk tarik tunai)",r):""})()}${rw("Tarik tunai",rk(x=>x.k==="tarik"))}${rw("Penjualan cash",rk(x=>x.k==="jual"&&x.m==="cash"))}${rw("Penjualan TF/QRIS",rk(x=>x.k==="jual"&&x.m!=="cash"))}</div>
 <div class="card"><h2>Ringkasan kas fisik</h2>
 <div class="row"><span>Uang modal</span><span>${R(c.o.kas)}</span></div>
-<div class="row"><span class="m">+ Cash transfer</span><span class="ok">${R(c.ci-c.cs)}</span></div>
+<div class="row"><span class="m">+ Cash transfer</span><span class="ok">${R(c.ci-c.cs-c.tc)}</span></div>
+${c.tc?`<div class="row"><span class="m">+ Tambah cash</span><span class="ok">${R(c.tc)}</span></div>`:""}
 <div class="row"><span class="m">+ Penjualan cash</span><span class="ok">${R(c.cs)}</span></div>
 <div class="row"><span class="m">− Tarik tunai (cash keluar)</span><span class="no">${R(c.co)}</span></div>
 <div class="row b"><span>Kas seharusnya</span><span>${R(c.kas)}</span></div></div>
@@ -88,7 +121,8 @@ return`<div class="card"><h2>Rekap transaksi hari ini</h2>${rw("Transfer",rk(x=>
 <div class="card"><h2>Cek saldo Rainbow</h2><p class="m" style="margin:0 0 6px;font-size:12px">ℹ️ Saldo Rainbow = khusus TF bank, top up DANA, token listrik. Saldo Digital Chip (khusus inject voucher paket/pulsa) dicatat terpisah di tab Stok.</p>
 <div class="row"><span>Saldo awal</span><span>${R(c.o.saldo)}</span></div>
 <div class="row"><span class="m">− Transfer keluar</span><span class="no">${R(c.tf)}</span></div>
-<div class="row b"><span>Saldo seharusnya</span><span>${R(c.saldo)}</span></div>
+<div class="row"><span class="m">+ Tambah saldo dari pusat</span><span class="ok">${R(c.pus)}</span></div>
+<div class="row b"><span>Saldo seharusnya</span><span>${R(c.saldo)}</span></div>${c.saldo<0?`<div class="pill no">⚠️ Saldo Rainbow minus. Ada tambahan saldo dari pusat yang belum dicatat?</div>`:""}
 <label>Saldo Rainbow aktual (cek di aplikasi)</label><input id="sa" class="rp" inputmode="numeric" value="${cl.saldoAkhir?cl.saldoAkhir.toLocaleString("id-ID"):""}"><div id="sel2"></div>
 <p class="m" style="font-size:12px">Selisih saldo bisa dari biaya admin bank atau transaksi belum dicatat.</p></div>
 <div class="card"><h2>Setoran</h2>${c.nofoto?`<p class="wa">⚠️ ${c.nofoto} tarik tunai belum ada foto bukti.</p>`:""}
@@ -132,7 +166,8 @@ return`<div class="card"><h2>Scan kertas closing stok</h2><p class="m" style="ma
 <div class="card"><h2>Paket data terjual</h2>${pk}<div class="row b"><span>Total semua paket (${aj})</span><span>${R(at)}</span></div></div>
 <div class="card"><h2>Uang &amp; saldo</h2><div class="two">${uk}</div>${cm.map(x=>`<div class="${x[0]}" style="margin-top:8px">${x[1]}</div>`).join("")}</div>
 <button class="btn" id="ss">Simpan stok</button>${S.stok[d]?`<p class="m" style="font-size:12px;text-align:center">Tersimpan oleh ${esc(S.stok[d].by||"-")} pukul ${S.stok[d].t||""}</p>`:""}`}
-function vRw(){const ks=Object.keys(S.close).sort().reverse();return`<div class="card"><h2>Riwayat closing</h2>${ks.length?ks.map(k=>{const x=S.close[k];return`<div class="tx"><div><b>${k}</b><div class="m" style="font-size:12px">Kas seharusnya ${R(x.kasExp)}<br>Kas fisik ${R(x.fisik)}</div></div><div style="text-align:right"><b class="${x.sel===0?"ok":"no"}">${x.sel===0?"Pas ✓":"Selisih "+R(x.sel)}</b><br><span class="m" style="font-size:12px">Setor ${R(x.setor)}</span></div></div>`}).join(""):'<p class="m">Belum ada closing.</p>'}</div>`}
+function vRw(){return vRw0()+syncCard()}
+function vRw0(){const ks=Object.keys(S.close).sort().reverse();return`<div class="card"><h2>Riwayat closing</h2>${ks.length?ks.map(k=>{const x=S.close[k];return`<div class="tx"><div><b>${k}</b><div class="m" style="font-size:12px">Kas seharusnya ${R(x.kasExp)}<br>Kas fisik ${R(x.fisik)}</div></div><div style="text-align:right"><b class="${x.sel===0?"ok":"no"}">${x.sel===0?"Pas ✓":"Selisih "+R(x.sel)}</b><br><span class="m" style="font-size:12px">Setor ${R(x.setor)}</span><br><button class="x" style="font-size:12px;color:var(--lk)" data-sy="${k}">Kirim ulang</button></div></div>`}).join(""):'<p class="m">Belum ada closing.</p>'}</div>`}
 
 function pill(id,s){const el=$(id);if(!el)return;el.innerHTML=s===0?`<div class="pill ok">✓ PAS, tidak ada selisih</div>`:`<div class="pill ${s<0?"no":"wa"}">${s<0?"KURANG":"LEBIH"} ${R(Math.abs(s))}</div>`}
 function bind(){const d=D(),c=calc(d);
@@ -141,12 +176,12 @@ document.querySelectorAll(".dn,#sa").forEach(i=>i.oninput=upd);
 document.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{if(editId)return toast("Selesaikan atau batalkan edit dulu");kind=b.dataset.k;photo="";draw()});
 document.querySelectorAll("[data-ed]").forEach(b=>b.onclick=()=>{const x=S.tx.find(y=>y.id==b.dataset.ed);if(!x)return;editId=x.id;kind=x.k;photo=x.p||"";fill=true;draw();window.scrollTo(0,0)});
 const cn=$("#cn");if(cn)cn.onclick=()=>{editId=null;photo="";draw()};
-if(fill&&editId){fill=false;const x=S.tx.find(y=>y.id===editId);if(x){$("#n").value=(x.n+(x.f||0)).toLocaleString("id-ID");if($("#f"))$("#f").value=x.f?x.f.toLocaleString("id-ID"):"";$("#ct").value=x.ct||"";if($("#j"))$("#j").value=x.j||1;if($("#sb"))$("#sb").value=x.s===PJ?"TF Bank":x.s||"TF Bank";if($("#sr"))$("#sr").value=isIbu(x)?"ibu":"rainbow";if(x.k==="jual"){$("#cat").value=x.c;$("#mt").value=x.m}}}
+if(fill&&editId){fill=false;const x=S.tx.find(y=>y.id===editId);if(x){$("#n").value=(x.n+(x.f||0)).toLocaleString("id-ID");if($("#f"))$("#f").value=x.f?x.f.toLocaleString("id-ID"):"";$("#ct").value=x.ct||"";if($("#j"))$("#j").value=x.j||1;if($("#sb"))$("#sb").value=x.s===PJ?"TF Bank":x.s||"TF Bank";if($("#sr"))$("#sr").value=x.r==="pusat"||x.r==="kas"?x.r:isIbu(x)?"ibu":"rainbow";if(x.k==="jual"){$("#cat").value=x.c;$("#mt").value=x.m}}}
 document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{ask("Hapus transaksi ini?",()=>{S.tx=S.tx.filter(x=>x.id!=b.dataset.del);save();draw()})});
 document.querySelectorAll(".kk").forEach(i=>i.onchange=()=>{draft.k[i.dataset.n][i.dataset.i]=num(i.value);redraw()});
 document.querySelectorAll(".kp").forEach(i=>i.onchange=()=>{const v=num(i.value);if(v)draft.p[i.dataset.k]=v;else delete draft.p[i.dataset.k];redraw()});
 document.querySelectorAll(".ku").forEach(i=>i.onchange=()=>{draft.u[i.dataset.k]=num(i.value);redraw()});
-const ss=$("#ss");if(ss)ss.onclick=()=>{const bad=KT.filter(n=>kwarn(n,draft.k[n],prevK(d)).length).length;if(bad&&!ss.dataset.ok){ask(bad+" baris stok perlu dicek. Tetap simpan?",()=>{ss.dataset.ok=1;ss.onclick()});return}S.stok[d]={by:user,k:draft.k,p:draft.p,u:draft.u,t:new Date().toTimeString().slice(0,5)};save();scanMsg="✓ Stok tersimpan";draw()};
+const ss=$("#ss");if(ss)ss.onclick=()=>{const bad=KT.filter(n=>kwarn(n,draft.k[n],prevK(d)).length).length;if(bad&&!ss.dataset.ok){ask(bad+" baris stok perlu dicek. Tetap simpan?",()=>{ss.dataset.ok=1;ss.onclick()});return}S.stok[d]={by:user,k:draft.k,p:draft.p,u:draft.u,t:new Date().toTimeString().slice(0,5)};save();scanMsg="✓ Stok tersimpan";draw();syncStok(d)};
 const aks=$("#aks");if(aks)aks.onclick=()=>{try{localStorage.setItem("konter_key",$("#ak").value.trim());toast("Kunci tersimpan")}catch(e){toast("Gagal menyimpan kunci")}};
 const sc=$("#sc");if(sc)sc.onchange=async()=>{const f=sc.files[0];if(!f)return;sc.parentNode.querySelector(".sm").textContent="Memproses foto, bisa sampai 1 menit...";
 try{const r=await askImg(await shrink(f));
@@ -156,22 +191,26 @@ UK.forEach(([k])=>nd.u[k]=num((r.u||{})[k]));draft=nd;
 scanMsg="✓ Terbaca. Cek dan koreksi dulu sebelum simpan."+(r.tgl&&r.tgl!==d?" ⚠️ Tanggal di kertas "+r.tgl+" beda dengan tanggal terpilih ("+d+").":"")}
 catch(e){scanMsg=errMsg(e)}
 draw()};
+const sr=$("#sr");if(sr){const sh=()=>{$("#jw").style.display=sr.value==="pusat"?"none":"block"};sr.onchange=sh;sh()}
+document.querySelectorAll("[data-sy]").forEach(b=>b.onclick=()=>syncClosing(b.dataset.sy,true));
+const sys=$("#sys");if(sys)sys.onclick=()=>{saveSync();toast("Pengaturan tersimpan")};
+const syt=$("#syt");if(syt)syt.onclick=async()=>{saveSync();try{const r=await post({tgl:"tes",sheets:[{name:"Tes",head:["Waktu","Pesan"],rows:[[new Date().toLocaleString("id-ID"),"Koneksi berhasil"]]}]});toast(r==="nourl"?"Isi alamat Web App dulu":"Tes terkirim, cek sheet Tes")}catch(e){toast("Gagal: "+(e.message||"tidak bisa terhubung"))}};
 const bo=$("#bo");if(bo)bo.onclick=()=>{S.open[d]={kas:num($("#ok").value),saldo:num($("#os").value)};save();draw()};
 const ph=$("#ph");if(ph)ph.onchange=()=>{const f=ph.files[0];if(!f)return;const im=new Image();im.onload=()=>{const s=Math.min(1,520/Math.max(im.width,im.height)),cv=document.createElement("canvas");cv.width=im.width*s;cv.height=im.height*s;cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);photo=cv.toDataURL("image/jpeg",.55);const n=$("#n").value,f2=$("#f").value,ct=$("#ct").value;draw();$("#n").value=n;$("#f").value=f2;$("#ct").value=ct};im.src=URL.createObjectURL(f)};
 const add=$("#add");if(add)add.onclick=()=>{const n=num($("#n").value);if(!n)return toast("Isi nominal dulu");
 if(kind==="tarik"&&!photo&&!add.dataset.ok){ask("Belum ada foto bukti transfer. Tetap simpan?",()=>{add.dataset.ok=1;add.onclick()});return}
-const x={id:Date.now(),d,k:kind,n,f:0,j:kind==="jual"?1:Math.max(1,num($("#j").value)),s:kind==="transfer"?$("#sb").value:"",r:kind==="transfer"?$("#sr").value:"",ct:$("#ct").value,t:new Date().toTimeString().slice(0,5),by:user};
+const x={id:Date.now(),d,k:kind,n,f:0,j:kind==="jual"?1:Math.max(1,num($("#j").value)),s:kind==="transfer"&&["pusat","kas"].indexOf($("#sr").value)<0?$("#sb").value:"",r:kind==="transfer"?$("#sr").value:"",ct:$("#ct").value,t:new Date().toTimeString().slice(0,5),by:user};
 if(kind==="jual"){x.c=$("#cat").value;x.m=$("#mt").value}if(kind==="tarik")x.p=photo;
 if(editId){const i=S.tx.findIndex(y=>y.id===editId);if(i>=0){x.id=editId;x.t=S.tx[i].t;S.tx[i]=x}editId=null}else S.tx.push(x);photo="";save();draw()};
 const wa=$("#wa");if(wa)wa.onclick=()=>{const r=rd(),k=f=>{const a=c.t.filter(f),fe=a.reduce((s,x)=>s+x.f,0);return a.reduce((s,x)=>s+(x.j||1),0)+" trx - "+R(a.reduce((s,x)=>s+x.n,0))+(fe?" (fee "+R(fe)+")":"")},sl=r.fisik-c.kas,st=v=>v===0?"✅ PAS":"⚠️ "+(v<0?"KURANG ":"LEBIH ")+R(Math.abs(v));
-let t="*LAPORAN CLOSING KONTER*\nTanggal: "+d+"\nKasir: "+user+"\n\n*Rekap transaksi*\nTransfer: "+k(x=>x.k==="transfer"&&!isIbu(x))+["TF Bank","Top up DANA","Token listrik"].map(s=>c.t.some(x=>x.k==="transfer"&&!isIbu(x)&&(x.s||"TF Bank")===s)?"\n   - "+s+": "+k(y=>y.k==="transfer"&&!isIbu(y)&&(y.s||"TF Bank")===s):"").join("")+(c.pinjam?"\nTF via saldo Ibu/Tigaraksa: "+k(isIbu)+" (cash disetor ke Ibu)":"")+"\nTarik tunai: "+k(x=>x.k==="tarik")+"\nPenjualan cash: "+k(x=>x.k==="jual"&&x.m==="cash")+"\nPenjualan TF/QRIS: "+k(x=>x.k==="jual"&&x.m!=="cash")+"\n\n*Kas fisik*\nModal awal: "+R(c.o.kas)+"\nKas seharusnya: "+R(c.kas)+"\nKas fisik: "+R(r.fisik)+"\nStatus: "+st(sl)+"\n\n*Saldo Rainbow*\nSeharusnya: "+R(c.saldo)+"\n";
+let t="*LAPORAN CLOSING SAUDARA CELL*\nTanggal: "+d+"\nKasir: "+user+(bioOK?"":" (masuk pakai PIN)")+"\n\n*Rekap transaksi*\nTransfer: "+k(x=>isRb(x))+["TF Bank","Top up DANA","Token listrik"].map(s=>c.t.some(x=>isRb(x)&&(x.s||"TF Bank")===s)?"\n   - "+s+": "+k(y=>isRb(y)&&(y.s||"TF Bank")===s):"").join("")+(c.pinjam?"\nTF via saldo Ibu/Tigaraksa: "+k(isIbu)+" (cash disetor ke Ibu)":"")+(c.tc?"\nTambah cash (untuk tarik tunai): "+R(c.tc):"")+"\nTarik tunai: "+k(x=>x.k==="tarik")+"\nPenjualan cash: "+k(x=>x.k==="jual"&&x.m==="cash")+"\nPenjualan TF/QRIS: "+k(x=>x.k==="jual"&&x.m!=="cash")+"\n\n*Kas fisik*\nModal awal: "+R(c.o.kas)+"\nKas seharusnya: "+R(c.kas)+"\nKas fisik: "+R(r.fisik)+"\nStatus: "+st(sl)+"\n\n*Saldo Rainbow*"+(c.pus?"\nTambah saldo dari pusat: "+R(c.pus):"")+"\nSeharusnya: "+R(c.saldo)+"\n";
 t+=r.sa?"Aktual: "+R(r.sa)+"\nStatus: "+st(r.sa-c.saldo)+"\n":"Aktual: belum diisi\n";
 if(S.stok[d]&&S.stok[d].k){const s=S.stok[d],pv=prevK(d);let pj=0,pt=0;Object.keys(PK).forEach(o=>PK[o].forEach(p=>{const j=s.p[pkey(o,p)]||0;pj+=j;pt+=j*p[1]}));
 t+="\n*Stok kartu & perdana*\n"+KT.map(n=>{const r=s.k[n];return n+": akhir "+r[3]+", terjual "+Math.max(0,r[0]+r[1]-r[3])+(kwarn(n,r,pv).length?" ⚠️":"")}).join("\n")+"\n\n*Paket data*: "+pj+" terjual, "+R(pt)+"\n";
 if(s.u.setoran)t+="Setoran kertas: "+R(s.u.setoran)+(S.close[d]&&S.close[d].setor!==s.u.setoran?" ⚠️ beda dengan closing app "+R(S.close[d].setor):" ✅")+"\n"}
 t+="\nModal besok: "+R(r.bs)+"\n*Setor: "+R(r.fisik-r.bs)+"*"+(c.tk?"\nMasuk rekening lewat tarik tunai: "+R(c.tk)+"\n*Total setoran: "+R(r.fisik-r.bs+c.tk)+"*":"");if(c.nofoto)t+="\n\n⚠️ "+c.nofoto+" tarik tunai tanpa foto bukti";
 window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank")};
-const sv=$("#sv");if(sv)sv.onclick=()=>{const r=rd(),sl=r.fisik-c.kas;if((sl!==0||c.nofoto)&&!sv.dataset.ok){ask((sl!==0?"⚠️ Kas "+(sl<0?"KURANG ":"LEBIH ")+R(Math.abs(sl))+". ":"")+(c.nofoto?c.nofoto+" tarik tunai tanpa bukti. ":"")+"Tetap simpan closing?",()=>{sv.dataset.ok=1;sv.onclick()});return}S.close[d]={by:user,cnt:r.cnt,receh:r.receh,fisik:r.fisik,kasExp:c.kas,sel:r.fisik-c.kas,saldoAkhir:r.sa,saldoExp:c.saldo,besok:r.bs,setor:r.fisik-r.bs,pinjam:c.pinjam||0};save();toast("Closing tersimpan ✓");tab="rw";document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x.dataset.t==="rw"));draw()};
+const sv=$("#sv");if(sv)sv.onclick=()=>{const r=rd(),sl=r.fisik-c.kas;if((sl!==0||c.nofoto)&&!sv.dataset.ok){ask((sl!==0?"⚠️ Kas "+(sl<0?"KURANG ":"LEBIH ")+R(Math.abs(sl))+". ":"")+(c.nofoto?c.nofoto+" tarik tunai tanpa bukti. ":"")+"Tetap simpan closing?",()=>{sv.dataset.ok=1;sv.onclick()});return}S.close[d]={by:user,cnt:r.cnt,receh:r.receh,fisik:r.fisik,kasExp:c.kas,sel:r.fisik-c.kas,saldoAkhir:r.sa,saldoExp:c.saldo,besok:r.bs,setor:r.fisik-r.bs,pinjam:c.pinjam||0};save();toast("Closing tersimpan ✓");tab="rw";document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x.dataset.t==="rw"));draw();showQuote(user,c.t.length,sl,d);syncClosing(d)};
 upd()}
 function rd(){const cnt={};let fisik=0;document.querySelectorAll(".dn").forEach(i=>{const q=num(i.value);if(q){cnt[i.dataset.v]=q;fisik+=q*i.dataset.v}});const receh=num(($("#rc")||{}).value);return{cnt,receh,fisik:fisik+receh,sa:num(($("#sa")||{}).value),bs:num(($("#bs")||{}).value)}}
 function upd(){if(!$("#fis"))return;const c=calc(D()),r=rd();$("#fis").textContent=R(r.fisik);pill("#sel1",r.fisik-c.kas);if(r.sa)pill("#sel2",r.sa-c.saldo);else $("#sel2").innerHTML="";$("#stor").textContent=R(r.fisik-r.bs);if($("#tot"))$("#tot").textContent=R(r.fisik-r.bs+c.tk)}
